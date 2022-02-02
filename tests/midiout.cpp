@@ -11,6 +11,8 @@
 #include <iostream>
 #include <libremidi/libremidi.hpp>
 #include <thread>
+#include <emscripten.h>
+#include <emscripten/html5.h>
 
 // This function should be embedded in a try/catch block in case of
 // an exception.  It offers the user a choice of MIDI ports to open.
