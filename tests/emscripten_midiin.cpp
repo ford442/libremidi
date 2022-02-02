@@ -1,7 +1,6 @@
 #include <iostream>
 #include <libremidi/libremidi.hpp>
 #include <emscripten.h>
-#include <emscripten/html5.h>
 #include <memory>
 
 int main(int argc,char**){
