@@ -34,5 +34,5 @@ output.send_message(std::vector<unsigned char>{0x80,64,100});
 .output_removed=[&](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-emscripten_set_main_loop([]{},0,0);
+emscripten_set_main_loop([]{},0,1);
 }
