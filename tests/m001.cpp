@@ -390,7 +390,7 @@ FS.mkdir("/shader");
 });
 midd();
 emscripten_set_canvas_element_size("#canvas",400,300);
-EM_ASM(Module['canvas'].style.backgroundColor='black';);
+EM_ASM(Module['canvas'].style.backgroundColor='green';);
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
@@ -403,38 +403,5 @@ ret=emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_c
 TEST_RESULT(emscripten_set_mousemove_callback);
 ret=emscripten_set_wheel_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,wheel_callback);
 TEST_RESULT(emscripten_set_wheel_callback);
-#ifdef AUTOMATE_SUCCESS
-EM_ASM(function sendEvent(type,data){
-var event=document.createEvent('Event');
-event.initEvent(type,true,true);
-for(var d in data) event[d]=data[d];
-window.dispatchEvent(event);
-}
-sendEvent('click',{ screenX: 123,screenY: 456,clientX: 123,clientY: 456,button: 0,buttons: 1 });
-);
-EmscriptenMouseEvent mouseEvent;
-ret=emscripten_get_mouse_status(&mouseEvent);
-TEST_RESULT(emscripten_get_mouse_status);
-if (mouseEvent.screenX != 123 || mouseEvent.screenY != 456 || mouseEvent.clientX != 123 || mouseEvent.clientY != 456){
-printf("ERROR! Incorrect mouse status\n");
-report_result(1);
-}
-ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,0);
-TEST_RESULT(emscripten_set_click_callback);
-EM_ASM(function sendEvent(type,data){
-var event=document.createEvent('Event');
-event.initEvent(type,true,true);
-for(var d in data) event[d]=data[d];
-window.dispatchEvent(event);
-}
-sendEvent('click',{ screenX: -500000,screenY: -500000,clientX: -500000,clientY: -500000,button: 0,buttons: 0 }); // Send a dummy event that should not be received.
-sendEvent('mousedown',{ screenX: 1,screenY: 1,clientX: 1,clientY: 1,button: 0,buttons: 1 });
-sendEvent('mouseup',{ screenX: 1,screenY: 1,clientX: 1,clientY: 1,button: 0,buttons: 0 });
-sendEvent('dblclick',{ screenX: 1,screenY: 1,clientX: 1,clientY: 1,button: 0,buttons: 0 });
-sendEvent('mousemove',{ screenX: 1,screenY: 1,clientX: 1,clientY: 1,button: 0,buttons: 0,'movementX': 1,'movementY': 1 });
-sendEvent('wheel',{ screenX: 1,screenY: 1,clientX: 1,clientY: 1,button: 0,buttons: 0,'deltaX': 1,'deltaY': 1,'deltaZ': 1,'deltaMode': 1 });
-sendEvent('mousewheel',{ screenX: 1,screenY: 1,clientX: 1,clientY: 1,button: 0,buttons: 0,'wheelDeltaX': 1,'wheelDeltaY': 1 });
-);
-#endif
 return 1;
 }
