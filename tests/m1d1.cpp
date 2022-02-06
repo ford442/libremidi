@@ -237,6 +237,7 @@ output.send_message(std::vector<unsigned char>{0x90,64,100});
 };
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 emscripten_set_main_loop([]{},60,1);
+emscripten_cancel_main_loop();
 }
 
 static void strt(){
@@ -305,8 +306,6 @@ viewportSizeX=w;
 viewportSizeY=h;
 glClearColor(0.0f,1.0f,0.0f,1.0f);
 midd();
-  
-emscripten_cancel_main_loop();
 emscripten_set_main_loop((void(*)())renderFrame,0,0);
 }
 
