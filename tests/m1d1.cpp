@@ -1,3 +1,4 @@
+#include <libremidi/libremidi.hpp>
 #include <vector>
 #include <algorithm>
 #include <cstring>
@@ -12,7 +13,6 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <ctime>
-#include <libremidi/libremidi.hpp>
 
 using namespace std;
 using namespace std::chrono;
@@ -306,7 +306,7 @@ output.send_message(std::vector<unsigned char>{0x80,64,100});
 .output_removed=[&](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
- // emscripten_set_main_loop([] {}, 60, 1);
+emscripten_set_main_loop([] {}, 60, 1);
 }
 
 static void cls_aud(){
