@@ -6,13 +6,13 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <GLES3/gl3.h>
-#include <libremidi/libremidi.hpp>
 #include <emscripten.h>
 #include <emscripten/html5.h>
 #include <memory>
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <ctime>
+#include <libremidi/libremidi.hpp>
 
 using namespace std;
 using namespace std::chrono;
@@ -53,20 +53,19 @@ return NULL;
 }
 
 static const char common_shader_header_gles3[]=
-"#version 300 es\n"
-"precision highp float;\n"
-"precision highp int;\n";
+"#version 300 es \n"
+"precision highp float;precision highp int; \n";
 
 static const char vertex_shader_body_gles3[]=
 "layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
-"out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;}\n\0";
+"out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
 
 static const char fragment_shader_header_gles3[]=
-"in highp vec3 ourColor;\n"
-"out highp vec4 FragColor;\n";
+"in highp vec3 ourColor; \n"
+"out highp vec4 FragColor; \n";
 
 static const char fragment_shader_footer_gles3[]=
-"\n\0";
+" \n\0";
 
 EGLDisplay display;
 EGLContext contextegl;
@@ -189,7 +188,7 @@ EGL_NONE
 
 static const EGLint attribute_list[]={
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
-// EGL_CONTEXT_OPENGL_PROFILE_MASK_KHR,EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT_KHR,
+EGL_CONTEXT_OPENGL_PROFILE_MASK_KHR,EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT_KHR,
 EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
 EGL_CONTEXT_OPENGL_ROBUST_ACCESS_EXT,EGL_TRUE,
 EGL_DEPTH_ENCODING_NV,EGL_DEPTH_ENCODING_NONLINEAR_NV,
