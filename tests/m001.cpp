@@ -235,7 +235,7 @@ libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)}
 emscripten_set_main_loop([]{},60,1);
 }
 
-static EM_BOOL userClick(int emsc_type, const EmscriptenMouseEvent* evt){
+static EM_BOOL OnMouseEvent(int emsc_type, const EmscriptenMouseEvent* evt){
 if (evt->shiftKey){
 EM_ASM({console.log("SHIFT");});
 }
@@ -245,10 +245,10 @@ EM_ASM({console.log("CLICK");});
 
 static void strt(){
 emscripten_cancel_main_loop();
-emscripten_set_mousedown_callback("#canvas",0,1,userClick);
-emscripten_set_mouseup_callback("#canvas",0,1,userClick);
-emscripten_set_keydown_callback("#canvas",0,1,userClick);
-emscripten_set_keyup_callback("#canvas",0,1,userClick);
+emscripten_set_mousedown_callback("#canvas",0,1,OnMouseEvent);
+emscripten_set_mouseup_callback("#canvas",0,1,OnMouseEvent);
+emscripten_set_keydown_callback("#canvas",0,1,OnMouseEvent);
+emscripten_set_keyup_callback("#canvas",0,1,OnMouseEvent);
 for(ii=0;ii<2161;ii++){
 vertices[ii]=0.0f;
 }
