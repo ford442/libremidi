@@ -162,8 +162,7 @@ ink[0]=white/100;
 }
 
 glClearColor(ink[0],ink[1],ink[2],ink[3]);
-
-  glGenVertexArrays(1,&VAO);
+glGenVertexArrays(1,&VAO);
 glGenBuffers(1,&VBO);
 glBindVertexArray(VAO);
 glBindBuffer(GL_ARRAY_BUFFER,VBO);
@@ -274,7 +273,6 @@ emscripten_webgl_make_context_current(ctx);
 int h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
 int w=h;
 glHint(GL_FRAGMENT_SHADER_DERIVATIVE_HINT,GL_NICEST);
-glCtx=&contextegl;
 sources[0]=common_shader_header;
 sources[1]=vertex_shader_body;
 vtx=compile_shader(GL_VERTEX_SHADER,2,sources);
