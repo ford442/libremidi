@@ -242,13 +242,14 @@ EM_ASM({console.log("SHIFT");});
 if (evt->button == 0){
 EM_ASM({console.log("CLICK");});
 }}
-
-static void strt(){
-emscripten_cancel_main_loop();
 emscripten_set_mousedown_callback("#canvas",0,1,OnMouseEvent);
 emscripten_set_mouseup_callback("#canvas",0,1,OnMouseEvent);
 emscripten_set_keydown_callback("#canvas",0,1,OnMouseEvent);
 emscripten_set_keyup_callback("#canvas",0,1,OnMouseEvent);
+
+static void strt(){
+emscripten_cancel_main_loop();
+
 for(ii=0;ii<2161;ii++){
 vertices[ii]=0.0f;
 }
