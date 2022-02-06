@@ -1,18 +1,28 @@
-#include <vector>
-#include <algorithm>
-#include <cstring>
-#include <cmath>
-#include <cstdio>
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
-#include <GLES3/gl3.h>
+
+
 #include <libremidi/libremidi.hpp>
 #include <emscripten.h>
 #include <emscripten/html5.h>
-#include <memory>
-#include <SDL2/SDL.h>
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+#include <GLES3/gl3.h>
+#include <GLES3/gl31.h>
+#include <GLES3/gl32.h>
+#define __gl2_h_
+#include <GLES2/gl2ext.h>
+#include <vector>
 #include <iostream>
+#include <algorithm>
+#include <cstring>
+#include <cstdarg>
+#include <cmath>
+#include <cstdio>
+#include <cstdint>
+#include <cstdlib>
 #include <ctime>
+#include <memory>
+
+
 
 using namespace std;
 using namespace std::chrono;
