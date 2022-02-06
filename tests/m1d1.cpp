@@ -1,4 +1,3 @@
-#include <libremidi/libremidi.hpp>
 #include <vector>
 #include <algorithm>
 #include <cstring>
@@ -13,6 +12,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <ctime>
+#include <libremidi/libremidi.hpp>
 
 using namespace std;
 using namespace std::chrono;
