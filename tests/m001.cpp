@@ -317,10 +317,10 @@ void str(){
 strt();
 }}
 int main(){
-  emscripten_set_mousedown_callback("#canvas",0,1,OnMouseEvent);
-emscripten_set_mouseup_callback("#canvas",0,1,OnMouseEvent);
-emscripten_set_keydown_callback("#canvas",0,1,OnKeyboardEvent);
-emscripten_set_keyup_callback("#canvas",0,1,OnKeyboardEvent);
+  emscripten_set_mousedown_callback("#canvas",0,1,OnMouseEvent,EM_CALLBACK_THREAD_CONTEXT_CALLING_THREAD);
+emscripten_set_mouseup_callback("#canvas",0,1,OnMouseEvent,EM_CALLBACK_THREAD_CONTEXT_CALLING_THREAD);
+emscripten_set_keydown_callback("#canvas",0,1,OnKeyboardEvent,EM_CALLBACK_THREAD_CONTEXT_CALLING_THREAD);
+emscripten_set_keyup_callback("#canvas",0,1,OnKeyboardEvent,EM_CALLBACK_THREAD_CONTEXT_CALLING_THREAD);
 EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
