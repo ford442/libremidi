@@ -242,10 +242,7 @@ EM_ASM({console.log("SHIFT");});
 if (evt->button == 0){
 EM_ASM({console.log("CLICK");});
 }}
-emscripten_set_mousedown_callback("#canvas",0,1,OnMouseEvent);
-emscripten_set_mouseup_callback("#canvas",0,1,OnMouseEvent);
-emscripten_set_keydown_callback("#canvas",0,1,OnMouseEvent);
-emscripten_set_keyup_callback("#canvas",0,1,OnMouseEvent);
+
 
 static void strt(){
 emscripten_cancel_main_loop();
@@ -316,6 +313,10 @@ void str(){
 strt();
 }}
 int main(){
+  emscripten_set_mousedown_callback("#canvas",0,1,OnMouseEvent);
+emscripten_set_mouseup_callback("#canvas",0,1,OnMouseEvent);
+emscripten_set_keydown_callback("#canvas",0,1,OnMouseEvent);
+emscripten_set_keyup_callback("#canvas",0,1,OnMouseEvent);
 EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
