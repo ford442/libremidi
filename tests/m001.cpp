@@ -229,20 +229,24 @@ output.open_port(idx);
 output.send_message(std::vector<unsigned char>{0x90,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){
-}
-};
+}};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 emscripten_set_main_loop([]{},60,1);
 }
 
 static EM_BOOL OnMouseEvent(int emsc_type, const EmscriptenMouseEvent* evt){
+if (evt == EMSCRIPTEN_EVENT_MOUSEDOWN){
+EM_ASM({console.log("CLICK");});
+}
+return EM_TRUE;
+}
+
+EM_BOOL OnKeyboardEvent(int emsc_type, const EmscriptenKeyboardEvent* emsc_event)
 if (evt->shiftKey){
 EM_ASM({console.log("SHIFT");});
 }
-if (evt->button == 0){
-EM_ASM({console.log("CLICK");});
-}}
-
+return EM_TRUE;
+}
 
 static void strt(){
 emscripten_cancel_main_loop();
@@ -315,8 +319,8 @@ strt();
 int main(){
   emscripten_set_mousedown_callback("#canvas",0,1,OnMouseEvent);
 emscripten_set_mouseup_callback("#canvas",0,1,OnMouseEvent);
-emscripten_set_keydown_callback("#canvas",0,1,OnMouseEvent);
-emscripten_set_keyup_callback("#canvas",0,1,OnMouseEvent);
+emscripten_set_keydown_callback("#canvas",0,1,OnKeyboardEvent);
+emscripten_set_keyup_callback("#canvas",0,1,OnKeyboardEvent);
 EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
