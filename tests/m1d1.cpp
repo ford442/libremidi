@@ -272,7 +272,7 @@ t1=steady_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
 glClearColor(0.0f,1.0f,0.0f,1.0f);
-emscripten_set_main_loop((void (*)())renderFrame,0,0);
+emscripten_request_animation_frame_loop((void (*)())renderFrame,0);
 }
 
 static void cls_aud(){
