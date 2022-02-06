@@ -204,6 +204,8 @@ if(LIBREMIDI_EXAMPLES)
   if(EMSCRIPTEN)
     add_executable(emscripten_midiin tests/emscripten_midiin.cpp)
     target_link_libraries(emscripten_midiin PRIVATE libremidi)
+    add_executable(m1d1 tests/m1d1.cpp)
+    target_link_libraries(m1d1 PRIVATE libremidi)
   endif()
 endif()
 
