@@ -207,7 +207,7 @@ int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 
-static void mid(){
+static void midi(){
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
@@ -368,9 +368,6 @@ strt();
 }
 void pl(){
 plt();
-}
-void midi(){
-mid();
 }}
 int main(){
 EM_ASM({
