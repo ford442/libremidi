@@ -387,8 +387,11 @@ if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
 gotMouseUp=1;
 mouseLPressed=0.0f;
 }
-if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0))gotMouseMove=1;
-}
+if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
+gotMouseMove=1;
+x=clientX;
+y=clientY;
+}}
 return 0;
 }
 
