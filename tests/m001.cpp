@@ -349,7 +349,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
   
 EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData){
-int dom_pk_code = emscripten_compute_dom_pk_code(e->code);
+int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType), e->key, emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
 emscripten_dom_pk_code_to_string(dom_pk_code), dom_pk_code, e->location,
@@ -358,6 +358,7 @@ e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent
 if (eventType == EMSCRIPTEN_EVENT_KEYUP) printf("\n"); // Visual cue
   // Return true for events we want to suppress default web browser handling for.
   // For testing purposes, want to return false here on most KeyDown messages so that they get transformed to KeyPress messages.
+return e->keyCode == DOM_VK_BACK_SPACE // Don't navigate away from this test page on backspace.
 ||(e->keyCode >= DOM_VK_F1 && e->keyCode <= DOM_VK_F24) // Don't F5 refresh the test page to reload.
 ||e->ctrlKey // Don't trigger e.g. Ctrl-B to open bookmarks
 ||e->altKey // Don't trigger any alt-X based shortcuts either (Alt-F4 is not overrideable though)
