@@ -9,7 +9,6 @@
 #include <GLES3/gl32.h>
 #define __gl2_h_
 #include <GLES2/gl2ext.h>
-#include <SDL2/SDL.h>
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -75,8 +74,6 @@ EGLDisplay display;
 EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
-SDL_Window *win;
-SDL_GLContext *glCtx;
 
 static const char* common_shader_header=common_shader_header_gles3;
 static const char* vertex_shader_body=vertex_shader_body_gles3;
@@ -118,19 +115,16 @@ Uint32 buttons;
 static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT);
 siz=0.42;
-SDL_PumpEvents();
 t2=steady_clock::now();
 duration<double>time_spana=duration_cast<duration<double>>(t2 - t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
-buttons=SDL_GetMouseState(&x, &y);
-mouseX=x/viewportSizeX;
-mouseY=y/viewportSizeY;
 ink[0]=mouseX/2;
 ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
-if((buttons & SDL_BUTTON_LMASK)!=0){
+  
+if((buttons)!=0){
 mouseLPressed=1.0f;
 ink[2]=white;
 siz=0.77;
@@ -171,7 +165,8 @@ ink[0]=white/100;
 }
 
 glClearColor(ink[0],ink[1],ink[2],ink[3]);
-glGenVertexArrays(1,&VAO);
+
+  glGenVertexArrays(1,&VAO);
 glGenBuffers(1,&VBO);
 glBindVertexArray(VAO);
 glBindBuffer(GL_ARRAY_BUFFER,VBO);
@@ -268,25 +263,21 @@ EGLConfig eglconfig=NULL;
 EGLint config_size,major,minor;
 display=eglGetDisplay(EGL_DEFAULT_DISPLAY);
 eglInitialize(display,&major,&minor);
-if(eglChooseConfig(display,attribute_list,&eglconfig,1,&config_size)==EGL_TRUE && eglconfig!=NULL){
-if(eglBindAPI(EGL_OPENGL_ES_API)!=EGL_TRUE){
-}
+eglChooseConfig(display,attribute_list,&eglconfig,1,&config_size);
+eglBindAPI(EGL_OPENGL_ES_API);
 EGLint anEglCtxAttribs2[]={
 EGL_CONTEXT_CLIENT_VERSION,3,
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
 EGL_CONTEXT_PRIORITY_LEVEL_IMG,EGL_CONTEXT_PRIORITY_REALTIME_NV,
 EGL_NONE};
 contextegl=eglCreateContext(display,eglconfig,EGL_NO_CONTEXT,anEglCtxAttribs2);
-if(contextegl==EGL_NO_CONTEXT){
-}
-else{
 surface=eglCreateWindowSurface(display,eglconfig,NULL,attribut_list);
 eglMakeCurrent(display,surface,surface,contextegl);
-}}
+}
 emscripten_webgl_make_context_current(ctx);
 int h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
 int w=h;
-win=SDL_CreateWindow("Shader",SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,w,h,0);
+glHint(GL_FRAGMENT_SHADER_DERIVATIVE_HINT,GL_NICEST);
 glCtx=&contextegl;
 sources[0]=common_shader_header;
 sources[1]=vertex_shader_body;
@@ -304,11 +295,6 @@ glDeleteShader(vtx);
 glDeleteShader(frag);
 glReleaseShaderCompiler();
 glUseProgram(shader_program);
-SDL_SetMainReady();
-if (SDL_Init(SDL_INIT_EVENTS)<0){
-qu(1);
-SDL_Log("SDL failed to init.");
-}
 t1=steady_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
@@ -316,61 +302,10 @@ glClearColor(0.0f,1.0f,0.0f,1.0f);
 emscripten_set_main_loop((void(*)())renderFrame,0,0);
 }
 
-static void cls_aud(){
-if(dev!=0){
-SDL_PauseAudioDevice(dev,SDL_TRUE);
-SDL_CloseAudioDevice(dev);
-dev=0;
-}}
-static void qu(int rc){
-SDL_Quit();
-exit(rc);
-}
-static void opn_aud(){
-dev=SDL_OpenAudioDevice(NULL,SDL_FALSE,&wave.spec,NULL,0);
-if(!dev){
-SDL_FreeWAV(wave.snd);
-qu(2);
-}
-SDL_PauseAudioDevice(dev,SDL_FALSE);
-}
-Uint8 *wptr;
-int lft;
-static void SDLCALL bfr(void *unused,Uint8 *stm,int len){
-wptr=wave.snd+wave.pos;
-lft=wave.slen-wave.pos;
-while (lft<=len){
-SDL_memcpy(stm,wptr,lft);
-stm+=lft;
-len-=lft;
-wptr=wave.snd;
-lft=wave.slen;
-wave.pos=0;
-}
-SDL_memcpy(stm,wptr,len);
-wave.pos+=len;
-}
-char flnm[16];
-static void plt(){
-SDL_SetMainReady();
-if (SDL_Init(SDL_INIT_AUDIO)<0){
-qu(1);
-SDL_Log("SDL failed to init.");
-}
-SDL_strlcpy(flnm,"/snd/sample.wav",sizeof(flnm));
-if(SDL_LoadWAV(flnm,&wave.spec,&wave.snd,&wave.slen)==NULL){
-qu(1);
-}
-wave.pos=0;
-wave.spec.callback=bfr;
-opn_aud();
-}
+
 extern "C" {
 void str(){
 strt();
-}
-void pl(){
-plt();
 }}
 int main(){
 EM_ASM({
