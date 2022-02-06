@@ -235,7 +235,7 @@ libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)}
 emscripten_set_main_loop([]{},60,1);
 }
 
-EM_BOOL userClick(int emsc_type, const EmscriptenMouseEvent* evt){
+static EM_BOOL userClick(int emsc_type, const EmscriptenMouseEvent* evt){
 if (evt->shiftKey){
 EM_ASM({console.log("SHIFT");});
 }
