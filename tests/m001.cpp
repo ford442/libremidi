@@ -302,16 +302,6 @@ void str(){
 strt();
 }}
 
-void report_result(int result){
-if (result == 0){
-printf("Test successful!\n");
-} else {
-printf("Test failed!\n");
-}
-#ifdef REPORT_RESULT
-REPORT_RESULT(result);
-#endif
-}
 static inline const char *emscripten_event_type_to_string(int eventType){
 const char *events[]={ "(invalid)","(none)","keypress","keydown","keyup","click","mousedown","mouseup","dblclick","mousemove","wheel","resize","scroll","blur","focus","focusin","focusout","deviceorientation","devicemotion","orientationchange","fullscreenchange","pointerlockchange","visibilitychange","touchstart","touchend","touchmove","touchcancel","gamepadconnected","gamepaddisconnected","beforeunload","batterychargingchange","batterylevelchange","webglcontextlost","webglcontextrestored","(invalid)" };
 ++eventType;
@@ -319,6 +309,7 @@ if (eventType < 0) eventType=0;
 if (eventType >= sizeof(events)/sizeof(events[0])) eventType=sizeof(events)/sizeof(events[0])-1;
 return events[eventType];
 }
+
 const char *emscripten_result_to_string(EMSCRIPTEN_RESULT result){
 if (result == EMSCRIPTEN_RESULT_SUCCESS) return "EMSCRIPTEN_RESULT_SUCCESS";
 if (result == EMSCRIPTEN_RESULT_DEFERRED) return "EMSCRIPTEN_RESULT_DEFERRED";
@@ -331,6 +322,7 @@ if (result == EMSCRIPTEN_RESULT_FAILED) return "EMSCRIPTEN_RESULT_FAILED";
 if (result == EMSCRIPTEN_RESULT_NO_DATA) return "EMSCRIPTEN_RESULT_NO_DATA";
 return "Unknown EMSCRIPTEN_RESULT!";
 }
+
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x,emscripten_result_to_string(ret));
 int gotClick=0;
 int gotMouseDown=0;
@@ -338,15 +330,8 @@ int gotMouseUp=0;
 int gotDblClick=0;
 int gotMouseMove=0;
 int gotWheel=0;
-void instruction(){
-if (!gotClick){ printf("Please click on the canvas.\n"); return; }
-if (!gotMouseDown){ printf("Please click on the canvas.\n"); return; }
-if (!gotMouseUp){ printf("Please click on the canvas.\n"); return; }
-if (!gotDblClick){ printf("Please double-click on the canvas.\n"); return; }
-if (!gotMouseMove){ printf("Please move the mouse on the canvas.\n"); return; }
-if (!gotWheel){ printf("Please scroll the mouse wheel.\n"); return; }
-if (gotClick && gotMouseDown && gotMouseUp && gotDblClick && gotMouseMove && gotWheel) report_result(0);
-}
+
+
 EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",
 emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,
@@ -359,14 +344,9 @@ if (eventType == EMSCRIPTEN_EVENT_DBLCLICK) gotDblClick=1;
 if (eventType == EMSCRIPTEN_EVENT_MOUSEUP) gotMouseUp=1;
 if (eventType == EMSCRIPTEN_EVENT_MOUSEMOVE && (e->movementX != 0 || e->movementY != 0)) gotMouseMove=1;
 }
-if (eventType == EMSCRIPTEN_EVENT_CLICK && e->screenX == -500000)  {
-printf("ERROR! Received an event to a callback that should have been unregistered!\n");
-gotClick=0;
-report_result(1);
-}
-instruction();
 return 0;
 }
+
 EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userData){
 printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",
 emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,
@@ -376,7 +356,6 @@ e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,
 if (e->deltaY > 0.f || e->deltaY < 0.f){
 gotWheel=1;
 }
-instruction();
 return 0;
 }
 
@@ -385,8 +364,6 @@ EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
-emscripten_set_canvas_element_size("#canvas",400,300);
-// EM_ASM(Module['canvas'].style.backgroundColor='green';);
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
