@@ -122,8 +122,7 @@ ink[0]=mouseX/2;
 ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
-if((ink[1])!=0){
-mouseLPressed=1.0f;
+if(mouseLPressed==1.0f){
 ink[2]=white;
 siz=0.77;
 vertices[7]=1.0f-mouseX;
@@ -148,7 +147,6 @@ vertices[(a*6)+3]=1.0f;
 vertices[(a*6)+4]=white;
 vertices[(a*6)+5]=1.0f-b;
 };
-mouseLPressed=0.0f;
 vertices[7]=-0.5f;
 vertices[1]=-0.5f;
 vertices[13]=0.7f;
@@ -380,9 +378,15 @@ e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e-
 e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!= 0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK) gotClick=1;
-if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0)gotMouseDown=1;
+if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
+gotMouseDown=1;
+mouseLPressed=1.0f;
+}
 if(eventType==EMSCRIPTEN_EVENT_DBLCLICK)gotDblClick=1;
-if(eventType==EMSCRIPTEN_EVENT_MOUSEUP)gotMouseUp=1;
+if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
+gotMouseUp=1;
+mouseLPressed=0.0f;
+}
 if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0))gotMouseMove=1;
 }
 return 0;
