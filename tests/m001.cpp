@@ -235,7 +235,7 @@ emscripten_set_main_loop([]{},60,1);
 }
 
 static EM_BOOL OnMouseEvent(int emsc_type, const EmscriptenMouseEvent* evt){
-if (evt->button == 0)
+if (evt->button == 0){
 EM_ASM({console.log("CLICK");});
 }
 return EM_TRUE;
