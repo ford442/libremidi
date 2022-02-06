@@ -13,10 +13,10 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-#include <cstring>
+#include <string.h>
 #include <cstdarg>
 #include <cmath>
-#include <cstdio>
+#include <stdio.h>
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
