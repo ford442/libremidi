@@ -275,8 +275,6 @@ glClearColor(0.0f,1.0f,0.0f,1.0f);
 emscripten_set_main_loop((void (*)())renderFrame,0,0);
 }
 
-
-
 static void cls_aud(){
 if(dev!=0){
 SDL_PauseAudioDevice(dev,SDL_TRUE);
@@ -365,7 +363,6 @@ output.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 };
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-emscripten_set_main_loop([] {}, 60, 1);
-
+// emscripten_set_main_loop([] {}, 60, 1);
 return 1;
 }
