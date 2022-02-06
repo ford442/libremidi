@@ -241,7 +241,7 @@ EM_ASM({console.log("CLICK");});
 return EM_TRUE;
 }
 
-EM_BOOL OnKeyboardEvent(void emsc_type, const EmscriptenKeyboardEvent* emsc_event)
+EM_BOOL OnKeyboardEvent(void emsc_type, const EmscriptenKeyboardEvent* evt)
 if (evt->shiftKey){
 EM_ASM({console.log("SHIFT");});
 }
