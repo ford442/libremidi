@@ -206,10 +206,11 @@ EGL_NONE
 int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
- 
-static void midd(){
+
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+
+static void midd(){
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){
 std::cout<<"MIDI Input connected: "<<idx<<" - "<<id<<std::endl;
@@ -235,7 +236,7 @@ output.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 };
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-emscripten_set_main_loop([]{},60,0);
+emscripten_set_main_loop([]{},60,1);
 }
 
 static void strt(){
