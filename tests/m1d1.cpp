@@ -1,5 +1,6 @@
 #include <libremidi/libremidi.hpp>
-#include <emscripten.hpp>
+#include <emscripten.h>
+#include <emscripten/html5.h>
 #include <memory>
 
 
