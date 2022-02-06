@@ -234,14 +234,14 @@ libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)}
 emscripten_set_main_loop([]{},60,1);
 }
 
-static EM_BOOL OnMouseEvent(int emsc_type, const EmscriptenMouseEvent* evt){
+static EM_BOOL OnMouseEvent(void emsc_type, const EmscriptenMouseEvent* evt){
 if (evt == EMSCRIPTEN_EVENT_MOUSEDOWN){
 EM_ASM({console.log("CLICK");});
 }
 return EM_TRUE;
 }
 
-EM_BOOL OnKeyboardEvent(int emsc_type, const EmscriptenKeyboardEvent* emsc_event)
+EM_BOOL OnKeyboardEvent(void emsc_type, const EmscriptenKeyboardEvent* emsc_event)
 if (evt->shiftKey){
 EM_ASM({console.log("SHIFT");});
 }
