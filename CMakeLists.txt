@@ -57,7 +57,7 @@ target_include_directories(libremidi ${_public}
 )
 
 if(EMSCRIPTEN)
-  set(CMAKE_EXECUTABLE_SUFFIX .html)
+  set(CMAKE_EXECUTABLE_SUFFIX .js)
   target_compile_definitions(libremidi ${_public} LIBREMIDI_EMSCRIPTEN)
 elseif(APPLE)
   ## CoreMIDI support ##
