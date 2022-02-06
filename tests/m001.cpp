@@ -323,11 +323,9 @@ return "Unknown EMSCRIPTEN_RESULT!";
 }
 
 int interpret_charcode_for_keyevent(int eventType,const EmscriptenKeyboardEvent *e){
-  
   // Only KeyPress events carry a charCode. For KeyDown and KeyUp events, these don't seem to be present yet, until later when the KeyDown
   // is transformed to KeyPress. Sometimes it can be useful to already at KeyDown time to know what the charCode of the resulting
   // KeyPress will be. The following attempts to do this:
- 
 if(eventType==EMSCRIPTEN_EVENT_KEYPRESS&&e->which)return e->which;
 if(e->charCode)return e->charCode;
 if(strlen(e->key)==1)return(int)e->key[0];
@@ -347,25 +345,24 @@ return num_chars;
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
-  
-EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData){
+
+EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
-emscripten_event_type_to_string(eventType), e->key, emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
-emscripten_dom_pk_code_to_string(dom_pk_code), dom_pk_code, e->location,
-e->ctrlKey ? " CTRL" : "", e->shiftKey ? " SHIFT" : "", e->altKey ? " ALT" : "", e->metaKey ? " META" : "", 
-e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode), e->keyCode, e->which);
-if (eventType == EMSCRIPTEN_EVENT_KEYUP) printf("\n"); // Visual cue
+emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
+emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode), e->keyCode, e->which);
+if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n"); // Visual cue
   // Return true for events we want to suppress default web browser handling for.
   // For testing purposes, want to return false here on most KeyDown messages so that they get transformed to KeyPress messages.
-return e->keyCode == DOM_VK_BACK_SPACE // Don't navigate away from this test page on backspace.
-||(e->keyCode >= DOM_VK_F1 && e->keyCode <= DOM_VK_F24) // Don't F5 refresh the test page to reload.
+return e->keyCode==DOM_VK_BACK_SPACE // Don't navigate away from this test page on backspace.
+||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24) // Don't F5 refresh the test page to reload.
 ||e->ctrlKey // Don't trigger e.g. Ctrl-B to open bookmarks
 ||e->altKey // Don't trigger any alt-X based shortcuts either (Alt-F4 is not overrideable though)
-||eventType == EMSCRIPTEN_EVENT_KEYPRESS || eventType == EMSCRIPTEN_EVENT_KEYUP; // Don't perform any default actions on these.
+||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType==EMSCRIPTEN_EVENT_KEYUP; // Don't perform any default actions on these.
 }
   
-#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x,emscripten_result_to_string(ret));
+#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x /*,emscripten_result_to_string(ret)*/);
+
 int gotClick=0;
 int gotMouseDown=0;
 int gotMouseUp=0;
@@ -376,15 +373,13 @@ int gotWheel=0;
 EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",
 emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,
-e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",
-e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
-if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!= 0){
-if(eventType==EMSCRIPTEN_EVENT_CLICK) gotClick=1;
+e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
+if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
+if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
 if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
 gotMouseDown=1;
 mouseLPressed=1.0f;
 }
-if(eventType==EMSCRIPTEN_EVENT_DBLCLICK)gotDblClick=1;
 if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
 gotMouseUp=1;
 mouseLPressed=0.0f;
