@@ -1,24 +1,7 @@
 #include <libremidi/libremidi.hpp>
 #include <emscripten.h>
-#include <emscripten/html5.h>
 #include <memory>
-#include <EGL/egl.h>
-#include <EGL/eglext.h>
-#include <GLES3/gl3.h>
-#include <GLES3/gl31.h>
-#include <GLES3/gl32.h>
-#define __gl2_h_
-#include <GLES2/gl2ext.h>
-#include <vector>
-#include <iostream>
-#include <algorithm>
-#include <cstring>
-#include <cstdarg>
-#include <cmath>
-#include <cstdio>
-#include <cstdint>
-#include <cstdlib>
-#include <ctime>
+
 
 int main(int argc,char**){
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
