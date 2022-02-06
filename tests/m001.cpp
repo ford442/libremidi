@@ -386,7 +386,7 @@ FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 emscripten_set_canvas_element_size("#canvas",400,300);
-EM_ASM(Module['canvas'].style.backgroundColor='green';);
+// EM_ASM(Module['canvas'].style.backgroundColor='green';);
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
