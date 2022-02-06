@@ -93,7 +93,6 @@ static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
 GLsizei i,srclens[nsources];
 for (i=0;i<nsources;++i){
-SDL_Log("GL Shader: %s",sources[i]);
 srclens[i]=(GLsizei)strlen(sources[i]);
 }
 shader=glCreateShader(type);
@@ -110,7 +109,6 @@ int x,y;
 long double siz,outTimeA;
 int a;
 float b;
-Uint32 buttons;
 
 static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT);
@@ -123,8 +121,7 @@ ink[0]=mouseX/2;
 ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
-  
-if((buttons)!=0){
+if((ink[1])!=0){
 mouseLPressed=1.0f;
 ink[2]=white;
 siz=0.77;
@@ -273,7 +270,6 @@ EGL_NONE};
 contextegl=eglCreateContext(display,eglconfig,EGL_NO_CONTEXT,anEglCtxAttribs2);
 surface=eglCreateWindowSurface(display,eglconfig,NULL,attribut_list);
 eglMakeCurrent(display,surface,surface,contextegl);
-}
 emscripten_webgl_make_context_current(ctx);
 int h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
 int w=h;
