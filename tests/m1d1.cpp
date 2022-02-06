@@ -272,7 +272,7 @@ viewportSizeX=w;
 viewportSizeY=h;
 glClearColor(0.0f,1.0f,0.0f,1.0f);
 emscripten_set_main_loop((void (*)())renderFrame,0,0);
-  /*
+ 
   std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
@@ -305,7 +305,7 @@ output.send_message(std::vector<unsigned char>{0x80,64,100});
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
  // emscripten_set_main_loop([] {}, 60, 1);
- */
+
 }
 
 static void cls_aud(){
