@@ -115,7 +115,7 @@ int x,y;
 long double siz,outTimeA;
 int a;
 float b;
-int idx;
+int m1;
 
 static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
@@ -315,7 +315,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
-midd(idx);
+midd(m1);
 // outp.send_message(std::vector<unsigned char>{0x90,64,100});
 EM_ASM({console.log("F1");});  
 }
@@ -384,6 +384,7 @@ std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,55,100});
+m1=idx;
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
