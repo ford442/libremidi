@@ -306,14 +306,17 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
-int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+      libremidi::midi_out outp;
+  int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
 //  output.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
-// output.send_message(std::vector<unsigned char>{0x88,64,100});
+  
+outp.send_message(libremidi::message::note_on(1, 55, 127));
+
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
