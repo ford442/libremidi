@@ -27,11 +27,7 @@ using namespace std::chrono;
 using namespace std::literals;
 using std::string;
 using namespace std::chrono;
-// struct timespec rem;
-
-timespec sleep_time;
-sleep_time.tv_sec=0;
-sleep_time.tv_nsec=400000000;
+struct timespec wait_time = {0, 5000 * 1000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
@@ -396,7 +392,7 @@ std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp;
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
-nanosleep(&sleep_time,NULL);
+nanosleep(&wait_time,NULL);
 outp.send_message(std::vector<unsigned char>{0x80,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){
