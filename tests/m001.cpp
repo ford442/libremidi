@@ -332,8 +332,8 @@ EM_ASM({console.log("F1");});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
-  libremidi::midi_out outp;
- outp.open_port(idx);
+ // libremidi::midi_out outp;
+// outp.open_port(idx);
   outp.send_message(std::vector<unsigned char>{0x80,64,100});
 
 // outp.send_message(std::vector<unsigned char>{0x80, 64, 100});
