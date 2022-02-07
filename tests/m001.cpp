@@ -111,7 +111,7 @@ int x,y;
 long double siz,outTimeA;
 int a;
 float b;
-  int idx;
+int idx;
 
 static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
@@ -306,10 +306,10 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
-      libremidi::midi_out outp;
-  outp.open_port(0);
+libremidi::midi_out outp;
+outp.open_port(idx);
 
-  int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
 //  output.send_message(std::vector<unsigned char>{0x90,64,100});
