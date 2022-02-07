@@ -393,6 +393,8 @@ libremidi::midi_out outp;
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 nanosleep(&wait_time,NULL);
+nanosleep(&wait_time,NULL);
+nanosleep(&wait_time,NULL);
 outp.send_message(std::vector<unsigned char>{0x80,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){
