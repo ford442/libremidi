@@ -312,30 +312,30 @@ int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 
 if(e->keyCode==112){
 libremidi::observer::callbacks callbacks{
-.input_added=[](int idx, const std::string& id){},
-.input_removed=[](int idx,const std::string& id){},
-.output_added=[](int idx,const std::string& id){
+.input_added=[&](int idx, const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp{};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
-.output_removed=[](int idx,const std::string& id){
+.output_removed=[&](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EM_ASM({console.log("F1");});  
 }
 if(e->keyCode==123){
 libremidi::observer::callbacks callbacks{
-.input_added=[](int idx, const std::string& id){},
-.input_removed=[](int idx,const std::string& id){},
-.output_added=[](int idx,const std::string& id){
+.input_added=[&](int idx, const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp{};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,55,100});
 },
-.output_removed=[](int idx,const std::string& id){
+.output_removed=[&](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EM_ASM({console.log("F12");});
