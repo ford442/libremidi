@@ -378,7 +378,7 @@ libremidi::observer::callbacks callbacks{
 .input_removed=[&](int idx,const std::string& id){},
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out outp{libremidi::API::EMSCRIPTEN, "Emscripten"};
+libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port();
 outp.send_message(std::vector<unsigned char>{0x90,55,100});
 },
