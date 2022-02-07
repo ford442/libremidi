@@ -323,7 +323,7 @@ EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userDa
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-output.send_message(std::vector<unsigned char>{0x90,64,100});
+//  output.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
@@ -391,6 +391,7 @@ FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 
+libremidi::midi_out midiout;
 chooseMidiPort(midiout);
 std::vector<unsigned char> message;
 message[0] = 144;
