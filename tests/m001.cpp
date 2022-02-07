@@ -207,7 +207,7 @@ char *fileloc="/shader/shader1.glsl";
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
-libremidi::midi_out output{};
+static libremidi::midi_out output{};
 
 static void midd(){
 libremidi::observer::callbacks callbacks{
