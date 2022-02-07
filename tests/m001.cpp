@@ -390,13 +390,12 @@ libremidi::observer::callbacks callbacks{
 .input_removed=[&](int idx,const std::string& id){},
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-nam={idx,id};
 libremidi::midi_out outp;
-outp.open_port(nam);
+outp.open_port(0);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 nanosleep(&req,&rem);
 nanosleep(&req,&rem);
-outp.send_message(std::vector<unsigned char>{0x90,64,0});
+outp.send_message(std::vector<unsigned char>{0x80,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
