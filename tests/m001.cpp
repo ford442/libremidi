@@ -312,7 +312,7 @@ EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userDa
 
   
   libremidi::midi_out outp;
-outp.open_port(0);
+outp.open_port(idx);
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
@@ -390,9 +390,8 @@ libremidi::observer::callbacks callbacks{
 .input_removed=[&](int idx,const std::string& id){},
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-// libremidi::midi_out output{};
+// libremidi::midi_out outp;
 // output.open_port(idx);
-
 // output.send_message(std::vector<unsigned char>{0x90,64,100});
 // output.send_message(libremidi::message::note_on(1, 55, 127));
 },
