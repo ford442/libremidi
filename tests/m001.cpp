@@ -327,7 +327,7 @@ int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 // unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-outp.send_message(bytes,sizeof(bytes));
+// outp.send_message(bytes,sizeof(bytes));
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
