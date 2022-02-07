@@ -87,12 +87,12 @@ const char* fragment_shader_header=fragment_shader_header_gles3;
 const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-GLfloat mouseX=0.0f;
-GLfloat mouseY=0.0f;
-GLfloat mouseLPressed=0.0f;
-GLfloat mouseRPressed=0.0f;
-GLfloat viewportSizeX=0.0f;
-GLfloat viewportSizeY=0.0f;
+GLfloat mouseX;
+GLfloat mouseY;
+GLfloat mouseLPressed;
+GLfloat mouseRPressed;
+GLfloat viewportSizeX;
+GLfloat viewportSizeY;
 GLfloat abstime;
 
 GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
@@ -107,22 +107,21 @@ glCompileShader(shader);
 return shader;
 }
 
-GLfloat ink[]={1.0f,0.0f,0.0f,1.0f};
+GLfloat ink[]={0.0f,1.0f,0.0f,1.0f};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
-long double white=1.0f;
+long double white;
 int x,y;
 long double siz,outTimeA;
 int a;
 float b;
 int m1,m2;
 
-
 void noteOnGL(int note){
 int aa;
 for(aa=0;aa<note;aa++){
 vertices[(note*aa)+3]=vertices[3]+0.2f;
-vertices[(note*aa)+4]=vertices[100]+white;
+vertices[(note*aa)+4]=vertices[100]+&white;
 vertices[(note*aa)+5]=vertices[3]+0.2f;
 }
 vertices[(note*aa)+6]=white;
@@ -139,7 +138,7 @@ vertices[(note*aab)+5]=vertices[3];
 
 void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
-siz=0.42;
+siz=0.33;
 t2=steady_clock::now();
 duration<double>time_spana=duration_cast<duration<double>>(t2 - t1);
 outTimeA=time_spana.count();
@@ -151,8 +150,8 @@ ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
 if(mouseLPressed==1.0f){
-ink[2]=white;
-siz=0.77;
+ink[2]=white+0.1f;
+siz=0.88;
 vertices[7]=1.0f-mouseX;
 vertices[1]=1.0f-mouseY;
 vertices[13]=1.0f-mouseX;
