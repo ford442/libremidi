@@ -320,6 +320,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 midd(m1);
+return true;
 }
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
