@@ -31,8 +31,8 @@ struct timespec s_time={0,10000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
-std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+static std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+static std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
 const char *read_file_into_str(const char *filename){
 char *result=NULL;
@@ -87,8 +87,8 @@ const char* fragment_shader_header=fragment_shader_header_gles3;
 const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-static GLfloat mouseX;
-static GLfloat mouseY;
+float mouseX;
+float mouseY;
 GLfloat mouseLPressed;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
@@ -123,7 +123,7 @@ int aa;
 for(aa=0;aa<note;aa++){
 vertices[(note*aa)+3]=vertices[3]+0.2f;
 vertices[(note*aa)+4]=vertices[100]+white;
-vertices[(note*aa)+5]=vertices[3]+0.2f;
+vertices[(note*aa)+5]=vertices[33]+0.2f;
 }
 vertices[(note*aa)+6]=white;
 }
@@ -455,7 +455,7 @@ if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
 gotMouseUp=1;
 // mouseLPressed=0.0f;
 }
-if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
+if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE/*&&(e->movementX!=0||e->movementY!=0)*/){
 gotMouseMove=1;
 x=e->clientX;
 y=e->clientY;
