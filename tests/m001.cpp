@@ -308,10 +308,9 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
-libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
+int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 
 if(e->keyCode==112){
-  
 libremidi::observer::callbacks callbacks{
 .input_added=[](int idx, const std::string& id){},
 .input_removed=[](int idx,const std::string& id){},
@@ -323,7 +322,8 @@ outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
 .output_removed=[](int idx,const std::string& id){
 }};
-int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
+}
 EM_ASM({console.log("F1");});  
 }
 if(e->keyCode==123){
@@ -338,7 +338,7 @@ outp.send_message(std::vector<unsigned char>{0x90,55,100});
 },
 .output_removed=[](int idx,const std::string& id){
 }};
-int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EM_ASM({console.log("F12");});
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
