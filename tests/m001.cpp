@@ -209,6 +209,7 @@ std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 static void midd(){
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){
+/*
 std::cout<<"MIDI Input connected: "<<idx<<" - "<<id<<std::endl;
 auto input=std::make_shared<libremidi::midi_in>();
 input->set_callback([](const libremidi::message& msg){
@@ -219,6 +220,7 @@ std::cout<<(int)msg.bytes[0]<<" "
 });
 input->open_port(idx);
 inputs.push_back(input);
+*/
 },
 .input_removed=[&](int idx,const std::string& id){
 },
@@ -226,7 +228,9 @@ inputs.push_back(input);
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out output{};
 output.open_port(idx);
-output.send_message(std::vector<unsigned char>{0x90,64,100});
+  
+// 
+  
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
@@ -337,9 +341,11 @@ EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userDa
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
+output.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
+output.send_message(std::vector<unsigned char>{0x88,64,100});
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
