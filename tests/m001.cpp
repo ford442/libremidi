@@ -28,7 +28,7 @@ using namespace std::literals;
 using std::string;
 using namespace std::chrono;
 struct timespec rem;
-struct timespec req={0,20000000};
+struct timespec req={0,200000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
