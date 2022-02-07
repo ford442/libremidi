@@ -132,10 +132,9 @@ void noteOffGL(int note){
 int aab;
 for(aab=0;aab<note;aab++){
 vertices[(note*aab)+3]=vertices[3];
-vertices[(note*aab)+4]=vertices[3];
-vertices[(note*aab)+5]=vertices[3];
-}vertices[(note*aab)+6]=white/2.0f;
-}
+vertices[(note*aab)+4]=vertices[33];
+vertices[(note*aab)+5]=vertices[333];
+}}
 
 void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
