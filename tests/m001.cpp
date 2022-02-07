@@ -204,39 +204,10 @@ int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 
-std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
-static libremidi::midi_out output{};
 
 static void midd(){
-libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx, const std::string& id){
-/*
-std::cout<<"MIDI Input connected: "<<idx<<" - "<<id<<std::endl;
-auto input=std::make_shared<libremidi::midi_in>();
-input->set_callback([](const libremidi::message& msg){
-std::cout<<(int)msg.bytes[0]<<" "
-<<(int)msg.bytes[1]<<" "
-<<(int)msg.bytes[2]<<" "
-<<(double) msg.timestamp<<std::endl;
-});
-input->open_port(idx);
-inputs.push_back(input);
-*/
-},
-.input_removed=[&](int idx,const std::string& id){
-},
-.output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-// libremidi::midi_out output{};
-output.open_port(idx);
-},
-.output_removed=[&](int idx,const std::string& id){
-}};
-libremidi::observer obs{
-libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-emscripten_set_main_loop([]{},60,1);
+
 }
 
 static void strt(){
@@ -409,6 +380,22 @@ EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
+  std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+static libremidi::midi_out output{};
+libremidi::observer::callbacks callbacks{
+.input_added=[&](int idx, const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){
+std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+libremidi::midi_out output{};
+output.open_port(idx);
+output.send_message(std::vector<unsigned char>{0x90,64,100});
+},
+.output_removed=[&](int idx,const std::string& id){}};
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
+emscripten_set_main_loop([]{},60,1);
+
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
@@ -424,6 +411,6 @@ TEST_RESULT(emscripten_set_wheel_callback);
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-midd();
+// midd();
 return 1;
 }
