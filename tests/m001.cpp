@@ -303,10 +303,10 @@ return num_chars;
 }
 
 void midd(int idx,unsigned char k){
-libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
-outp.open_port(idx);
+libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
+outpu.open_port(idx+1);
 EM_ASM({console.log("note off");});
-outp.send_message(std::vector<unsigned char>{0x80,k,100});
+outpu.send_message(std::vector<unsigned char>{0x80,k,100});
 }
 
 void midd2(int idx,unsigned char k){
