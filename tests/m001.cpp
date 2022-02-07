@@ -310,35 +310,9 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
   
-  libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx, const std::string& id){},
-.input_removed=[&](int idx,const std::string& id){},
-.output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out outp;
-outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x90,64,100});
-},
-.output_removed=[&](int idx,const std::string& id){
-}};
-libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_click_callback);
-ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mousedown_callback);
-ret=emscripten_set_mouseup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mouseup_callback);
-ret=emscripten_set_dblclick_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_dblclick_callback);
-ret=emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mousemove_callback);
-ret=emscripten_set_wheel_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,wheel_callback);
-TEST_RESULT(emscripten_set_wheel_callback);
-emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-  
+
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+  
 // libremidi::midi_out outp;
 // outp.open_port(idx);
 unsigned char bytes[3] = { 144, 110, 40 };
@@ -361,8 +335,6 @@ return e->keyCode==DOM_VK_BACK_SPACE // Don't navigate away from this test page 
 ||e->ctrlKey // Don't trigger e.g. Ctrl-B to open bookmarks
 ||e->altKey // Don't trigger any alt-X based shortcuts either (Alt-F4 is not overrideable though)
 ||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType==EMSCRIPTEN_EVENT_KEYUP; // Don't perform any default actions on these.
-emscripten_set_main_loop([]{},60,1);
-
 }
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
@@ -413,6 +385,34 @@ EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
-
+libremidi::observer::callbacks callbacks{
+.input_added=[&](int idx, const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){
+std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+libremidi::midi_out outp;
+outp.open_port(idx);
+outp.send_message(std::vector<unsigned char>{0x90,64,100});
+outp.send_message(std::vector<unsigned char>{0x90,64,0});
+},
+.output_removed=[&](int idx,const std::string& id){
+}};
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
+EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+TEST_RESULT(emscripten_set_click_callback);
+ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+TEST_RESULT(emscripten_set_mousedown_callback);
+ret=emscripten_set_mouseup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+TEST_RESULT(emscripten_set_mouseup_callback);
+ret=emscripten_set_dblclick_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+TEST_RESULT(emscripten_set_dblclick_callback);
+ret=emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+TEST_RESULT(emscripten_set_mousemove_callback);
+ret=emscripten_set_wheel_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,wheel_callback);
+TEST_RESULT(emscripten_set_wheel_callback);
+emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
+emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
+emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
+emscripten_set_main_loop([]{},60,1);
 return 1;
 }
