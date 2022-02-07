@@ -283,7 +283,7 @@ libremidi::observer::callbacks callbacks{
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out output{};
 output.open_port(idx);
-// output.send_message(std::vector<unsigned char>{0x90,64,100});
+output.send_message(std::vector<unsigned char>{0x90,64,100});
 },
 .output_removed=[](int idx,const std::string& id){}};
 
@@ -391,14 +391,14 @@ FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 
-libremidi::midi_out midiout;
+// libremidi::midi_out midiout;
 // chooseMidiPort(midiout);
 std::vector<unsigned char> message;
 message[0] = 144;
 message[1] = 64;
 message[2] = 90;
-midiout.send_message(message);
-  
+// midiout.send_message(message);
+
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
