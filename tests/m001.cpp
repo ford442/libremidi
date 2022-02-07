@@ -309,19 +309,6 @@ if(eventType>=sizeof(events)/sizeof(events[0]))eventType=sizeof(events)/sizeof(e
 return events[eventType];
 }
 
-const char *emscripten_result_to_string(EMSCRIPTEN_RESULT result){
-if(result ==EMSCRIPTEN_RESULT_SUCCESS)return "EMSCRIPTEN_RESULT_SUCCESS";
-if(result==EMSCRIPTEN_RESULT_DEFERRED)return "EMSCRIPTEN_RESULT_DEFERRED";
-if(result==EMSCRIPTEN_RESULT_NOT_SUPPORTED)return "EMSCRIPTEN_RESULT_NOT_SUPPORTED";
-if(result==EMSCRIPTEN_RESULT_FAILED_NOT_DEFERRED)return "EMSCRIPTEN_RESULT_FAILED_NOT_DEFERRED";
-if(result==EMSCRIPTEN_RESULT_INVALID_TARGET)return "EMSCRIPTEN_RESULT_INVALID_TARGET";
-if(result==EMSCRIPTEN_RESULT_UNKNOWN_TARGET)return "EMSCRIPTEN_RESULT_UNKNOWN_TARGET";
-if(result==EMSCRIPTEN_RESULT_INVALID_PARAM)return "EMSCRIPTEN_RESULT_INVALID_PARAM";
-if(result==EMSCRIPTEN_RESULT_FAILED)return "EMSCRIPTEN_RESULT_FAILED";
-if(result==EMSCRIPTEN_RESULT_NO_DATA)return "EMSCRIPTEN_RESULT_NO_DATA";
-return "Unknown EMSCRIPTEN_RESULT!";
-}
-
 int interpret_charcode_for_keyevent(int eventType,const EmscriptenKeyboardEvent *e){
   // Only KeyPress events carry a charCode. For KeyDown and KeyUp events, these don't seem to be present yet, until later when the KeyDown
   // is transformed to KeyPress. Sometimes it can be useful to already at KeyDown time to know what the charCode of the resulting
@@ -348,9 +335,15 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+if (keycode=="DOM_VK_F1(112)"){
+EM_ASM({console.log("F1"});
+}
+if (keycode=="DOM_VK_F1(123)"){
+EM_ASM({console.log("F12"});
+}
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
-emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode), e->keyCode, e->which);
+emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n"); // Visual cue
   // Return true for events we want to suppress default web browser handling for.
   // For testing purposes, want to return false here on most KeyDown messages so that they get transformed to KeyPress messages.
@@ -360,8 +353,8 @@ return e->keyCode==DOM_VK_BACK_SPACE // Don't navigate away from this test page 
 ||e->altKey // Don't trigger any alt-X based shortcuts either (Alt-F4 is not overrideable though)
 ||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType==EMSCRIPTEN_EVENT_KEYUP; // Don't perform any default actions on these.
 }
-  
-#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x /*,emscripten_result_to_string(ret)*/);
+
+#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
 int gotClick=0;
 int gotMouseDown=0;
