@@ -336,10 +336,10 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if (keycode=="DOM_VK_F1(112)"){
-EM_ASM({console.log("F1"});
+EM_ASM({console.log("F1");});
 }
 if (keycode=="DOM_VK_F1(123)"){
-EM_ASM({console.log("F12"});
+EM_ASM({console.log("F12");});
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
