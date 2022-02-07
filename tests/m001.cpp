@@ -204,10 +204,7 @@ int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 
-
-
 static void midd(){
-
 }
 
 static void strt(){
@@ -380,9 +377,8 @@ EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
-  std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
-static libremidi::midi_out output{};
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){},
 .input_removed=[&](int idx,const std::string& id){},
