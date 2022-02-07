@@ -125,6 +125,8 @@ vertices[(note*aa)+3]=vertices[3]+0.2f;
 vertices[(note*aa)+4]=vertices[100]+white;
 vertices[(note*aa)+5]=vertices[33]+0.2f;
 }
+mouseX=x/viewportSizeX;
+mouseY=y/viewportSizeY;
 vertices[(note*aa)+6]=white;
 }
 
