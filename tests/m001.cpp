@@ -317,7 +317,8 @@ std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp;
 outp.open_port(idx);
 // output.send_message(std::vector<unsigned char>{0x90,64,100});
-// output.send_message(libremidi::message::note_on(1, 55, 127));
+output.send_message(libremidi::message::note_on(1, 55, 127));
+output.send_message(libremidi::message::note_off(1, 55, 127));
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
