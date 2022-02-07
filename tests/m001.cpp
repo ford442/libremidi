@@ -334,19 +334,7 @@ if(e->keyCode==120){k=63;midd(m1,k);}
 if(e->keyCode==121){k=62;midd(m1,k);}
 if(e->keyCode==122){k=61;midd(m1,k);}
 if(e->keyCode==123){k=60;midd(m1,k);}
-  
-  if(e->keyCode==49){k=71;midd(m1,k);}
-if(e->keyCode==50){k=70;midd(m1,k);}
-if(e->keyCode==51){k=69;midd(m1,k);}
-if(e->keyCode==52){k=68;midd(m1,k);}
-if(e->keyCode==53){k=67;midd(m1,k);}
-if(e->keyCode==54){k=66;midd(m1,k);}
-if(e->keyCode==55){k=65;midd(m1,k);}
-if(e->keyCode==56){k=64;midd(m1,k);}
-if(e->keyCode==57){k=63;midd(m1,k);}
-if(e->keyCode==48){k=62;midd(m1,k);}
-if(e->keyCode==189){k=61;midd(m1,k);}
-if(e->keyCode==187){k=60;midd(m1,k);}
+
   
 mouseLPressed=0.0f;
 return true;
@@ -367,6 +355,19 @@ if(e->keyCode==120){k=63;midd2(m1,k);}
 if(e->keyCode==121){k=62;midd2(m1,k);}
 if(e->keyCode==122){k=61;midd2(m1,k);}
 if(e->keyCode==123){k=60;midd2(m1,k);}
+    
+if(e->keyCode==49){k=71;midd(m1,k);}
+if(e->keyCode==50){k=70;midd(m1,k);}
+if(e->keyCode==51){k=69;midd(m1,k);}
+if(e->keyCode==52){k=68;midd(m1,k);}
+if(e->keyCode==53){k=67;midd(m1,k);}
+if(e->keyCode==54){k=66;midd(m1,k);}
+if(e->keyCode==55){k=65;midd(m1,k);}
+if(e->keyCode==56){k=64;midd(m1,k);}
+if(e->keyCode==57){k=63;midd(m1,k);}
+if(e->keyCode==48){k=62;midd(m1,k);}
+if(e->keyCode==189){k=61;midd(m1,k);}
+if(e->keyCode==187){k=60;midd(m1,k);}
 mouseLPressed=1.0f;
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
