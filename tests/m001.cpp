@@ -310,12 +310,12 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-libremidi::midi_out outp;
-outp.open_port(idx);
+// libremidi::midi_out outp;
+// outp.open_port(idx);
 unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-outp.send_message(bytes,sizeof(bytes));
+// outp.send_message(bytes,sizeof(bytes));
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
@@ -388,8 +388,8 @@ libremidi::observer::callbacks callbacks{
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp;
-// outp.open_port(0);
-// outp.send_message(std::vector<unsigned char>{0x90,64,100});
+outp.open_port(idx);
+outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
