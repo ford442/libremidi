@@ -34,7 +34,7 @@ high_resolution_clock::time_point t2;
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
-static const char *read_file_into_str(const char *filename){
+const char *read_file_into_str(const char *filename){
 char *result=NULL;
 long length=0;
 FILE *file=fopen(filename,"r");
@@ -61,19 +61,19 @@ return result;
 return NULL;
 }
 
-static const char common_shader_header_gles3[]=
+const char common_shader_header_gles3[]=
 "#version 300 es \n"
 "precision highp float;precision highp int; \n";
 
-static const char vertex_shader_body_gles3[]=
+const char vertex_shader_body_gles3[]=
 "layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
 "out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
 
-static const char fragment_shader_header_gles3[]=
+const char fragment_shader_header_gles3[]=
 "in highp vec3 ourColor; \n"
 "out highp vec4 FragColor; \n";
 
-static const char fragment_shader_footer_gles3[]=
+const char fragment_shader_footer_gles3[]=
 " \n\0";
 
 EGLDisplay display;
@@ -81,10 +81,10 @@ EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
 
-static const char* common_shader_header=common_shader_header_gles3;
-static const char* vertex_shader_body=vertex_shader_body_gles3;
-static const char* fragment_shader_header=fragment_shader_header_gles3;
-static const char* fragment_shader_footer=fragment_shader_footer_gles3;
+const char* common_shader_header=common_shader_header_gles3;
+const char* vertex_shader_body=vertex_shader_body_gles3;
+const char* fragment_shader_header=fragment_shader_header_gles3;
+const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
 GLfloat mouseX=0.0f;
@@ -95,7 +95,7 @@ GLfloat viewportSizeX=0.0f;
 GLfloat viewportSizeY=0.0f;
 GLfloat abstime;
 
-static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
+GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
 GLsizei i,srclens[nsources];
 for (i=0;i<nsources;++i){
@@ -110,7 +110,7 @@ return shader;
 GLfloat ink[]={1.0f,0.0f,0.0f,1.0f};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
-long double white;
+long double white=1.0f;
 int x,y;
 long double siz,outTimeA;
 int a;
@@ -118,21 +118,23 @@ float b;
 int m1,m2;
 
 
-static void noteOnGL(int note){
+void noteOnGL(int note){
 for(int aa=0;aa<note;aa++){
 vertices[(note*aa)+3]=vertices[3]+0.2f;
 vertices[(note*aa)+3]=vertices[3]+0.2f;
 vertices[(note*aa)+3]=vertices[3]+0.2f;
+}
+vertices[(note*aa)+6]=white;
+}
+
+void noteOffGL(int note){
+for(int aab=0;aab<note;aab++){
+vertices[(note*aa)+3]=vertices[3];
+vertices[(note*aa)+3]=vertices[3];
+vertices[(note*aa)+3]=vertices[3];
 }}
 
-static void noteOffGL(int note){
-for(int aa=0;aa<note;aa++){
-vertices[(note*aa)+3]=vertices[3];
-vertices[(note*aa)+3]=vertices[3];
-vertices[(note*aa)+3]=vertices[3];
-}}
-
-static void renderFrame(){
+void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.42;
 t2=steady_clock::now();
@@ -197,12 +199,12 @@ glDrawArrays(GL_TRIANGLES,0,360);
 eglSwapBuffers(display,surface);
 }
 
-static const EGLint attribut_list[]={
+const EGLint attribut_list[]={
 // EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
 EGL_NONE
 };
 
-static const EGLint attribute_list[]={
+const EGLint attribute_list[]={
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
 EGL_CONTEXT_OPENGL_PROFILE_MASK_KHR,EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT_KHR,
 EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
@@ -223,7 +225,7 @@ int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 
-static void strt(){
+void strt(){
 emscripten_cancel_main_loop();
 for(ii=0;ii<2161;ii++){
 vertices[ii]=0.0f;
@@ -291,7 +293,7 @@ void str(){
 strt();
 }}
 
-static inline const char *emscripten_event_type_to_string(int eventType){
+inline const char *emscripten_event_type_to_string(int eventType){
 const char *events[]={"(invalid)","(none)","keypress","keydown","keyup","click","mousedown","mouseup","dblclick","mousemove","wheel","resize","scroll","blur","focus","focusin","focusout","deviceorientation","devicemotion","orientationchange","fullscreenchange","pointerlockchange","visibilitychange","touchstart","touchend","touchmove","touchcancel","gamepadconnected","gamepaddisconnected","beforeunload","batterychargingchange","batterylevelchange","webglcontextlost","webglcontextrestored","(invalid)"};
 ++eventType;
 if(eventType<0)eventType=0;
