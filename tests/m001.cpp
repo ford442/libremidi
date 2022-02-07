@@ -306,10 +306,8 @@ int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *k
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
-
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-/*
 if(e->keyCode==112){
 // outp.send_message(std::vector<unsigned char>{0x90,64,100});
 EM_ASM({console.log("F1");});  
@@ -326,7 +324,6 @@ return e->keyCode==DOM_VK_BACK_SPACE // Don't navigate away from this test page 
 ||e->ctrlKey // Don't trigger e.g. Ctrl-B to open bookmarks
 ||e->altKey // Don't trigger any alt-X based shortcuts either (Alt-F4 is not overrideable though)
 ||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType==EMSCRIPTEN_EVENT_KEYUP; // Don't perform any default actions on these.
-*/
 }
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
