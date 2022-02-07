@@ -302,46 +302,6 @@ if((*str++&0xC0)!=0x80)++num_chars;
 return num_chars;
 }
 
-void midd3(int idx){
-libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
-outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x80,60,100});
-  nanosleep(&s_time,NULL);
-outp.send_message(std::vector<unsigned char>{0x80,61,100});
-    nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,62,100});
-    nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,63,100});
-    nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,64,100});  
-  nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,65,100});  
-  nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,66,100});  
-  nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,67,100});  
-  nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,68,100});  
-  nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,69,100});  
-  nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,70,100});  
-  nanosleep(&s_time,NULL);
-
-outp.send_message(std::vector<unsigned char>{0x80,71,100});  
-  nanosleep(&s_time,NULL);
-
-}
-
 void midd(int idx,unsigned char k){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
@@ -379,7 +339,6 @@ return true;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 unsigned char k;
-mouseLPressed=1.0f;
 if(e->keyCode==112){k=71;midd2(m1,k);}
 if(e->keyCode==113){k=70;midd2(m1,k);}
 if(e->keyCode==114){k=69;midd2(m1,k);}
@@ -392,7 +351,7 @@ if(e->keyCode==120){k=63;midd2(m1,k);}
 if(e->keyCode==121){k=62;midd2(m1,k);}
 if(e->keyCode==122){k=61;midd2(m1,k);}
 if(e->keyCode==123){k=60;midd2(m1,k);}
-if(e->keyCode==32){midd3(m1);}
+mouseLPressed=1.0f;
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
 emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
