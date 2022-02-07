@@ -286,9 +286,6 @@ return events[eventType];
 }
 
 int interpret_charcode_for_keyevent(int eventType,const EmscriptenKeyboardEvent *e){
-  // Only KeyPress events carry a charCode. For KeyDown and KeyUp events, these don't seem to be present yet, until later when the KeyDown
-  // is transformed to KeyPress. Sometimes it can be useful to already at KeyDown time to know what the charCode of the resulting
-  // KeyPress will be. The following attempts to do this:
 if(eventType==EMSCRIPTEN_EVENT_KEYPRESS&&e->which)return e->which;
 if(e->charCode)return e->charCode;
 if(strlen(e->key)==1)return(int)e->key[0];
@@ -300,7 +297,7 @@ int number_of_characters_in_utf8_string(const char *str){
 if(!str)return 0;
 int num_chars=0;
 while(*str){
-if((*str++&0xC0)!=0x80) ++num_chars; // Skip all continuation bytes
+if((*str++&0xC0)!=0x80)++num_chars;
 }
 return num_chars;
 }
@@ -308,6 +305,10 @@ return num_chars;
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
+
+
+EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+
 libremidi::observer::callbacks callbacks{
 .input_added=[](int idx, const std::string& id){},
 .input_removed=[](int idx,const std::string& id){},
@@ -321,7 +322,7 @@ outp.open_port(idx);
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 libremidi::midi_out outp{};
 std::string name=outp.get_port_name(0);
-EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+  
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
