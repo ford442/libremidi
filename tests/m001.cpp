@@ -309,6 +309,17 @@ int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *k
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
+libremidi::observer::callbacks callbacks{
+.input_added=[&](int idx, const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){
+std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+libremidi::midi_out outp;
+outp.open_port(idx);
+outp.send_message(std::vector<unsigned char>{0x90,64,100});
+},
+.output_removed=[&](int idx,const std::string& id){
+}};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 
 
@@ -389,21 +400,7 @@ EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
-  
-libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx, const std::string& id){},
-.input_removed=[&](int idx,const std::string& id){},
-.output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out outp;
-outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x90,64,100});
 
-},
-.output_removed=[&](int idx,const std::string& id){
-}};
-  
-  
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
