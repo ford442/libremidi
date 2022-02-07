@@ -310,15 +310,15 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 // outp.send_message(std::vector<unsigned char>{0x80, 64, 100});
-int dom_pk_code=emscripten_compute_dom_pk_code(e->code);libremidi::midi_out outp;
+int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+  libremidi::midi_out outp;
+outp.open_port(0);
 
 if(e->keyCode==112){
-outp.open_port(0);
 EM_ASM({console.log("F1");});
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
-outp.open_port(1);
 EM_ASM({console.log("F12");});
 outp.send_message(std::vector<unsigned char>{0x80, 64, 100});
 }
