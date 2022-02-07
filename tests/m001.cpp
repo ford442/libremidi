@@ -208,9 +208,6 @@ int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 
-static void midd(){
-}
-
 static void strt(){
 emscripten_cancel_main_loop();
 for(ii=0;ii<2161;ii++){
@@ -289,7 +286,7 @@ output.open_port(idx);
 // output.send_message(std::vector<unsigned char>{0x90,64,100});
 },
 .output_removed=[](int idx,const std::string& id){}};
- 
+
 static inline const char *emscripten_event_type_to_string(int eventType){
 const char *events[]={"(invalid)","(none)","keypress","keydown","keyup","click","mousedown","mouseup","dblclick","mousemove","wheel","resize","scroll","blur","focus","focusin","focusout","deviceorientation","devicemotion","orientationchange","fullscreenchange","pointerlockchange","visibilitychange","touchstart","touchend","touchmove","touchcancel","gamepadconnected","gamepaddisconnected","beforeunload","batterychargingchange","batterylevelchange","webglcontextlost","webglcontextrestored","(invalid)"};
 ++eventType;
@@ -394,6 +391,13 @@ FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 
+chooseMidiPort(midiout);
+std::vector<unsigned char> message;
+message[0] = 144;
+message[1] = 64;
+message[2] = 90;
+midiout.send_message(message);
+  
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
@@ -412,6 +416,7 @@ emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_main_loop([]{},60,1);
 
+  
 // midd();
 return 1;
 }
