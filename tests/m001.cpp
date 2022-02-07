@@ -391,7 +391,7 @@ libremidi::observer::callbacks callbacks{
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp;
-outp.open_port(0);
+outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 nanosleep(&req,&rem);
 nanosleep(&req,&rem);
