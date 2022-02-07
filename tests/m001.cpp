@@ -395,6 +395,10 @@ outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 nanosleep(&req,&rem);
 nanosleep(&req,&rem);
+nanosleep(&req,&rem);
+nanosleep(&req,&rem);
+nanosleep(&req,&rem);
+nanosleep(&req,&rem);
 outp.send_message(std::vector<unsigned char>{0x80,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){
