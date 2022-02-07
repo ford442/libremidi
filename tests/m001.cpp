@@ -313,7 +313,7 @@ libremidi::observer::callbacks callbacks{
 .input_removed=[](int idx,const std::string& id){},
 .output_added=[](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-static libremidi::midi_out outp{};
+libremidi::midi_out outp{};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
@@ -331,6 +331,7 @@ EM_ASM({console.log("F1");});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
+libremidi::midi_out outp{};
 outp.send_message(std::vector<unsigned char>{0x80,64,100});
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
