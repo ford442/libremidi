@@ -309,48 +309,24 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-
+/*
 if(e->keyCode==112){
-libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx, const std::string& id){},
-.input_removed=[&](int idx,const std::string& id){},
-.output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out outp{};
-outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x90,64,100});
-},
-.output_removed=[&](int idx,const std::string& id){
-}};
-libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
+// outp.send_message(std::vector<unsigned char>{0x90,64,100});
 EM_ASM({console.log("F1");});  
 }
 if(e->keyCode==123){
-libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx, const std::string& id){},
-.input_removed=[&](int idx,const std::string& id){},
-.output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out outp{};
-outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x90,55,100});
-},
-.output_removed=[&](int idx,const std::string& id){
-}};
-libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EM_ASM({console.log("F12");});
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
 emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n"); // Visual cue
-  // Return true for events we want to suppress default web browser handling for.
-  // For testing purposes, want to return false here on most KeyDown messages so that they get transformed to KeyPress messages.
 return e->keyCode==DOM_VK_BACK_SPACE // Don't navigate away from this test page on backspace.
 ||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24) // Don't F5 refresh the test page to reload.
 ||e->ctrlKey // Don't trigger e.g. Ctrl-B to open bookmarks
 ||e->altKey // Don't trigger any alt-X based shortcuts either (Alt-F4 is not overrideable though)
 ||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType==EMSCRIPTEN_EVENT_KEYUP; // Don't perform any default actions on these.
+*/
 }
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
@@ -397,7 +373,18 @@ EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
-
+libremidi::observer::callbacks callbacks{
+.input_added=[&](int idx, const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){
+std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+libremidi::midi_out outp{libremidi::API::EMSCRIPTEN, "Emscripten"};
+outp.open_port();
+outp.send_message(std::vector<unsigned char>{0x90,55,100});
+},
+.output_removed=[&](int idx,const std::string& id){
+}};
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
