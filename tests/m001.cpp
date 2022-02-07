@@ -313,8 +313,7 @@ std::vector<char> nam;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-libremidi::midi_out outp;
- outp.open_port(idx);
+
 // unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
@@ -322,6 +321,8 @@ EM_ASM({console.log("F1");});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
+  libremidi::midi_out outp;
+ outp.open_port(idx);
   outp.send_message(std::vector<unsigned char>{0x80,64,100});
 
 // outp.send_message(std::vector<unsigned char>{0x80, 64, 100});
@@ -397,9 +398,7 @@ libremidi::midi_out outp;
 outp.open_port(idx);
   
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
-nanosleep(&wait_time,NULL);
-nanosleep(&wait_time,NULL);
-nanosleep(&wait_time,NULL);
+
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
