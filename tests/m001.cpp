@@ -117,11 +117,25 @@ int a;
 float b;
 int m1,m2;
 
+static void noteOnGL(int note){
+for(int aa=0;aa<note;aa++){
+vertices[(note*(2160/(note*aa))+3]=vertices[3]+0.2f;
+vertices[(note*(2160/(note*aa))+3]=vertices[3]+0.2f;
+vertices[(note*(2160/aa)+3]=vertices[3]+0.2f;
+}}
+
+static void noteOffGL(int note){
+for(int aa=0;aa<note;aa++){
+vertices[(note*(2160/(note*aa))+3]=vertices[3];
+vertices[(note*(2160/(note*aa))+3]=vertices[3];
+vertices[(note*(2160/aa)+3]=vertices[3];
+}}
+
 static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.42;
 t2=steady_clock::now();
-duration<double>time_spana=duration_cast<duration<double>>(t2 - t1);
+duration<double>time_spana=duration_cast<duration<double>>(t2-t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
 mouseX=x/viewportSizeX;
@@ -167,18 +181,6 @@ vertices[2]=0.0f;
 ink[2]=white;
 ink[0]=white/100;
 }
-
-glClearColor(ink[0],ink[1],ink[2],ink[3]);
-glGenVertexArrays(1,&VAO);
-glGenBuffers(1,&VBO);
-glBindVertexArray(VAO);
-glBindBuffer(GL_ARRAY_BUFFER,VBO);
-glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)0);
-glEnableVertexAttribArray(0);
-glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)(3*sizeof(float)));
-glEnableVertexAttribArray(1);
-glUseProgram(shader_program);
 glDrawArrays(GL_TRIANGLES,0,360);
 eglSwapBuffers(display,surface);
 }
@@ -264,10 +266,21 @@ glDeleteShader(vtx);
 glDeleteShader(frag);
 glReleaseShaderCompiler();
 glUseProgram(shader_program);
+glClearColor(ink[0],ink[1],ink[2],ink[3]);
+glGenVertexArrays(1,&VAO);
+glGenBuffers(1,&VBO);
+glBindVertexArray(VAO);
+glBindBuffer(GL_ARRAY_BUFFER,VBO);
+glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)0);
+glEnableVertexAttribArray(0);
+glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)(3*sizeof(float)));
+glEnableVertexAttribArray(1);
+attrib_position=glGetAttribLocation(shader_program,"location");
+glEnableVertexAttribArray(attrib_position);
 t1=steady_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
-glClearColor(0.0f,1.0f,0.0f,1.0f);
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 emscripten_set_main_loop((void(*)())renderFrame,0,0);
 }
