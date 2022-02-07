@@ -334,8 +334,6 @@ if(e->keyCode==120){k=63;midd(m1,k);}
 if(e->keyCode==121){k=62;midd(m1,k);}
 if(e->keyCode==122){k=61;midd(m1,k);}
 if(e->keyCode==123){k=60;midd(m1,k);}
-
-  
 mouseLPressed=0.0f;
 return true;
 }
@@ -343,6 +341,7 @@ return true;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 unsigned char k;
+if(e->repeat==true){return true;}
 if(e->keyCode==112){k=71;midd2(m1,k);}
 if(e->keyCode==113){k=70;midd2(m1,k);}
 if(e->keyCode==114){k=69;midd2(m1,k);}
@@ -355,7 +354,6 @@ if(e->keyCode==120){k=63;midd2(m1,k);}
 if(e->keyCode==121){k=62;midd2(m1,k);}
 if(e->keyCode==122){k=61;midd2(m1,k);}
 if(e->keyCode==123){k=60;midd2(m1,k);}
-    
 if(e->keyCode==49){k=71;midd(m1,k);}
 if(e->keyCode==50){k=70;midd(m1,k);}
 if(e->keyCode==51){k=69;midd(m1,k);}
