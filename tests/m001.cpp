@@ -309,12 +309,11 @@ return num_chars;
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
+char nam;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
-  
 
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-  
 // libremidi::midi_out outp;
 // outp.open_port(idx);
 unsigned char bytes[3] = { 144, 110, 40 };
@@ -381,7 +380,6 @@ gotWheel=1;
 }
 return 0;
 }
-
 int main(){
 EM_ASM({
 FS.mkdir("/snd");
@@ -392,8 +390,9 @@ libremidi::observer::callbacks callbacks{
 .input_removed=[&](int idx,const std::string& id){},
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+nam={idx,id};
 libremidi::midi_out outp;
-outp.open_port(idx);
+outp.open_port(nam);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 nanosleep(&req,&rem);
 nanosleep(&req,&rem);
