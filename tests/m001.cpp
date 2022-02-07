@@ -375,7 +375,7 @@ gotWheel=1;
 }
 return 0;
 }
-
+int idx;
 int main(){
 EM_ASM({
 FS.mkdir("/snd");
