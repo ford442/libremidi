@@ -120,16 +120,16 @@ int m1,m2;
 
 static void noteOnGL(int note){
 for(int aa=0;aa<note;aa++){
-vertices[(note*aa)+3)]=vertices[3]+0.2f;
-vertices[(note*aa)+3)]=vertices[3]+0.2f;
-vertices[(note*aa)+3)]=vertices[3]+0.2f;
+vertices[(note*aa)+3]=vertices[3]+0.2f;
+vertices[(note*aa)+3]=vertices[3]+0.2f;
+vertices[(note*aa)+3]=vertices[3]+0.2f;
 }}
 
 static void noteOffGL(int note){
 for(int aa=0;aa<note;aa++){
-vertices[(note*aa)+3)]=vertices[3];
-vertices[(note*aa)+3)]=vertices[3];
-vertices[(note*aa)+3)]=vertices[3];
+vertices[(note*aa)+3]=vertices[3];
+vertices[(note*aa)+3]=vertices[3];
+vertices[(note*aa)+3]=vertices[3];
 }}
 
 static void renderFrame(){
