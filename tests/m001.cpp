@@ -114,20 +114,6 @@ float b;
   int idx;
 
 static void renderFrame(){
-std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
-libremidi::observer::callbacks callbacks{
-.input_added=[](int idx, const std::string& id){},
-.input_removed=[](int idx,const std::string& id){},
-.output_added=[](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out output{};
-output.open_port(idx);
-output.send_message(std::vector<unsigned char>{0x90,64,100});
-},
-.output_removed=[](int idx,const std::string& id){}};
-libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.42;
 t2=steady_clock::now();
@@ -391,13 +377,19 @@ FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 
-// libremidi::midi_out midiout;
-// chooseMidiPort(midiout);
-std::vector<unsigned char> message;
-message[0] = 144;
-message[1] = 64;
-message[2] = 90;
-// midiout.send_message(message);
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+libremidi::observer::callbacks callbacks{
+.input_added=[](int idx, const std::string& id){},
+.input_removed=[](int idx,const std::string& id){},
+.output_added=[](int idx,const std::string& id){
+std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+libremidi::midi_out output{};
+output.open_port(idx);
+output.send_message(std::vector<unsigned char>{0x90,64,100});
+},
+.output_removed=[](int idx,const std::string& id){}};
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
@@ -414,8 +406,6 @@ TEST_RESULT(emscripten_set_wheel_callback);
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-// emscripten_set_main_loop([]{},60,1);
-
-// midd();
+emscripten_set_main_loop([]{},60,1);
 return 1;
 }
