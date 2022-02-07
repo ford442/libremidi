@@ -115,7 +115,7 @@ int x,y;
 long double siz,outTimeA;
 int a;
 float b;
-int m1;
+int m1,m2;
 
 static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
