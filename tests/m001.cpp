@@ -207,6 +207,8 @@ char *fileloc="/shader/shader1.glsl";
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
+libremidi::midi_out output{};
+
 static void midd(){
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){
@@ -227,7 +229,7 @@ inputs.push_back(input);
 },
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out output{};
+// libremidi::midi_out output{};
 output.open_port(idx);
 },
 .output_removed=[&](int idx,const std::string& id){
