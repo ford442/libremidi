@@ -125,18 +125,16 @@ vertices[(note*aa)+3]=vertices[3]+0.2f;
 vertices[(note*aa)+4]=vertices[100]+white;
 vertices[(note*aa)+5]=vertices[33]+0.2f;
 }
-mouseX=x/viewportSizeX;
-mouseY=y/viewportSizeY;
 vertices[(note*aa)+6]=white;
 }
 
 void noteOffGL(int note){
-int aab;
+/*int aab;
 for(aab=0;aab<note;aab++){
 vertices[(note*aab)+3]=vertices[3];
 vertices[(note*aab)+4]=vertices[33];
 vertices[(note*aab)+5]=vertices[333];
-}}
+}*/}
 
 void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
