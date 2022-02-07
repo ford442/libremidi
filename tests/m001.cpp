@@ -122,8 +122,8 @@ void noteOnGL(int note){
 int aa;
 for(aa=0;aa<note;aa++){
 vertices[(note*aa)+3]=vertices[3]+0.2f;
-vertices[(note*aa)+3]=vertices[3]+0.2f;
-vertices[(note*aa)+3]=vertices[3]+0.2f;
+vertices[(note*aa)+4]=vertices[100]+white;
+vertices[(note*aa)+5]=vertices[3]+0.2f;
 }
 vertices[(note*aa)+6]=white;
 }
@@ -132,9 +132,10 @@ void noteOffGL(int note){
 int aab;
 for(aab=0;aab<note;aab++){
 vertices[(note*aab)+3]=vertices[3];
-vertices[(note*aab)+3]=vertices[3];
-vertices[(note*aab)+3]=vertices[3];
-}}
+vertices[(note*aab)+4]=vertices[3];
+vertices[(note*aab)+5]=vertices[3];
+}vertices[(note*aab)+6]=white/2.0f;
+}
 
 void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
@@ -381,8 +382,7 @@ if(e->keyCode==82){k=80;midd(m1,k);kkey=362;noteOffGL(kkey);}
 if(e->keyCode==69){k=81;midd(m1,k);kkey=367;noteOffGL(kkey);}
 if(e->keyCode==87){k=82;midd(m1,k);kkey=372;noteOffGL(kkey);}
 if(e->keyCode==81){k=83;midd(m1,k);kkey=377;noteOffGL(kkey);}
-  
-  
+
 mouseLPressed=0.0f;
 return true;
 }
