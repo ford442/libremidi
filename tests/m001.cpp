@@ -315,20 +315,18 @@ libremidi::observer::callbacks callbacks{
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp{};
 outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x90,64,100});
-outp.send_message(libremidi::message::note_on(1,111,111));
 },
 .output_removed=[](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-
-
+libremidi::midi_out outp{};
+std::string name=outp.get_port_name(0);
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-// unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-// outp.send_message(bytes,sizeof(bytes));
+outp.open_port(0,name);
+outp.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
