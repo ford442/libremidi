@@ -309,6 +309,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 libremidi::midi_out outp;
 unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
@@ -387,11 +388,11 @@ libremidi::observer::callbacks callbacks{
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp;
 outp.open_port(idx);
-output.send_message(std::vector<unsigned char>{0x90,64,100});
+outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
-libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
