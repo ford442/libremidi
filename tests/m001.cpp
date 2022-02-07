@@ -311,7 +311,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 
 libremidi::midi_out outp;
-outp.open_port(0);
+outp.open_port(1);
 outp.send_message(std::vector<unsigned char>{0x80, 64, 100});
 
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
