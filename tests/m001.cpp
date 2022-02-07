@@ -385,7 +385,7 @@ libremidi::midi_out output{};
   output.open_port(idx);
 output.send_message(std::vector<unsigned char>{0x90,64,100});
 },
-.output_removed=[&](int idx,const std::string& id){}};
+.output_removed=[](int idx,const std::string& id){}};
  
 int main(){
 EM_ASM({
