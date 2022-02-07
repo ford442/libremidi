@@ -301,7 +301,13 @@ if((*str++&0xC0)!=0x80)++num_chars;
 }
 return num_chars;
 }
-  
+
+void midd([&](int idx){
+libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
+outp.open_port(idx);
+outp.send_message(std::vector<unsigned char>{0x80,55,100});
+}
+          
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
@@ -309,6 +315,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
+midd();
 // outp.send_message(std::vector<unsigned char>{0x90,64,100});
 EM_ASM({console.log("F1");});  
 }
@@ -363,7 +370,6 @@ gotWheel=1;
 }
 return 0;
 }
-
 
 int main(){
 EM_ASM({
