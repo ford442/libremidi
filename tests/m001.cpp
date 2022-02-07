@@ -315,8 +315,7 @@ EM_ASM({console.log("F1");});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
-  
-outp.send_message(libremidi::message::note_on(1, 55, 127));
+outp.send_message(std::vector<unsigned char>{0x80, 64, 100});
 
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
