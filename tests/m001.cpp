@@ -321,13 +321,19 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
-midd2(m1);
-EM_ASM({console.log("F1");});  
-}
 if(eventType==EMSCRIPTEN_EVENT_KEYUP){
 midd(m1);
+}else{
+midd2(m1);
+}
+EM_ASM({console.log("F1");});  
 }
 if(e->keyCode==123){
+if(eventType==EMSCRIPTEN_EVENT_KEYUP){
+midd(m1);
+}else{
+midd2(m1);
+}
 EM_ASM({console.log("F12");});
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
