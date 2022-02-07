@@ -317,14 +317,14 @@ std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp;
 outp.open_port(idx);
 // output.send_message(std::vector<unsigned char>{0x90,64,100});
-output.send_message(libremidi::message::note_on(1, 55, 127));
-output.send_message(libremidi::message::note_off(1, 55, 127));
+outp.send_message(libremidi::message::note_on(1, 55, 127));
+outp.send_message(libremidi::message::note_off(1, 55, 127));
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-libremidi::midi_out outp;
-outp.open_port(idx);
+// libremidi::midi_out outp;
+// outp.open_port(idx);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
