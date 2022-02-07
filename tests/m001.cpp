@@ -325,11 +325,7 @@ return true;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-int k;
-if(e->keyCode==112){
-k=
-midd2(m1);
-}
+unsigned char k;
 if(e->keyCode==112){k=71;midd2(m1,k);}
 if(e->keyCode==113){k=70;midd2(m1,k);}
 if(e->keyCode==114){k=69;midd2(m1,k);}
