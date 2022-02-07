@@ -381,20 +381,19 @@ EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
-/*
+
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){},
 .input_removed=[&](int idx,const std::string& id){},
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-  */
+
+},
+.output_removed=[&](int idx,const std::string& id){}};
+ 
 libremidi::midi_out output{};
 output.open_port(idx);
 output.send_message(std::vector<unsigned char>{0x90,64,100});
-  /*
-},
-.output_removed=[&](int idx,const std::string& id){}};
-  */
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
