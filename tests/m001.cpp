@@ -315,7 +315,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
-midd();
+midd(idx);
 // outp.send_message(std::vector<unsigned char>{0x90,64,100});
 EM_ASM({console.log("F1");});  
 }
