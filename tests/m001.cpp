@@ -28,7 +28,7 @@ using namespace std::literals;
 using std::string;
 using namespace std::chrono;
 // struct timespec rem;
-timespec sleep_time;
+struct timespec sleep_time;
 sleep_time.tv_sec=0;
 sleep_time.tv_nsec=400000000;
 high_resolution_clock::time_point t1;
