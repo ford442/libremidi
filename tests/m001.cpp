@@ -126,9 +126,9 @@ vertices[(note*(2160/aa)+3]=vertices[3]+0.2f;
 
 static void noteOffGL(int note){
 for(int aa=0;aa<note;aa++){
-vertices[(note*(2160/(note*aa))+3]=vertices[3];
-vertices[(note*(2160/(note*aa))+3]=vertices[3];
-vertices[(note*(2160/aa)+3]=vertices[3];
+vertices[(note*(2160/(note*aa))+3)]=vertices[3];
+vertices[(note*(2160/(note*aa))+3)]=vertices[3];
+vertices[(note*(2160/aa)+3)]=vertices[3];
 }}
 
 static void renderFrame(){
