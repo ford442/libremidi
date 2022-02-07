@@ -27,7 +27,7 @@ using namespace std::chrono;
 using namespace std::literals;
 using std::string;
 using namespace std::chrono;
-struct timespec wait_time = {0, 5000 * 1000000};
+struct timespec s_time={0,10000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
@@ -306,17 +306,40 @@ void midd3(int idx){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x80,60,100});
+  nanosleep(&s_time,NULL);
 outp.send_message(std::vector<unsigned char>{0x80,61,100});
+    nanosleep(&s_time,NULL);
+
 outp.send_message(std::vector<unsigned char>{0x80,62,100});
+    nanosleep(&s_time,NULL);
+
 outp.send_message(std::vector<unsigned char>{0x80,63,100});
-outp.send_message(std::vector<unsigned char>{0x80,64,100});
-outp.send_message(std::vector<unsigned char>{0x80,65,100});
-outp.send_message(std::vector<unsigned char>{0x80,66,100});
-outp.send_message(std::vector<unsigned char>{0x80,67,100});
-outp.send_message(std::vector<unsigned char>{0x80,68,100});
-outp.send_message(std::vector<unsigned char>{0x80,69,100});
-outp.send_message(std::vector<unsigned char>{0x80,70,100});
-outp.send_message(std::vector<unsigned char>{0x80,71,100});
+    nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,64,100});  
+  nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,65,100});  
+  nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,66,100});  
+  nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,67,100});  
+  nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,68,100});  
+  nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,69,100});  
+  nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,70,100});  
+  nanosleep(&s_time,NULL);
+
+outp.send_message(std::vector<unsigned char>{0x80,71,100});  
+  nanosleep(&s_time,NULL);
+
 }
 
 void midd(int idx,unsigned char k){
