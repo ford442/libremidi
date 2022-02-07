@@ -394,7 +394,7 @@ std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 // output.open_port(idx);
 // output.send_message(std::vector<unsigned char>{0x90,64,100});
 // output.send_message(libremidi::message::note_on(1, 55, 127));
-},
+// },
 // .output_removed=[&](int idx,const std::string& id){}};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
