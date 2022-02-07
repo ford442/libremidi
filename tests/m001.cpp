@@ -302,13 +302,13 @@ if((*str++&0xC0)!=0x80)++num_chars;
 return num_chars;
 }
 
-void midd(int idx){
+void midd(int idx,unsigned char k){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x80,55,100});
+outp.send_message(std::vector<unsigned char>{0x80,k,100});
 }
 
-void midd2(int idx,int k){
+void midd2(int idx,unsigned char k){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,k,100});
@@ -319,7 +319,19 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
-midd(m1);
+unsigned char k;
+if(e->keyCode==112){k=71;midd(m1,k);}
+if(e->keyCode==113){k=70;midd(m1,k);}
+if(e->keyCode==114){k=69;midd(m1,k);}
+if(e->keyCode==115){k=68;midd(m1,k);}
+if(e->keyCode==116){k=67;midd(m1,k);}
+if(e->keyCode==117){k=66;midd(m1,k);}
+if(e->keyCode==118){k=65;midd(m1,k);}
+if(e->keyCode==119){k=64;midd(m1,k);}
+if(e->keyCode==120){k=63;midd(m1,k);}
+if(e->keyCode==121){k=62;midd(m1,k);}
+if(e->keyCode==122){k=61;midd(m1,k);}
+if(e->keyCode==123){k=60;midd(m1,k);}
 return true;
 }
 
@@ -338,7 +350,6 @@ if(e->keyCode==120){k=63;midd2(m1,k);}
 if(e->keyCode==121){k=62;midd2(m1,k);}
 if(e->keyCode==122){k=61;midd2(m1,k);}
 if(e->keyCode==123){k=60;midd2(m1,k);}
-  
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
 emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
