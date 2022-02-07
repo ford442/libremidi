@@ -31,8 +31,8 @@ struct timespec wait_time = {0, 5000 * 1000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
-static std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-static std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
@@ -308,12 +308,12 @@ return num_chars;
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
-static libremidi::midi_out outp;
 libremidi::observer::callbacks callbacks{
 .input_added=[](int idx, const std::string& id){},
 .input_removed=[](int idx,const std::string& id){},
 .output_added=[](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+static libremidi::midi_out outp{};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
