@@ -323,7 +323,6 @@ outp.send_message(std::vector<unsigned char>{0x90,64,100});
 .output_removed=[](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-}
 EM_ASM({console.log("F1");});  
 }
 if(e->keyCode==123){
