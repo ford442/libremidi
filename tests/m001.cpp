@@ -337,6 +337,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 unsigned char k;
 int kkey;
+if(e->repeat==true){return true;}
 
 if(e->keyCode==112){k=59;midd(m1,k);kkey=10;noteOffGL(kkey);}
 if(e->keyCode==113){k=58;midd(m1,k);kkey=20;noteOffGL(kkey);}
