@@ -311,7 +311,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 libremidi::midi_out outp;
-outp.open_port(&idx);
+outp.open_port(idx);
 unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
