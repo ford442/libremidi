@@ -119,7 +119,8 @@ int m1,m2;
 
 
 void noteOnGL(int note){
-for(int aa=0;aa<note;aa++){
+int aa;
+for(aa=0;aa<note;aa++){
 vertices[(note*aa)+3]=vertices[3]+0.2f;
 vertices[(note*aa)+3]=vertices[3]+0.2f;
 vertices[(note*aa)+3]=vertices[3]+0.2f;
