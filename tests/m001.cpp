@@ -302,7 +302,7 @@ if((*str++&0xC0)!=0x80)++num_chars;
 return num_chars;
 }
 
-void midd([&](int idx){
+void midd([&](int idx)){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x80,55,100});
