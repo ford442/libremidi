@@ -392,7 +392,7 @@ FS.mkdir("/shader");
 });
 
 libremidi::midi_out midiout;
-chooseMidiPort(midiout);
+// chooseMidiPort(midiout);
 std::vector<unsigned char> message;
 message[0] = 144;
 message[1] = 64;
