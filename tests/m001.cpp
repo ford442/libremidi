@@ -133,8 +133,7 @@ vertices[(note*(2160/aa)+3)]=vertices[3];
 }}
 
 static void renderFrame(){
-glEnableVertexAttribArray(attrib_position);
-glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
+// glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.42;
 t2=steady_clock::now();
 duration<double>time_spana=duration_cast<duration<double>>(t2-t1);
@@ -271,10 +270,9 @@ glUseProgram(shader_program);
 glClearColor(ink[0],ink[1],ink[2],ink[3]);
 glGenVertexArrays(1,&VAO);
 glGenBuffers(1,&VBO);
-glBindVertexArray(VAO);
-attrib_position=glGetAttribLocation(shader_program,"aPos");
 glBindBuffer(GL_ARRAY_BUFFER,VBO);
 glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+glBindVertexArray(VAO);
 glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)0);
 glEnableVertexAttribArray(0);
 glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)(3*sizeof(float)));
