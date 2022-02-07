@@ -315,7 +315,6 @@ libremidi::observer::callbacks callbacks{
 .input_removed=[&](int idx,const std::string& id){},
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out outp;
 // outp.open_port(idx);
 // output.send_message(std::vector<unsigned char>{0x90,64,100});
 },
@@ -323,6 +322,7 @@ libremidi::midi_out outp;
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 // libremidi::midi_out outp;
+libremidi::midi_out outp;
 outp.open_port(0);
 unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
