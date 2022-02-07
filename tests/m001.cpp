@@ -308,13 +308,12 @@ return num_chars;
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
-
+static libremidi::midi_out outp;
 libremidi::observer::callbacks callbacks{
 .input_added=[](int idx, const std::string& id){},
 .input_removed=[](int idx,const std::string& id){},
 .output_added=[](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out outp;
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
@@ -328,12 +327,10 @@ int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 // unsigned char bytes[3] = { 144, 110, 40 };
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-// outp.send_message(bytes,sizeof(bytes));
+outp.send_message(bytes,sizeof(bytes));
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
-libremidi::midi_out outp;
-outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x80,64,100});
 }
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
@@ -351,12 +348,7 @@ return e->keyCode==DOM_VK_BACK_SPACE // Don't navigate away from this test page 
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
-int gotClick=0;
-int gotMouseDown=0;
-int gotMouseUp=0;
-int gotDblClick=0;
-int gotMouseMove=0;
-int gotWheel=0;
+int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 
 EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",
