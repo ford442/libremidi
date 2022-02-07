@@ -30,6 +30,9 @@ using std::string;
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
 long length=0;
@@ -311,7 +314,7 @@ EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userDa
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-output.send_message(std::vector<unsigned char>{0x90,64,100});
+outputs.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
@@ -379,8 +382,6 @@ FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 
-std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){},
 .input_removed=[&](int idx,const std::string& id){},
@@ -408,7 +409,7 @@ TEST_RESULT(emscripten_set_wheel_callback);
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-  emscripten_set_main_loop([]{},60,1);
+emscripten_set_main_loop([]{},60,1);
 
 // midd();
 return 1;
