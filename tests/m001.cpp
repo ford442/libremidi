@@ -322,11 +322,11 @@ outp.open_port(idx);
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 libremidi::midi_out outp{};
 std::string name=outp.get_port_name(0);
-  
+outp.open_port(0,name);
+
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-outp.open_port(0,name);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
