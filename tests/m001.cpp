@@ -310,15 +310,15 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx, const std::string& id){},
-.input_removed=[&](int idx,const std::string& id){},
-.output_added=[&](int idx,const std::string& id){
+.input_added=[](int idx, const std::string& id){},
+.input_removed=[](int idx,const std::string& id){},
+.output_added=[](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 libremidi::midi_out outp;
 outp.open_port(idx);
 outp.send_message(std::vector<unsigned char>{0x90,64,100});
 },
-.output_removed=[&](int idx,const std::string& id){
+.output_removed=[](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 
