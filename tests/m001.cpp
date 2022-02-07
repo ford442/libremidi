@@ -390,7 +390,7 @@ output.send_message(std::vector<unsigned char>{0x90,64,100});
 },
 .output_removed=[&](int idx,const std::string& id){}};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-emscripten_set_main_loop([]{},60,1);
+emscripten_set_main_loop([]{},60,0);
 
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
