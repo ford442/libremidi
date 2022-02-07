@@ -278,6 +278,18 @@ void str(){
 strt();
 }}
 
+int idx;
+libremidi::observer::callbacks callbacks{
+.input_added=[](int idx, const std::string& id){},
+.input_removed=[](int idx,const std::string& id){},
+.output_added=[](int idx,const std::string& id){
+std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+libremidi::midi_out output{};
+output.open_port(idx);
+// output.send_message(std::vector<unsigned char>{0x90,64,100});
+},
+.output_removed=[](int idx,const std::string& id){}};
+ 
 static inline const char *emscripten_event_type_to_string(int eventType){
 const char *events[]={"(invalid)","(none)","keypress","keydown","keyup","click","mousedown","mouseup","dblclick","mousemove","wheel","resize","scroll","blur","focus","focusin","focusout","deviceorientation","devicemotion","orientationchange","fullscreenchange","pointerlockchange","visibilitychange","touchstart","touchend","touchmove","touchcancel","gamepadconnected","gamepaddisconnected","beforeunload","batterychargingchange","batterylevelchange","webglcontextlost","webglcontextrestored","(invalid)"};
 ++eventType;
@@ -314,7 +326,7 @@ EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userDa
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
 EM_ASM({console.log("F1");});
-// outputs.send_message(std::vector<unsigned char>{0x90,64,100});
+output.send_message(std::vector<unsigned char>{0x90,64,100});
 }
 if(e->keyCode==123){
 EM_ASM({console.log("F12");});
@@ -375,27 +387,14 @@ gotWheel=1;
 }
 return 0;
 }
-int idx;
-libremidi::observer::callbacks callbacks{
-.input_added=[](int idx, const std::string& id){},
-.input_removed=[](int idx,const std::string& id){},
-.output_added=[](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
-libremidi::midi_out output{};
-  output.open_port(idx);
-output.send_message(std::vector<unsigned char>{0x90,64,100});
-},
-.output_removed=[](int idx,const std::string& id){}};
- 
+
 int main(){
 EM_ASM({
 FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 
-
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
