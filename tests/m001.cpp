@@ -30,6 +30,9 @@ using std::string;
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
 long length=0;
@@ -306,7 +309,9 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
-libremidi::midi_out outp;
+
+  
+  libremidi::midi_out outp;
 outp.open_port(0);
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->keyCode==112){
@@ -380,8 +385,6 @@ FS.mkdir("/snd");
 FS.mkdir("/shader");
 });
 
-std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){},
 .input_removed=[&](int idx,const std::string& id){},
