@@ -233,8 +233,7 @@ output.open_port(idx);
 .output_removed=[&](int idx,const std::string& id){
 }};
 libremidi::observer obs{
-libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks);
-};
+libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 emscripten_set_main_loop([]{},60,1);
 }
 
