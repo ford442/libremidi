@@ -320,7 +320,7 @@ outp.open_port(idx);
 .output_removed=[](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-libremidi::midi_out outp{};
+static libremidi::midi_out outp{};
 std::string name=outp.get_port_name(0);
 outp.open_port(0,name);
 
