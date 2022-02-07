@@ -304,7 +304,7 @@ return num_chars;
 
 void midd(int idx,unsigned char k){
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
-outpu.open_port(idx+1);
+outpu.open_port(idx);
 EM_ASM({console.log("note off");});
 outpu.send_message(std::vector<unsigned char>{0x80,k,100});
 }
@@ -322,18 +322,18 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 unsigned char k;
-if(e->keyCode==112){k=71;midd(m1,k);}
-if(e->keyCode==113){k=70;midd(m1,k);}
-if(e->keyCode==114){k=69;midd(m1,k);}
-if(e->keyCode==115){k=68;midd(m1,k);}
-if(e->keyCode==116){k=67;midd(m1,k);}
-if(e->keyCode==117){k=66;midd(m1,k);}
-if(e->keyCode==118){k=65;midd(m1,k);}
-if(e->keyCode==119){k=64;midd(m1,k);}
-if(e->keyCode==120){k=63;midd(m1,k);}
-if(e->keyCode==121){k=62;midd(m1,k);}
-if(e->keyCode==122){k=61;midd(m1,k);}
-if(e->keyCode==123){k=60;midd(m1,k);}
+if(e->keyCode==112){k=71;midd(m2,k);}
+if(e->keyCode==113){k=70;midd(m2,k);}
+if(e->keyCode==114){k=69;midd(m2,k);}
+if(e->keyCode==115){k=68;midd(m2,k);}
+if(e->keyCode==116){k=67;midd(m2,k);}
+if(e->keyCode==117){k=66;midd(m2,k);}
+if(e->keyCode==118){k=65;midd(m2,k);}
+if(e->keyCode==119){k=64;midd(m2,k);}
+if(e->keyCode==120){k=63;midd(m2,k);}
+if(e->keyCode==121){k=62;midd(m2,k);}
+if(e->keyCode==122){k=61;midd(m2,k);}
+if(e->keyCode==123){k=60;midd(m2,k);}
 // mouseLPressed=0.0f;
 return true;
 }
@@ -409,6 +409,7 @@ libremidi::observer::callbacks callbacks{
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 m1=idx;
+m2=idx+1;
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
