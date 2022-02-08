@@ -430,7 +430,7 @@ printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%
 // if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n");
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
-// #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
+#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 
@@ -441,17 +441,13 @@ if(eventType==EMSCRIPTEN_EVENT_CLICK){
 gotClick=1;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
-gotMouseDown=1;
-mouseLPressed=1.0f;
+gotMouseDown=1;mouseLPressed=1.0f;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
-gotMouseUp=1;
-mouseLPressed=0.0f;
+gotMouseUp=1;mouseLPressed=0.0f;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
-gotMouseMove=1;
-x=e->clientX;
-y=e->clientY;
+gotMouseMove=1;x=e->clientX;y=e->clientY;
 }}
 return 0;
 }
@@ -479,17 +475,17 @@ m1=idx;
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-// TEST_RESULT(emscripten_set_click_callback);
+ TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-// TEST_RESULT(emscripten_set_mousedown_callback);
+ TEST_RESULT(emscripten_set_mousedown_callback);
 ret=emscripten_set_mouseup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-// TEST_RESULT(emscripten_set_mouseup_callback);
+ TEST_RESULT(emscripten_set_mouseup_callback);
 ret=emscripten_set_dblclick_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-// TEST_RESULT(emscripten_set_dblclick_callback);
+ TEST_RESULT(emscripten_set_dblclick_callback);
 ret=emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-// TEST_RESULT(emscripten_set_mousemove_callback);
+ TEST_RESULT(emscripten_set_mousemove_callback);
 ret=emscripten_set_wheel_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,wheel_callback);
-// TEST_RESULT(emscripten_set_wheel_callback);
+ TEST_RESULT(emscripten_set_wheel_callback);
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
