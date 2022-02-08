@@ -1,6 +1,5 @@
 #pragma once
 
-#if defined(__EMSCRIPTEN__)
 #include <libremidi/detail/emscripten_api.hpp>
 
 namespace libremidi
@@ -33,10 +32,9 @@ public:
 
   const void load_current_infos() noexcept
   {
-#define get_js_string(variable_to_read, ...) \
-  (char*)EM_ASM_INT({var jsstr=variable_to_read;var bytes=lengthBytesUTF8(jsstr) + 1;var str=_malloc(bytes);stringToUTF8(jsstr, str, bytes);return str;}, __VA_ARGS__);
+#define get_js_string(variable_to_read, ...)(char*)EM_ASM_INT({var jsstr=variable_to_read;var bytes=lengthBytesUTF8(jsstr)+1;var str=_malloc(bytes);stringToUTF8(jsstr,str,bytes);return str;}, __VA_ARGS__);
 
-    EM_ASM_INT({let inputs=[];let outputs=[];for(let inpt of globalThis.__libreMidi_access.inputs.values()){inputs.push(inpt);}
+EM_ASM_INT({let inputs=[];let outputs=[];for(let inpt of globalThis.__libreMidi_access.inputs.values()){inputs.push(inpt);}
 for(let outpt of globalThis.__libreMidi_access.outputs.values()){
 outputs.push(outpt);
 }
@@ -264,8 +262,7 @@ struct emscripten_backend
   static const constexpr auto API = libremidi::API::EMSCRIPTEN_WEBMIDI;
 };
 
-// Some implementation goes there
-/// Observer ///
+
 inline observer_emscripten::observer_emscripten(observer::callbacks&& c)
   : observer_api{std::move(c)}
 {
@@ -297,7 +294,6 @@ inline void observer_emscripten::update(
   }
 }
 
-/// midi_in ///
 inline midi_in_emscripten::midi_in_emscripten(std::string_view clientName, unsigned int queueSizeLimit)
   : midi_in_default<midi_in_emscripten>{nullptr, queueSizeLimit}
 {
@@ -371,14 +367,12 @@ inline void midi_in_emscripten::on_input(message msg)
 }
 
 
-/// midi_out ///
 inline midi_out_emscripten::midi_out_emscripten(std::string_view)
 {
 }
 
 inline midi_out_emscripten::~midi_out_emscripten()
 {
-  // Close a connection if it exists.
   midi_out_emscripten::close_port();
 }
 
@@ -448,7 +442,7 @@ inline void midi_out_emscripten::send_message(const unsigned char* message, size
 }
 
 
-extern "C"
+ // extern "C"
 {
 inline void libremidi_devices_poll()
 {
@@ -458,5 +452,4 @@ inline void libremidi_devices_input(int port, double timestamp, int len, char* b
 {
   libremidi::webmidi_helpers::midi_access_emscripten::instance().devices_input(port, timestamp, len, bytes);
 }
-}
-#endif
+// }
