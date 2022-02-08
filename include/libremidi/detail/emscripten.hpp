@@ -202,8 +202,7 @@ EM_ASM({let id=setInterval(Module._libremidi_devices_poll,10000);globalThis.__li
 }
 
 void stop_observing(){
-EM_ASM({clearInterval(globalThis.__libreMidi_timer);globalThis.__libreMidi_timer=undefined;});
-}
+EM_ASM({clearInterval(globalThis.__libreMidi_timer);globalThis.__libreMidi_timer=undefined;});}
 
 void start_stream(int port_index){
 const auto& id=m_current_inputs[port_index].id;
