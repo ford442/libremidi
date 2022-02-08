@@ -1,8 +1,8 @@
 
 #include <libremidi/libremidi.hpp>
-#include <emscripten.h>
 #include <emscripten/html5.h>
 #include <emscripten/key_codes.h>
+#include <emscripten.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <GLES3/gl3.h>
@@ -471,7 +471,7 @@ gotWheel=1;
 }
 return 0;
 }
-int main(){
+int main(int argc, char**){
 EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
@@ -501,5 +501,4 @@ emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 emscripten_set_main_loop([]{},60,1);
-return 1;
 }
