@@ -112,6 +112,13 @@ long double siz,outTimeA;
 int a;
 float b;
 int m1,m2;
+unsigned char kl=999;
+int ii,idx;
+GLuint vtx,frag;
+char *fileloc="/shader/shader1.glsl";
+int kkey;
+int k;
+int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 
 void noteOnGL(int note){
 int aa;
@@ -218,9 +225,6 @@ EGL_STENCIL_SIZE,8,
 EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
-int ii,idx;
-GLuint vtx,frag;
-char *fileloc="/shader/shader1.glsl";
 
 void strt(){
 emscripten_cancel_main_loop();
@@ -314,23 +318,7 @@ if((*str++&0xC0)!=0x80)++num_chars;
 }
 return num_chars;
 }
-unsigned char kl=999;
-void midd(int idx,int kll,int com){
-kl=kll;
-libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
-outpu.open_port(idx);
-//  EM_ASM({console.log("note off");});
-if(com==1){
-for (unsigned char ll=48;ll<83;ll++){
-outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
-nanosleep(&s_time,NULL);
-}}
-if(com==2){
-outpu.send_message(std::vector<unsigned char>{0x80,kl,100});
-}
-if(com==3){
-outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
-}}
+
 
 /*
 void midd2(int idx,unsigned char k){
@@ -354,8 +342,54 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 // unsigned char k;
-int kkey;
-int k;
+
+#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
+
+EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
+printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
+if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
+if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
+if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
+gotMouseDown=1;
+mouseLPressed=1.0f;
+}
+if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
+gotMouseUp=1;
+mouseLPressed=0.0f;
+}
+if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
+gotMouseMove=1;
+x=e->clientX;
+y=e->clientY;
+}}
+return 0;
+}
+
+EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userData){
+printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,(float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
+if(e->deltaY>0.f||e->deltaY<0.f){
+gotWheel=1;
+}
+return 0;
+}
+
+
+void midd(int idx,int kll,int com){
+kl=kll;
+libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
+outpu.open_port(idx);
+//  EM_ASM({console.log("note off");});
+if(com==1){
+for (unsigned char ll=48;ll<83;ll++){
+outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
+nanosleep(&s_time,NULL);
+}}
+if(com==2){
+outpu.send_message(std::vector<unsigned char>{0x80,kl,100});
+}
+if(com==3){
+outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
+}}
 
 EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->repeat==true){return true;}
@@ -451,37 +485,7 @@ printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%
 // if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n");
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
-#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
-int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
-
-EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
-printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
-if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
-if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
-if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
-gotMouseDown=1;
-mouseLPressed=1.0f;
-}
-if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
-gotMouseUp=1;
-mouseLPressed=0.0f;
-}
-if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
-gotMouseMove=1;
-x=e->clientX;
-y=e->clientY;
-}}
-return 0;
-}
-
-EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userData){
-printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,(float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
-if(e->deltaY>0.f||e->deltaY<0.f){
-gotWheel=1;
-}
-return 0;
-}
 int main(int argc, char**){
 EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
