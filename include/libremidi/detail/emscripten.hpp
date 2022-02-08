@@ -190,12 +190,12 @@ let bytes=HEAPU8.subarray($0,$0+$1);output.send(Array.from(bytes));},bytes,len,i
 private:
   midi_access_emscripten() noexcept
   {
-    EM_ASM({
-if(navigator.requestMIDIAccess){navigator.requestMIDIAccess().then((midiAccess)=>globalThis.__libreMidi_access=midiAccess,
-()=>console.log('MIDI support rejected.'));
-}else{console.log('WebMIDI is not supported.');});
+  EM_ASM({
+if(navigator.requestMIDIAccess){
+navigator.requestMIDIAccess().then(
+(midiAccess)=>globalThis.__libreMidi_access=midiAccess,()=>console.log('MIDI support rejected, MIDI will not be available;'));
+}else{console.log('WebMIDI is not supported in this browser.');}});
   }
-
   ~midi_access_emscripten()
   {
     stop_observing();
