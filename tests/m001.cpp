@@ -338,7 +338,7 @@ libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
 // EM_ASM({console.log("note on");});
 for (unsigned char ll=48;ll<83;ll++){
-outp.send_message(std::vector<unsigned char>{0x90,ll,100});
+outp.send_message(std::vector<unsigned char>{0x80,ll,100});
 nanosleep(&s_time,NULL);
 }}
 
