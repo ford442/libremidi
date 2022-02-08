@@ -31,8 +31,8 @@ struct timespec s_time={0,10000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
-static std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-static std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+ std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+ std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
 const char *read_file_into_str(const char *filename){
 char *result=NULL;
@@ -140,7 +140,7 @@ void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
-duration<double>time_spana=duration_cast<duration<double>>(t2 - t1);
+duration<double>time_spana=duration_cast<duration<double>>(t2-t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
 mouseX=x/viewportSizeX;
@@ -155,12 +155,12 @@ siz=0.88;
 vertices[7]=1.0f-mouseX;
 vertices[1]=1.0f-mouseY;
 vertices[13]=1.0f-mouseX;
-vertices[10]=0.0f-white;
+vertices[10]=1.0f-white;
 vertices[11]=1.0f-mouseY;
 vertices[2]=white;
 vertices[8]=vertices[11];
-vertices[32]=white/1.2f;
-vertices[38]=white/1.1f;
+vertices[32]=white/1.5f;
+vertices[38]=white/1.2f;
 vertices[0]=vertices[32]-white;
 vertices[3]=vertices[1]-white;
 vertices[2]=vertices[2]-white;
