@@ -471,6 +471,7 @@ gotWheel=1;
 }
 return 0;
 }
+const std::string& id;
 int main(int argc, char**){
 EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
