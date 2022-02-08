@@ -399,7 +399,7 @@ int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 unsigned char k;
 int kkey;
 if(e->repeat==true){return true;}
-if(e->keyCode==32){midd3(idx);}
+if(e->keyCode==32){midd3(m1);}
 if(e->keyCode==112){k=59;midd2(m1,k);kkey=10;noteOnGL(kkey);}
 if(e->keyCode==113){k=58;midd2(m1,k);kkey=20;noteOnGL(kkey);}
 if(e->keyCode==114){k=57;midd2(m1,k);kkey=30;noteOnGL(kkey);}
