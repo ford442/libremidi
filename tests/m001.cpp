@@ -476,15 +476,11 @@ EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx,const std::string& id){},
-std::cout<<"MIDI Input connected: "<<idx;
-auto input=std::make_shared<libremidi::midi_in>();
-input->set_callback([](const libremidi::message& msg){
-// std::cout<<(int)msg.bytes[0]<<" "<<(int)msg.bytes[1]<<" "<<(int)msg.bytes[2]<<" "<<(double) msg.timestamp<<std::endl;
-});
-input->open_port(idx);
-inputs.push_back(input);
-.input_removed=[&](int idx,const std::string& id){},.output_added=[&](int idx,const std::string& id){
+.input_added=[&](int idx,const std::string& id){
+},
+.input_removed=[&](int idx,const std::string& id){
+},
+.output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output: "<<idx<<" - "<<id<<std::endl;m1=idx;
 },
 .output_removed=[&](int idx,const std::string& id){
