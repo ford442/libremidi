@@ -431,7 +431,7 @@ inline void midi_out_emscripten::send_message(const unsigned char* message, size
 }
 
 
- // extern "C"
+extern "C"
 {
 inline void libremidi_devices_poll()
 {
@@ -441,4 +441,4 @@ inline void libremidi_devices_input(int port, double timestamp, int len, char* b
 {
   libremidi::webmidi_helpers::midi_access_emscripten::instance().devices_input(port, timestamp, len, bytes);
 }
-// }
+}
