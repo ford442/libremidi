@@ -316,13 +316,23 @@ if((*str++&0xC0)!=0x80)++num_chars;
 return num_chars;
 }
 
-void midd(int idx,unsigned char k){
-libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
+void midd(int idx,int k,int com){
+libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 outpu.open_port(idx);
 //  EM_ASM({console.log("note off");});
+if(com==1){
+for (unsigned char ll=48;ll<83;ll++){
+outp.send_message(std::vector<unsigned char>{0x80,ll,100});
+nanosleep(&s_time,NULL);
+}}
+if(com==2){
 outpu.send_message(std::vector<unsigned char>{0x80,k,100});
 }
+if(com==3){
+outpu.send_message(std::vector<unsigned char>{0x90,k,100});
+}}
 
+/*
 void midd2(int idx,unsigned char k){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
@@ -338,54 +348,55 @@ for (unsigned char ll=48;ll<83;ll++){
 outp.send_message(std::vector<unsigned char>{0x80,ll,100});
 nanosleep(&s_time,NULL);
 }}
-
+*/
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
-unsigned char k;
+// unsigned char k;
 int kkey;
+int k;
 
 EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->repeat==true){return true;}
-if(e->keyCode==112){k=59;midd(m1,k);kkey=10;noteOffGL(kkey);}
-if(e->keyCode==113){k=58;midd(m1,k);kkey=20;noteOffGL(kkey);}
-if(e->keyCode==114){k=57;midd(m1,k);kkey=30;noteOffGL(kkey);}
-if(e->keyCode==115){k=56;midd(m1,k);kkey=40;noteOffGL(kkey);}
-if(e->keyCode==116){k=55;midd(m1,k);kkey=50;noteOffGL(kkey);}
-if(e->keyCode==117){k=54;midd(m1,k);kkey=60;noteOffGL(kkey);}
-if(e->keyCode==118){k=53;midd(m1,k);kkey=70;noteOffGL(kkey);}
-if(e->keyCode==119){k=52;midd(m1,k);kkey=80;noteOffGL(kkey);}
-if(e->keyCode==120){k=51;midd(m1,k);kkey=90;noteOffGL(kkey);}
-if(e->keyCode==121){k=50;midd(m1,k);kkey=100;noteOffGL(kkey);}
-if(e->keyCode==122){k=49;midd(m1,k);kkey=110;noteOffGL(kkey);}
-if(e->keyCode==123){k=48;midd(m1,k);kkey=120;noteOffGL(kkey);}
+if(e->keyCode==112){k=59;midd(m1,k,2);kkey=10;noteOffGL(kkey);}
+if(e->keyCode==113){k=58;midd(m1,k,2);kkey=20;noteOffGL(kkey);}
+if(e->keyCode==114){k=57;midd(m1,k,2);kkey=30;noteOffGL(kkey);}
+if(e->keyCode==115){k=56;midd(m1,k,2);kkey=40;noteOffGL(kkey);}
+if(e->keyCode==116){k=55;midd(m1,k,2);kkey=50;noteOffGL(kkey);}
+if(e->keyCode==117){k=54;midd(m1,k,2);kkey=60;noteOffGL(kkey);}
+if(e->keyCode==118){k=53;midd(m1,k,2);kkey=70;noteOffGL(kkey);}
+if(e->keyCode==119){k=52;midd(m1,k,2);kkey=80;noteOffGL(kkey);}
+if(e->keyCode==120){k=51;midd(m1,k,2);kkey=90;noteOffGL(kkey);}
+if(e->keyCode==121){k=50;midd(m1,k,2);kkey=100;noteOffGL(kkey);}
+if(e->keyCode==122){k=49;midd(m1,k,2);kkey=110;noteOffGL(kkey);}
+if(e->keyCode==123){k=48;midd(m1,k,2);kkey=120;noteOffGL(kkey);}
   
-if(e->keyCode==49){k=71;midd(m1,k);kkey=220;noteOffGL(kkey);}
-if(e->keyCode==50){k=70;midd(m1,k);kkey=210;noteOffGL(kkey);}
-if(e->keyCode==51){k=69;midd(m1,k);kkey=200;noteOffGL(kkey);}
-if(e->keyCode==52){k=68;midd(m1,k);kkey=190;noteOffGL(kkey);}
-if(e->keyCode==53){k=67;midd(m1,k);kkey=180;noteOffGL(kkey);}
-if(e->keyCode==54){k=66;midd(m1,k);kkey=170;noteOffGL(kkey);}
-if(e->keyCode==55){k=65;midd(m1,k);kkey=150;noteOffGL(kkey);}
-if(e->keyCode==56){k=64;midd(m1,k);kkey=140;noteOffGL(kkey);}
-if(e->keyCode==57){k=63;midd(m1,k);kkey=130;noteOffGL(kkey);}
-if(e->keyCode==48){k=62;midd(m1,k);kkey=117;noteOffGL(kkey);}
-if(e->keyCode==189){k=61;midd(m1,k);kkey=107;noteOffGL(kkey);}
-if(e->keyCode==187){k=60;midd(m1,k);kkey=97;noteOffGL(kkey);}
+if(e->keyCode==49){k=71;midd(m1,k,2);kkey=220;noteOffGL(kkey);}
+if(e->keyCode==50){k=70;midd(m1,k,2);kkey=210;noteOffGL(kkey);}
+if(e->keyCode==51){k=69;midd(m1,k,2);kkey=200;noteOffGL(kkey);}
+if(e->keyCode==52){k=68;midd(m1,k,2);kkey=190;noteOffGL(kkey);}
+if(e->keyCode==53){k=67;midd(m1,k,2);kkey=180;noteOffGL(kkey);}
+if(e->keyCode==54){k=66;midd(m1,k,2);kkey=170;noteOffGL(kkey);}
+if(e->keyCode==55){k=65;midd(m1,k,2);kkey=150;noteOffGL(kkey);}
+if(e->keyCode==56){k=64;midd(m1,k,2);kkey=140;noteOffGL(kkey);}
+if(e->keyCode==57){k=63;midd(m1,k,2);kkey=130;noteOffGL(kkey);}
+if(e->keyCode==48){k=62;midd(m1,k,2);kkey=117;noteOffGL(kkey);}
+if(e->keyCode==189){k=61;midd(m1,k,2);kkey=107;noteOffGL(kkey);}
+if(e->keyCode==187){k=60;midd(m1,k,2);kkey=97;noteOffGL(kkey);}
   
-if(e->keyCode==221){k=72;midd(m1,k);kkey=111;noteOffGL(kkey);}
-if(e->keyCode==219){k=73;midd(m1,k);kkey=222;noteOffGL(kkey);}
-if(e->keyCode==80){k=74;midd(m1,k);kkey=333;noteOffGL(kkey);}
-if(e->keyCode==79){k=75;midd(m1,k);kkey=338;noteOffGL(kkey);}
-if(e->keyCode==73){k=76;midd(m1,k);kkey=343;noteOffGL(kkey);}
-if(e->keyCode==85){k=77;midd(m1,k);kkey=348;noteOffGL(kkey);}
-if(e->keyCode==89){k=78;midd(m1,k);kkey=353;noteOffGL(kkey);}
-if(e->keyCode==84){k=79;midd(m1,k);kkey=358;noteOffGL(kkey);}
-if(e->keyCode==82){k=80;midd(m1,k);kkey=362;noteOffGL(kkey);}
-if(e->keyCode==69){k=81;midd(m1,k);kkey=367;noteOffGL(kkey);}
-if(e->keyCode==87){k=82;midd(m1,k);kkey=372;noteOffGL(kkey);}
-if(e->keyCode==81){k=83;midd(m1,k);kkey=377;noteOffGL(kkey);}
+if(e->keyCode==221){k=72;midd(m1,k,2);kkey=111;noteOffGL(kkey);}
+if(e->keyCode==219){k=73;midd(m1,k,2);kkey=222;noteOffGL(kkey);}
+if(e->keyCode==80){k=74;midd(m1,k,2);kkey=333;noteOffGL(kkey);}
+if(e->keyCode==79){k=75;midd(m1,k,2);kkey=338;noteOffGL(kkey);}
+if(e->keyCode==73){k=76;midd(m1,k,2);kkey=343;noteOffGL(kkey);}
+if(e->keyCode==85){k=77;midd(m1,k,2);kkey=348;noteOffGL(kkey);}
+if(e->keyCode==89){k=78;midd(m1,k,2);kkey=353;noteOffGL(kkey);}
+if(e->keyCode==84){k=79;midd(m1,k,2);kkey=358;noteOffGL(kkey);}
+if(e->keyCode==82){k=80;midd(m1,k,2);kkey=362;noteOffGL(kkey);}
+if(e->keyCode==69){k=81;midd(m1,k,2);kkey=367;noteOffGL(kkey);}
+if(e->keyCode==87){k=82;midd(m1,k,2);kkey=372;noteOffGL(kkey);}
+if(e->keyCode==81){k=83;midd(m1,k,2);kkey=377;noteOffGL(kkey);}
 
 mouseLPressed=0.0f;
 return true;
@@ -395,45 +406,45 @@ EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userDa
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 
 if(e->repeat==true){return true;}
-if(e->keyCode==32){midd3(m1);}
-if(e->keyCode==112){k=59;midd2(m1,k);kkey=10;noteOnGL(kkey);}
-if(e->keyCode==113){k=58;midd2(m1,k);kkey=20;noteOnGL(kkey);}
-if(e->keyCode==114){k=57;midd2(m1,k);kkey=30;noteOnGL(kkey);}
-if(e->keyCode==115){k=56;midd2(m1,k);kkey=40;noteOnGL(kkey);}
-if(e->keyCode==116){k=55;midd2(m1,k);kkey=50;noteOnGL(kkey);}
-if(e->keyCode==117){k=54;midd2(m1,k);kkey=60;noteOnGL(kkey);}
-if(e->keyCode==118){k=53;midd2(m1,k);kkey=70;noteOnGL(kkey);}
-if(e->keyCode==119){k=52;midd2(m1,k);kkey=80;noteOnGL(kkey);}
-if(e->keyCode==120){k=51;midd2(m1,k);kkey=90;noteOnGL(kkey);}
-if(e->keyCode==121){k=50;midd2(m1,k);kkey=100;noteOnGL(kkey);}
-if(e->keyCode==122){k=49;midd2(m1,k);kkey=110;noteOnGL(kkey);}
-if(e->keyCode==123){k=48;midd2(m1,k);kkey=120;noteOnGL(kkey);}
+if(e->keyCode==32){midd(m1,0,1);}
+if(e->keyCode==112){k=59;midd(m1,k,3);kkey=10;noteOnGL(kkey);}
+if(e->keyCode==113){k=58;midd(m1,k,3);kkey=20;noteOnGL(kkey);}
+if(e->keyCode==114){k=57;midd(m1,k,3);kkey=30;noteOnGL(kkey);}
+if(e->keyCode==115){k=56;midd(m1,k,3);kkey=40;noteOnGL(kkey);}
+if(e->keyCode==116){k=55;midd(m1,k,3);kkey=50;noteOnGL(kkey);}
+if(e->keyCode==117){k=54;midd(m1,k,3);kkey=60;noteOnGL(kkey);}
+if(e->keyCode==118){k=53;midd(m1,k,3);kkey=70;noteOnGL(kkey);}
+if(e->keyCode==119){k=52;midd(m1,k,3);kkey=80;noteOnGL(kkey);}
+if(e->keyCode==120){k=51;midd(m1,k,3);kkey=90;noteOnGL(kkey);}
+if(e->keyCode==121){k=50;midd(m1,k,3);kkey=100;noteOnGL(kkey);}
+if(e->keyCode==122){k=49;midd(m1,k,3);kkey=110;noteOnGL(kkey);}
+if(e->keyCode==123){k=48;midd(m1,k,3);kkey=120;noteOnGL(kkey);}
   
-if(e->keyCode==49){k=71;midd2(m1,k);kkey=220;noteOnGL(kkey);}
-if(e->keyCode==50){k=70;midd2(m1,k);kkey=210;noteOnGL(kkey);}
-if(e->keyCode==51){k=69;midd2(m1,k);kkey=200;noteOnGL(kkey);}
-if(e->keyCode==52){k=68;midd2(m1,k);kkey=190;noteOnGL(kkey);}
-if(e->keyCode==53){k=67;midd2(m1,k);kkey=180;noteOnGL(kkey);}
-if(e->keyCode==54){k=66;midd2(m1,k);kkey=170;noteOnGL(kkey);}
-if(e->keyCode==55){k=65;midd2(m1,k);kkey=150;noteOnGL(kkey);}
-if(e->keyCode==56){k=64;midd2(m1,k);kkey=140;noteOnGL(kkey);}
-if(e->keyCode==57){k=63;midd2(m1,k);kkey=130;noteOnGL(kkey);}
-if(e->keyCode==48){k=62;midd2(m1,k);kkey=117;noteOnGL(kkey);}
-if(e->keyCode==189){k=61;midd2(m1,k);kkey=107;noteOnGL(kkey);}
-if(e->keyCode==187){k=60;midd2(m1,k);kkey=97;noteOnGL(kkey);}
+if(e->keyCode==49){k=71;midd(m1,k,3);kkey=220;noteOnGL(kkey);}
+if(e->keyCode==50){k=70;midd(m1,k,3);kkey=210;noteOnGL(kkey);}
+if(e->keyCode==51){k=69;midd(m1,k,3);kkey=200;noteOnGL(kkey);}
+if(e->keyCode==52){k=68;midd(m1,k,3);kkey=190;noteOnGL(kkey);}
+if(e->keyCode==53){k=67;midd(m1,k,3);kkey=180;noteOnGL(kkey);}
+if(e->keyCode==54){k=66;midd(m1,k,3);kkey=170;noteOnGL(kkey);}
+if(e->keyCode==55){k=65;midd(m1,k,3);kkey=150;noteOnGL(kkey);}
+if(e->keyCode==56){k=64;midd(m1,k,3);kkey=140;noteOnGL(kkey);}
+if(e->keyCode==57){k=63;midd(m1,k,3);kkey=130;noteOnGL(kkey);}
+if(e->keyCode==48){k=62;midd(m1,k,3);kkey=117;noteOnGL(kkey);}
+if(e->keyCode==189){k=61;midd(m1,k,3);kkey=107;noteOnGL(kkey);}
+if(e->keyCode==187){k=60;midd(m1,k,3);kkey=97;noteOnGL(kkey);}
   
-if(e->keyCode==221){k=72;midd2(m1,k);kkey=111;noteOnGL(kkey);}
-if(e->keyCode==219){k=73;midd2(m1,k);kkey=222;noteOnGL(kkey);}
-if(e->keyCode==80){k=74;midd2(m1,k);kkey=333;noteOnGL(kkey);}
-if(e->keyCode==79){k=75;midd2(m1,k);kkey=338;noteOnGL(kkey);}
-if(e->keyCode==73){k=76;midd2(m1,k);kkey=343;noteOnGL(kkey);}
-if(e->keyCode==85){k=77;midd2(m1,k);kkey=348;noteOnGL(kkey);}
-if(e->keyCode==89){k=78;midd2(m1,k);kkey=353;noteOnGL(kkey);}
-if(e->keyCode==84){k=79;midd2(m1,k);kkey=358;noteOnGL(kkey);}
-if(e->keyCode==82){k=80;midd2(m1,k);kkey=362;noteOnGL(kkey);}
-if(e->keyCode==69){k=81;midd2(m1,k);kkey=367;noteOnGL(kkey);}
-if(e->keyCode==87){k=82;midd2(m1,k);kkey=372;noteOnGL(kkey);}
-if(e->keyCode==81){k=83;midd2(m1,k);kkey=377;noteOnGL(kkey);}
+if(e->keyCode==221){k=72;midd(m1,k,3);kkey=111;noteOnGL(kkey);}
+if(e->keyCode==219){k=73;midd(m1,k,3);kkey=222;noteOnGL(kkey);}
+if(e->keyCode==80){k=74;midd(m1,k,3);kkey=333;noteOnGL(kkey);}
+if(e->keyCode==79){k=75;midd(m1,k,3);kkey=338;noteOnGL(kkey);}
+if(e->keyCode==73){k=76;midd(m1,k,3);kkey=343;noteOnGL(kkey);}
+if(e->keyCode==85){k=77;midd(m1,k,3);kkey=348;noteOnGL(kkey);}
+if(e->keyCode==89){k=78;midd(m1,k,3);kkey=353;noteOnGL(kkey);}
+if(e->keyCode==84){k=79;midd(m1,k,3);kkey=358;noteOnGL(kkey);}
+if(e->keyCode==82){k=80;midd(m1,k,3);kkey=362;noteOnGL(kkey);}
+if(e->keyCode==69){k=81;midd(m1,k,3);kkey=367;noteOnGL(kkey);}
+if(e->keyCode==87){k=82;midd(m1,k,3);kkey=372;noteOnGL(kkey);}
+if(e->keyCode==81){k=83;midd(m1,k,3);kkey=377;noteOnGL(kkey);}
   
 mouseLPressed=1.0f;
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",emscripten_event_type_to_string(eventType),e->key,/*emscripten_key_event_is_printable_character(e) ? "true" : "false",*/ e->code,emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
