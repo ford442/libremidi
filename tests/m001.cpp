@@ -111,7 +111,7 @@ GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
 GLfloat white;
-static float x,y;
+GLfloat x,y;
 long double siz,outTimeA;
 int a;
 float b;
