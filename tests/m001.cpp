@@ -486,10 +486,11 @@ printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 
+static std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+static std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+
 int main(int argc, char**){
 EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
-static std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-static std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx,const std::string& id){
 },
@@ -517,5 +518,5 @@ emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback)
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
-emscripten_set_main_loop([]{},0,1);
+emscripten_set_main_loop([]{},60,1);
 }
