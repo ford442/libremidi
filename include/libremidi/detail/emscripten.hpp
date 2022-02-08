@@ -264,7 +264,7 @@ inline observer_emscripten::~observer_emscripten()
 }
 
 inline void observer_emscripten::update(
-   //  const std::vector<observer_emscripten::device>& current_inputs,
+   const std::vector<observer_emscripten::device>& current_inputs,
     const std::vector<observer_emscripten::device>& current_outputs)
 {
   assert(current_inputs.size() >= m_known_inputs.size());
