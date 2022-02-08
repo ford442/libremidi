@@ -316,7 +316,8 @@ if((*str++&0xC0)!=0x80)++num_chars;
 return num_chars;
 }
 
-void midd(int idx,int k,int com){
+void midd(int idx,int kll,int com){
+unsigned char k=kll;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 outpu.open_port(idx);
 //  EM_ASM({console.log("note off");});
