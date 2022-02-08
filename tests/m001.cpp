@@ -326,10 +326,10 @@ outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
 nanosleep(&s_time,NULL);
 }}
 if(com==2){
-outpu.send_message(std::vector<unsigned char>{0x80,k,100});
+outpu.send_message(std::vector<unsigned char>{0x80,kl,100});
 }
 if(com==3){
-outpu.send_message(std::vector<unsigned char>{0x90,k,100});
+outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
 }}
 
 /*
