@@ -30,8 +30,8 @@ struct timespec s_time={0,10000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
-static std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-static std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
