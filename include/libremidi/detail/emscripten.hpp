@@ -41,7 +41,7 @@ outputs.push(outpt);
 globalThis.__libreMidi_currentInputs=inputs;
 globalThis.__libreMidi_currentOutputs=outputs;
 });
-    
+
     const int inputs = input_count();
     const int outputs = output_count();
     m_current_inputs.resize(inputs);
@@ -198,11 +198,12 @@ stop_observing();
 }
 
 void start_observing(){
-EM_ASM({let id=setTimeout(Module._libremidi_devices_poll,750);globalThis.__libreMidi_timer=id;});
+EM_ASM({let id=setInterval(Module._libremidi_devices_poll,1000);globalThis.__libreMidi_timer=id;});
 }
 
 void stop_observing(){
-EM_ASM({clearInterval(globalThis.__libreMidi_timer);globalThis.__libreMidi_timer=undefined;});}
+EM_ASM({clearInterval(globalThis.__libreMidi_timer);globalThis.__libreMidi_timer=undefined;});
+}
 
 void start_stream(int port_index){
 const auto& id=m_current_inputs[port_index].id;
