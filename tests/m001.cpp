@@ -465,7 +465,7 @@ EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userDat
 // emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,
 // e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",
 // e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,
-(float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
+// (float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
 if(e->deltaY>0.f||e->deltaY<0.f){
 gotWheel=1;
 }
