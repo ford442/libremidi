@@ -314,9 +314,9 @@ if((*str++&0xC0)!=0x80)++num_chars;
 }
 return num_chars;
 }
-unsigned char k="999";
+unsigned char kl=999;
 void midd(int idx,int kll,int com){
-k=kll;
+kl=kll;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 outpu.open_port(idx);
 //  EM_ASM({console.log("note off");});
