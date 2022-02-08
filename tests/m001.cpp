@@ -499,7 +499,7 @@ TEST_RESULT(emscripten_set_wheel_callback);
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-emscripten_set_main_loop([]{},60,1);
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
+emscripten_set_main_loop([]{},60,1);
 return 1;
 }
