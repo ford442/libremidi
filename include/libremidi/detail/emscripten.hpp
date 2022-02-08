@@ -1,6 +1,5 @@
 #pragma once
 
-#if defined(__EMSCRIPTEN__)
 #include <libremidi/detail/emscripten_api.hpp>
 
 namespace libremidi
@@ -18,46 +17,33 @@ public:
 
   const bool available() const noexcept
   {
-    return EM_ASM_INT(return typeof globalThis.__libreMidi_access !== undefined;);
+    return EM_ASM_INT({return typeof globalThis.__libreMidi_access !== undefined;});
   }
 
   const int input_count() const noexcept
   {
-    return EM_ASM_INT(return globalThis.__libreMidi_currentInputs.length;);
+    return EM_ASM_INT({return globalThis.__libreMidi_currentInputs.length;});
   }
 
   const int output_count() const noexcept
   {
-    return EM_ASM_INT(return globalThis.__libreMidi_currentOutputs.length;);
+    return EM_ASM_INT({return globalThis.__libreMidi_currentOutputs.length;});
   }
 
   const void load_current_infos() noexcept
   {
-#define get_js_string(variable_to_read, ...) \
-  (char*)EM_ASM_INT({ \
-  var jsstr = variable_to_read; \
-  var bytes = lengthBytesUTF8(jsstr) + 1; \
-  var str = _malloc(bytes); \
-  stringToUTF8(jsstr, str, bytes); \
-  return str; \
-}, __VA_ARGS__);
+#define get_js_string(variable_to_read, ...)(char*)EM_ASM_INT({var jsstr=variable_to_read;var bytes=lengthBytesUTF8(jsstr)+1;var str=_malloc(bytes);stringToUTF8(jsstr,str,bytes);return str;}, __VA_ARGS__);
 
+EM_ASM_INT({let inputs=[];let outputs=[];for(let inpt of globalThis.__libreMidi_access.inputs.values()){inputs.push(inpt);}
+for(let outpt of globalThis.__libreMidi_access.outputs.values()){
+outputs.push(outpt);
+}
+globalThis.__libreMidi_currentInputs=inputs;
+globalThis.__libreMidi_currentOutputs=outputs;
+});
 
-    EM_ASM_INT({
-      let inputs = [];
-      let outputs = [];
-      for(let inpt of globalThis.__libreMidi_access.inputs.values()) {
-        inputs.push(inpt);
-      }
-      for(let outpt of globalThis.__libreMidi_access.outputs.values()) {
-        outputs.push(outpt);
-      }
-      globalThis.__libreMidi_currentInputs = inputs;
-      globalThis.__libreMidi_currentOutputs = outputs;
-    });
     const int inputs = input_count();
     const int outputs = output_count();
-
     m_current_inputs.resize(inputs);
     m_current_outputs.resize(outputs);
 
@@ -192,98 +178,58 @@ public:
   void send_message(int port_index, const char* bytes, int len)
   {
     const auto& id = m_current_outputs[port_index].id;
-    EM_ASM({
-        let data = HEAPU8.subarray($0, $0 + $1);
-        const id = UTF8ToString($2);
-        let output = globalThis.__libreMidi_access.outputs.get(id);
-        let bytes = HEAPU8.subarray($0, $0 + $1);
-        output.send(Array.from(bytes));
-    }, bytes, len, id.c_str());
+    EM_ASM({let data=HEAPU8.subarray($0,$0+$1);const id=UTF8ToString($2);let output=globalThis.__libreMidi_access.outputs.get(id);
+let bytes=HEAPU8.subarray($0,$0+$1);output.send(Array.from(bytes));},bytes,len,id.c_str());
   }
 
   const std::vector<device_information>& inputs() const noexcept { return m_current_inputs; }
   const std::vector<device_information>& outputs() const noexcept { return m_current_outputs; }
 
 private:
-  midi_access_emscripten() noexcept
-  {
-    EM_ASM(
-     if(navigator.requestMIDIAccess) {
-       navigator.requestMIDIAccess().then(
-            (midiAccess) => globalThis.__libreMidi_access = midiAccess,
-            () => console.log('MIDI support rejected, MIDI will not be available;'));
-     } else {
-       console.log('WebMIDI is not supported in this browser.');
-     }
-    );
-  }
+midi_access_emscripten() noexcept{
+EM_ASM({if(navigator.requestMIDIAccess){
+navigator.requestMIDIAccess().then(
+(midiAccess)=>globalThis.__libreMidi_access=midiAccess,()=>console.log('MIDI support rejected.'));
+}else{console.log('WebMIDI is not supported in this browser.');}});
+}
+~midi_access_emscripten()
+{
+stop_observing();
+}
 
-  ~midi_access_emscripten()
-  {
-    stop_observing();
-  }
+void start_observing(){
+EM_ASM({let id=setInterval(Module._libremidi_devices_poll,1000);globalThis.__libreMidi_timer=id;});
+}
 
-  void start_observing()
-  {
-    EM_ASM(
-      let id = setInterval(Module._libremidi_devices_poll, 100);
-      globalThis.__libreMidi_timer = id;
-    );
-  }
+void stop_observing(){
+EM_ASM({clearInterval(globalThis.__libreMidi_timer);globalThis.__libreMidi_timer=undefined;});
+}
 
-  void stop_observing()
-  {
-    EM_ASM(
-      clearInterval(globalThis.__libreMidi_timer);
-      globalThis.__libreMidi_timer = undefined;
-    );
-  }
+void start_stream(int port_index){
+const auto& id=m_current_inputs[port_index].id;
+EM_ASM({const port_index=$0;const id=UTF8ToString($1);let input=globalThis.__libreMidi_access.inputs.get(id);
+function _arrayToHeap(typedArray){
+const numBytes=typedArray.length*typedArray.BYTES_PER_ELEMENT;
+const ptr=Module._malloc(numBytes);
+const heapBytes=new Uint8Array(Module.HEAPU8.buffer,ptr,numBytes);
+heapBytes.set(new Uint8Array(typedArray.buffer));
+return heapBytes;
+}
+function _freeArray(heapBytes){
+Module._free(heapBytes.byteOffset);
+}
+input.onmidimessage=(message)=>{
+let bytes=message.data;var heapBytes=_arrayToHeap(bytes);
+Module._libremidi_devices_input(port_index,message.timeStamp,bytes.length,heapBytes.byteOffset);
+_freeArray(heapBytes);},port_index,id.c_str());
+}
 
-  void start_stream(int port_index)
-  {
-    // Isn't life great...
-    // https://github.com/Planeshifter/emscripten-examples/tree/master/01_PassingArrays
-    const auto& id = m_current_inputs[port_index].id;
-    EM_ASM(
-      const port_index = $0;
-      const id = UTF8ToString($1);
-
-      let input = globalThis.__libreMidi_access.inputs.get(id);
-
-      function _arrayToHeap(typedArray){
-        const numBytes = typedArray.length * typedArray.BYTES_PER_ELEMENT;
-        const ptr = Module._malloc(numBytes);
-        const heapBytes = new Uint8Array(Module.HEAPU8.buffer, ptr, numBytes);
-        heapBytes.set(new Uint8Array(typedArray.buffer));
-        return heapBytes;
-      }
-
-      function _freeArray(heapBytes){
-        Module._free(heapBytes.byteOffset);
-      }
-
-      input.onmidimessage = (message) => {
-        let bytes = message.data;
-        var heapBytes = _arrayToHeap(bytes);
-        Module._libremidi_devices_input(port_index, message.timeStamp, bytes.length, heapBytes.byteOffset);
-        _freeArray(heapBytes);
-      };
-    , port_index
-    , id.c_str()
-    );
-  }
-
-  void stop_stream(int port_index)
-  {
-    const auto& id = m_current_inputs[port_index].id;
-    EM_ASM(
-      const id = UTF8ToString($1);
-
-      let input = globalThis.__libreMidi_access.inputs.get(id);
-      input.onmidimessage = undefined;
-    , id.c_str()
-    );
-  }
+void stop_stream(int port_index){
+const auto& id=m_current_inputs[port_index].id;
+EM_ASM({const id=UTF8ToString($1);
+let input=globalThis.__libreMidi_access.inputs.get(id);
+input.onmidimessage=undefined;},id.c_str());
+}
 
   std::vector<observer_emscripten*> m_observers;
   std::vector<device_information> m_current_inputs;
@@ -305,8 +251,7 @@ struct emscripten_backend
   static const constexpr auto API = libremidi::API::EMSCRIPTEN_WEBMIDI;
 };
 
-// Some implementation goes there
-/// Observer ///
+
 inline observer_emscripten::observer_emscripten(observer::callbacks&& c)
   : observer_api{std::move(c)}
 {
@@ -322,8 +267,6 @@ inline void observer_emscripten::update(
     const std::vector<observer_emscripten::device>& current_inputs,
     const std::vector<observer_emscripten::device>& current_outputs)
 {
-  // WebMIDI never remove inputs, it just marks them as disconnected.
-  // At least in known browsers...
   assert(current_inputs.size() >= m_known_inputs.size());
   assert(current_outputs.size() >= m_known_outputs.size());
 
@@ -340,7 +283,6 @@ inline void observer_emscripten::update(
   }
 }
 
-/// midi_in ///
 inline midi_in_emscripten::midi_in_emscripten(std::string_view clientName, unsigned int queueSizeLimit)
   : midi_in_default<midi_in_emscripten>{nullptr, queueSizeLimit}
 {
@@ -348,7 +290,6 @@ inline midi_in_emscripten::midi_in_emscripten(std::string_view clientName, unsig
 
 inline midi_in_emscripten::~midi_in_emscripten()
 {
-  // Close a connection if it exists.
   midi_in_emscripten::close_port();
 }
 
@@ -415,14 +356,12 @@ inline void midi_in_emscripten::on_input(message msg)
 }
 
 
-/// midi_out ///
 inline midi_out_emscripten::midi_out_emscripten(std::string_view)
 {
 }
 
 inline midi_out_emscripten::~midi_out_emscripten()
 {
-  // Close a connection if it exists.
   midi_out_emscripten::close_port();
 }
 
@@ -503,4 +442,3 @@ inline void libremidi_devices_input(int port, double timestamp, int len, char* b
   libremidi::webmidi_helpers::midi_access_emscripten::instance().devices_input(port, timestamp, len, bytes);
 }
 }
-#endif
