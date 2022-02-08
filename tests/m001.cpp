@@ -426,22 +426,24 @@ if(e->keyCode==69){k=81;midd2(m1,kn);kkey=367;noteOnGL(kkeyn);}
 if(e->keyCode==87){k=82;midd2(m1,kn);kkey=372;noteOnGL(kkeyn);}
 if(e->keyCode==81){k=83;midd2(m1,kn);kkey=377;noteOnGL(kkeyn);}
 mouseLPressed=1.0f;
-printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
+// printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
 emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
 emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 // if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n");
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
-#define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
+// #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 
 EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
-printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",
+// printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",
 emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,
 e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
-if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
+if(eventType==EMSCRIPTEN_EVENT_CLICK){
+gotClick=1;
+}
 if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
 gotMouseDown=1;
 mouseLPressed=1.0f;
@@ -459,7 +461,7 @@ return 0;
 }
 
 EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userData){
-printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",
+// printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",
 emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,
 e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",
 e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,
@@ -478,24 +480,24 @@ libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){},
 .input_removed=[&](int idx,const std::string& id){},
 .output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
+// std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 m1=idx;
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_click_callback);
+// TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mousedown_callback);
+// TEST_RESULT(emscripten_set_mousedown_callback);
 ret=emscripten_set_mouseup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mouseup_callback);
+// TEST_RESULT(emscripten_set_mouseup_callback);
 ret=emscripten_set_dblclick_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_dblclick_callback);
+// TEST_RESULT(emscripten_set_dblclick_callback);
 ret=emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mousemove_callback);
+// TEST_RESULT(emscripten_set_mousemove_callback);
 ret=emscripten_set_wheel_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,wheel_callback);
-TEST_RESULT(emscripten_set_wheel_callback);
+// TEST_RESULT(emscripten_set_wheel_callback);
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
