@@ -30,9 +30,6 @@ struct timespec s_time={0,10000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
-std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
-std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
-
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
 long length=0;
@@ -475,10 +472,9 @@ gotWheel=1;
 return 0;
 }
 int main(){
-EM_ASM({
-FS.mkdir("/snd");
-FS.mkdir("/shader");
-});
+EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx, const std::string& id){},
 .input_removed=[&](int idx,const std::string& id){},
@@ -488,7 +484,6 @@ m1=idx;
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
-libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
@@ -505,5 +500,6 @@ emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback)
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_main_loop([]{},60,1);
+libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 return 1;
 }
