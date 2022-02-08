@@ -1,0 +1,12 @@
+document.addEventListener('keydown',function(event){if(event.key==="F12"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F11"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F10"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F9"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F8"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F7"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F6"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F5"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F4"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F3"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F2"){event.preventDefault();}});
+document.addEventListener('keydown',function(event){if(event.key==="F1"){event.preventDefault();}});
