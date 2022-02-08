@@ -42,7 +42,7 @@ globalThis.__libreMidi_currentInputs=inputs;
 globalThis.__libreMidi_currentOutputs=outputs;
 });
 
-    const int inputs = input_count();
+    const int inputs = 0; // input_count();
     const int outputs = output_count();
     m_current_inputs.resize(inputs);
     m_current_outputs.resize(outputs);
@@ -264,7 +264,7 @@ inline observer_emscripten::~observer_emscripten()
 }
 
 inline void observer_emscripten::update(
-    const std::vector<observer_emscripten::device>& current_inputs,
+   //  const std::vector<observer_emscripten::device>& current_inputs,
     const std::vector<observer_emscripten::device>& current_outputs)
 {
   assert(current_inputs.size() >= m_known_inputs.size());
@@ -342,7 +342,7 @@ inline void midi_in_emscripten::set_port_name(std::string_view portName)
 
 inline unsigned int midi_in_emscripten::get_port_count()
 {
-  return webmidi_helpers::midi_access_emscripten::instance().input_count();
+  return 0; // webmidi_helpers::midi_access_emscripten::instance().input_count();
 }
 
 inline std::string midi_in_emscripten::get_port_name(unsigned int portNumber)
