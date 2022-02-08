@@ -219,7 +219,7 @@ EGL_STENCIL_SIZE,8,
 EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
-int ii;
+int ii,idx;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 
