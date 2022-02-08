@@ -106,8 +106,8 @@ return shader;
 GLfloat ink[]={0.0f,1.0f,0.0f,1.0f};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
-// long double white;
-GLfloat white;
+long double white;
+// GLfloat white;
 GLfloat x,y;
 long double siz,outTimeA;
 int a;
@@ -319,7 +319,7 @@ return num_chars;
 void midd(int idx,unsigned char k){
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outpu.open_port(idx);
-EM_ASM({console.log("note off");});
+//  EM_ASM({console.log("note off");});
 outpu.send_message(std::vector<unsigned char>{0x80,k,100});
 }
 
