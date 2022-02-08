@@ -13,10 +13,10 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
-#include <string.h>
+#include <cstring>
 #include <cstdarg>
 #include <cmath>
-#include <stdio.h>
+#include <cstdio>
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
@@ -26,14 +26,14 @@ using namespace std;
 using namespace std::chrono;
 using namespace std::literals;
 using std::string;
-using namespace std::chrono;
 struct timespec s_time={0,10000000};
 high_resolution_clock::time_point t1;
 high_resolution_clock::time_point t2;
 
 static std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 static std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
-const char *read_file_into_str(const char *filename){
+
+static const char *read_file_into_str(const char *filename){
 char *result=NULL;
 long length=0;
 FILE *file=fopen(filename,"r");
@@ -60,19 +60,19 @@ return result;
 return NULL;
 }
 
-const char common_shader_header_gles3[]=
+static const char common_shader_header_gles3[]=
 "#version 300 es \n"
 "precision highp float;precision highp int; \n";
 
-const char vertex_shader_body_gles3[]=
+static const char vertex_shader_body_gles3[]=
 "layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
 "out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
 
-const char fragment_shader_header_gles3[]=
+static const char fragment_shader_header_gles3[]=
 "in highp vec3 ourColor; \n"
 "out highp vec4 FragColor; \n";
 
-const char fragment_shader_footer_gles3[]=
+static const char fragment_shader_footer_gles3[]=
 " \n\0";
 
 EGLDisplay display;
@@ -80,21 +80,21 @@ EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
 
-const char* common_shader_header=common_shader_header_gles3;
-const char* vertex_shader_body=vertex_shader_body_gles3;
-const char* fragment_shader_header=fragment_shader_header_gles3;
-const char* fragment_shader_footer=fragment_shader_footer_gles3;
+static const char* common_shader_header=common_shader_header_gles3;
+static const char* vertex_shader_body=vertex_shader_body_gles3;
+static const char* fragment_shader_header=fragment_shader_header_gles3;
+static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-GLfloat mouseX;
-GLfloat mouseY;
-GLfloat mouseLPressed;
-GLfloat mouseRPressed;
-GLfloat viewportSizeX;
-GLfloat viewportSizeY;
+GLfloat mouseX=0.0f;
+GLfloat mouseY=0.0f;
+GLfloat mouseLPressed=0.0f;
+GLfloat mouseRPressed=0.0f;
+GLfloat viewportSizeX=0.0f;
+GLfloat viewportSizeY=0.0f;
 GLfloat abstime;
 
-GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
+static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
 GLsizei i,srclens[nsources];
 for (i=0;i<nsources;++i){
@@ -109,11 +109,9 @@ return shader;
 GLfloat ink[]={0.0f,1.0f,0.0f,1.0f};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
-float white;
-// long double white;
+long double white;
 int x,y;
-// long double siz,outTimeA;
-float siz,outTimeA;
+long double siz,outTimeA;
 int a;
 float b;
 int m1,m2;
@@ -140,7 +138,7 @@ void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
-duration<double>time_spana=duration_cast<duration<double>>(t2-t1);
+duration<double> time_spana=duration_cast<duration<double>>(t2 - t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
 mouseX=x/viewportSizeX;
