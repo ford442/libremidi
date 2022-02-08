@@ -473,13 +473,13 @@ gotWheel=1;
 return 0;
 }
 libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx, const std::string& id){},
-.input_removed=[&](int idx,const std::string& id){},
-.output_added=[&](int idx,const std::string& id){
+.input_added=[](int idx, const std::string& id){},
+.input_removed=[](int idx,const std::string& id){},
+.output_added=[](int idx,const std::string& id){
 std::cout<<"MIDI Output connected: "<<idx<<" - "<<id<<std::endl;
 m1=idx;
 },
-.output_removed=[&](int idx,const std::string& id){
+.output_removed=[](int idx,const std::string& id){
 }};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 int main(){
