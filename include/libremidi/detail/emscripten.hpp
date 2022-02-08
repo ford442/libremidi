@@ -198,7 +198,7 @@ stop_observing();
 }
 
 void start_observing(){
-EM_ASM({let id=setInterval(Module._libremidi_devices_poll,10000);globalThis.__libreMidi_timer=id;});
+EM_ASM({let id=setTimeout(Module._libremidi_devices_poll,750);globalThis.__libreMidi_timer=id;});
 }
 
 void stop_observing(){
