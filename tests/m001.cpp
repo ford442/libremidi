@@ -325,10 +325,10 @@ outpu.open_port(idx);
 outpu.send_message(std::vector<unsigned char>{0x80,k,100});
 }
 
-void midd2(int idx,unsigned char k){
+void midd2(int idx,unsigned char klk){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
-outp.send_message(std::vector<unsigned char>{0x90,k,100});
+outp.send_message(std::vector<unsigned char>{0x90,klk,100});
 }
 
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
@@ -427,8 +427,8 @@ if(e->keyCode==87){k=82;midd2(m1,kn);kkey=372;noteOnGL(kkeyn);}
 if(e->keyCode==81){k=83;midd2(m1,kn);kkey=377;noteOnGL(kkeyn);}
 mouseLPressed=1.0f;
 // printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",
-emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
-emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
+// emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,
+// emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 // if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n");
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
@@ -438,8 +438,8 @@ int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel
 
 EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 // printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",
-emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,
-e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
+// emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,
+// e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK){
 gotClick=1;
@@ -462,9 +462,9 @@ return 0;
 
 EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userData){
 // printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",
-emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,
-e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",
-e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,
+// emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,
+// e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",
+// e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,
 (float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
 if(e->deltaY>0.f||e->deltaY<0.f){
 gotWheel=1;
