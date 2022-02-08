@@ -323,7 +323,7 @@ outpu.open_port(idx);
 //  EM_ASM({console.log("note off");});
 if(com==1){
 for (unsigned char ll=48;ll<83;ll++){
-outp.send_message(std::vector<unsigned char>{0x80,ll,100});
+outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
 nanosleep(&s_time,NULL);
 }}
 if(com==2){
