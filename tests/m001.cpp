@@ -109,7 +109,7 @@ return shader;
 GLfloat ink[]={0.0f,1.0f,0.0f,1.0f};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
-long double white;
+// long double white;
 GLfloat white;
 int x,y;
 long double siz,outTimeA;
