@@ -186,38 +186,28 @@ let bytes=HEAPU8.subarray($0,$0+$1);output.send(Array.from(bytes));},bytes,len,i
   const std::vector<device_information>& outputs() const noexcept { return m_current_outputs; }
 
 private:
-  midi_access_emscripten() noexcept
-  {
-  EM_ASM({
-if(navigator.requestMIDIAccess){
+midi_access_emscripten() noexcept{
+EM_ASM({if(navigator.requestMIDIAccess){
 navigator.requestMIDIAccess().then(
-(midiAccess)=>globalThis.__libreMidi_access=midiAccess,()=>console.log('MIDI support rejected, MIDI will not be available;'));
+(midiAccess)=>globalThis.__libreMidi_access=midiAccess,()=>console.log('MIDI support rejected.'));
 }else{console.log('WebMIDI is not supported in this browser.');}});
-  }
-  ~midi_access_emscripten()
-  {
-    stop_observing();
-  }
+}
+~midi_access_emscripten()
+{
+stop_observing();
+}
 
-  void start_observing()
-  {
-    EM_ASM({
-let id=setInterval(Module._libremidi_devices_poll,100);globalThis.__libreMidi_timer=id;
-    });
-  }
+void start_observing(){
+EM_ASM({let id=setInterval(Module._libremidi_devices_poll,500);globalThis.__libreMidi_timer=id;});
+}
 
-  void stop_observing()
-  {
-    EM_ASM({
-      clearInterval(globalThis.__libreMidi_timer);globalThis.__libreMidi_timer=undefined;
-    });
-  }
+void stop_observing(){
+EM_ASM({clearInterval(globalThis.__libreMidi_timer);globalThis.__libreMidi_timer=undefined;});
+}
 
-  void start_stream(int port_index)
-  {
-    const auto& id = m_current_inputs[port_index].id;
-    EM_ASM({
-const port_index=$0;const id=UTF8ToString($1);let input=globalThis.__libreMidi_access.inputs.get(id);
+void start_stream(int port_index){
+const auto& id=m_current_inputs[port_index].id;
+EM_ASM({const port_index=$0;const id=UTF8ToString($1);let input=globalThis.__libreMidi_access.inputs.get(id);
 function _arrayToHeap(typedArray){
 const numBytes=typedArray.length*typedArray.BYTES_PER_ELEMENT;
 const ptr=Module._malloc(numBytes);
@@ -234,13 +224,12 @@ Module._libremidi_devices_input(port_index,message.timeStamp,bytes.length,heapBy
 _freeArray(heapBytes);},port_index,id.c_str());
 }
 
-  void stop_stream(int port_index)
-  {
-    const auto& id = m_current_inputs[port_index].id;
-    EM_ASM({
-const id=UTF8ToString($1);let input=globalThis.__libreMidi_access.inputs.get(id);
+void stop_stream(int port_index){
+const auto& id=m_current_inputs[port_index].id;
+EM_ASM({const id=UTF8ToString($1);
+let input=globalThis.__libreMidi_access.inputs.get(id);
 input.onmidimessage=undefined;},id.c_str());
-  }
+}
 
   std::vector<observer_emscripten*> m_observers;
   std::vector<device_information> m_current_inputs;
