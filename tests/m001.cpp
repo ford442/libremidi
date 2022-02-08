@@ -329,9 +329,18 @@ outpu.send_message(std::vector<unsigned char>{0x80,k,100});
 void midd2(int idx,unsigned char k){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
-EM_ASM({console.log("note on");});
+// EM_ASM({console.log("note on");});
 outp.send_message(std::vector<unsigned char>{0x90,k,100});
 }
+
+void midd3(){
+libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
+outp.open_port(idx);
+// EM_ASM({console.log("note on");});
+for (unsigned char ll=48;ll<83;ll++){
+outp.send_message(std::vector<unsigned char>{0x90,ll,100});
+nanosleep(&s_time,NULL);
+}}
 
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
@@ -390,6 +399,7 @@ int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 unsigned char k;
 int kkey;
 if(e->repeat==true){return true;}
+if(e->keyCode==32){midd3();}
 if(e->keyCode==112){k=59;midd2(m1,k);kkey=10;noteOnGL(kkey);}
 if(e->keyCode==113){k=58;midd2(m1,k);kkey=20;noteOnGL(kkey);}
 if(e->keyCode==114){k=57;midd2(m1,k);kkey=30;noteOnGL(kkey);}
