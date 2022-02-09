@@ -152,7 +152,7 @@ vertices[(kkey*aa)+3]=vertices[3]+0.2f;
 vertices[(kkey*aa)+4]=vertices[100]+white;
 vertices[(kkey*aa)+5]=vertices[33]+0.2f;
 }
-vertices[(note*aa)+6]=white;
+vertices[(kkey*aa)+6]=white;
 ink[2]=white+0.1f;
 siz=0.88;
 vertices[7]=1.0f-mouseX;
