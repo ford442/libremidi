@@ -354,10 +354,14 @@ if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
 if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
 gotMouseDown=1;
 mouseLPressed=1.0f;
+x=e->clientX;
+y=e->clientY;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
 gotMouseUp=1;
 mouseLPressed=0.0f;
+x=e->clientX;
+y=e->clientY;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
 gotMouseMove=1;
