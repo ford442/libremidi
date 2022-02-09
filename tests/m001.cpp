@@ -472,7 +472,6 @@ gotWheel=1;
 return 0;
 }
 int main(int argc, char**){
-EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
