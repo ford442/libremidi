@@ -112,15 +112,15 @@ GLfloat x,y;
 long double siz,outTimeA;
 int a;
 float b;
-GLint m1,m2;
-unsigned char kl=999;
-int ii,idx;
+static GLint m1,m2;
+static unsigned char kl=999;
+static int ii,idx;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 static GLint kkey;
-GLint k;
+static GLint k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
-int aa;
+static int aa;
 
 /*
 void noteOnGL(int note){
@@ -488,10 +488,11 @@ printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 
- std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
- std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
+std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
+std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 
 int main(int argc, char**){
+ 
 EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx,const std::string& id){
