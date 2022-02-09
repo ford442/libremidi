@@ -119,24 +119,19 @@ char *fileloc="/shader/shader1.glsl";
 int kkey;
 int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
-
-void noteOnGL(int note){
 int aa;
-for(aa=0;aa<note;aa++){
-vertices[(note*aa)+3]=vertices[3]+0.2f;
-vertices[(note*aa)+4]=vertices[100]+white;
-vertices[(note*aa)+5]=vertices[33]+0.2f;
-}
-vertices[(note*aa)+6]=white;
+
+/*
+void noteOnGL(int note){
 }
 
 void noteOffGL(int note){
-/*int aab;
+int aab;
 for(aab=0;aab<note;aab++){
 vertices[(note*aab)+3]=vertices[3];
 vertices[(note*aab)+4]=vertices[33];
 vertices[(note*aab)+5]=vertices[333];
-}*/}
+}}*/
 
 void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
@@ -152,6 +147,12 @@ ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
 if(mouseLPressed==1.0f){
+for(aa=0;aa<kkey;aa++){
+vertices[(kkey*aa)+3]=vertices[3]+0.2f;
+vertices[(kkey*aa)+4]=vertices[100]+white;
+vertices[(kkey*aa)+5]=vertices[33]+0.2f;
+}
+vertices[(note*aa)+6]=white;
 ink[2]=white+0.1f;
 siz=0.88;
 vertices[7]=1.0f-mouseX;
