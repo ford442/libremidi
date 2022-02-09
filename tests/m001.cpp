@@ -83,12 +83,12 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-GLfloat mouseX=0.0f;
-GLfloat mouseY=0.0f;
-GLfloat mouseLPressed=0.0f;
-GLfloat mouseRPressed=0.0f;
-GLfloat viewportSizeX=0.0f;
-GLfloat viewportSizeY=0.0f;
+static GLfloat mouseX;
+static GLfloat mouseY;
+static GLfloat mouseLPressed;
+GLfloat mouseRPressed;
+static GLfloat viewportSizeX;
+static GLfloat viewportSizeY;
 GLfloat abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
@@ -375,6 +375,8 @@ EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userDat
 printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,(float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
 if(e->deltaY>0.f||e->deltaY<0.f){
 gotWheel=1;
+x=e->clientX;
+y=e->clientY;
 }
 return 0;
 }
@@ -384,7 +386,6 @@ void midd(int idx,int kll,int com){
 kl=kll;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 outpu.open_port(idx);
-//  EM_ASM({console.log("note off");});
 if(com==1){
 for (unsigned char ll=48;ll<83;ll++){
 outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
