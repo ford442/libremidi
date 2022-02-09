@@ -352,19 +352,22 @@ printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
 if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
-gotMouseDown=1;
-mouseLPressed=1.0f;
+
 x=e->clientX;
 y=e->clientY;
+mouseLPressed=1.0f;
+gotMouseDown=1;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
-gotMouseUp=1;
-mouseLPressed=0.0f;
 x=e->clientX;
 y=e->clientY;
+mouseLPressed=0.0f;
+gotMouseUp=1;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
 gotMouseMove=1;
+x=e->clientX;
+y=e->clientY;
 }}
 return 0;
 }
@@ -373,8 +376,6 @@ EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userDat
 printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,(float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
 if(e->deltaY>0.f||e->deltaY<0.f){
 gotWheel=1;
-x=e->clientX;
-y=e->clientY;
 }
 return 0;
 }
