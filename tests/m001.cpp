@@ -108,13 +108,15 @@ GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
  GLfloat white;
-GLfloat x,y;
+static GLfloat x,y;
 long double siz,outTimeA;
 int a;
 float b;
-static GLint m1,m2;
-static unsigned char kl=999;
-static int ii,idx;
+GLint m1,m2;
+unsigned char kl=999;
+unsigned char ll;
+
+int ii,idx;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 static GLint kkey;
@@ -352,15 +354,10 @@ printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
 if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
-
-x=e->clientX;
-y=e->clientY;
 mouseLPressed=1.0f;
 gotMouseDown=1;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
-x=e->clientX;
-y=e->clientY;
 mouseLPressed=0.0f;
 gotMouseUp=1;
 }
@@ -386,7 +383,7 @@ kl=kll;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 outpu.open_port(idx);
 if(com==1){
-for (unsigned char ll=48;ll<83;ll++){
+for (ll=48;ll<83;ll++){
 outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
 nanosleep(&s_time,NULL);
 }}
@@ -489,7 +486,7 @@ if(e->keyCode==81){k=83;midd(m1,k,3);kkey=377;/*noteOnGL(kkey);*/}
 mouseLPressed=1.0f;
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",emscripten_event_type_to_string(eventType),e->key,/*emscripten_key_event_is_printable_character(e) ? "true" : "false",*/ e->code,emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 // if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n");
-return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
+return e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
