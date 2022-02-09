@@ -75,6 +75,7 @@ EGLDisplay display;
 EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
+EMSCRIPTEN_RESULT ret;
 
 static const char* common_shader_header=common_shader_header_gles3;
 static const char* vertex_shader_body=vertex_shader_body_gles3;
@@ -503,7 +504,7 @@ m1=idx;
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
-EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_mousedown_callback);
