@@ -116,7 +116,7 @@ unsigned char kl=999;
 int ii,idx;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
-GLint kkey;
+static GLint kkey;
 GLint k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
