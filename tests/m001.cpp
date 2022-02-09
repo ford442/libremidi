@@ -83,12 +83,12 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-static GLfloat mouseX;
-static GLfloat mouseY;
-static GLfloat mouseLPressed;
+GLfloat mouseX;
+GLfloat mouseY;
+GLfloat mouseLPressed;
 GLfloat mouseRPressed;
-static GLfloat viewportSizeX;
-static GLfloat viewportSizeY;
+GLfloat viewportSizeX;
+GLfloat viewportSizeY;
 GLfloat abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
@@ -134,7 +134,7 @@ vertices[(note*aab)+4]=vertices[33];
 vertices[(note*aab)+5]=vertices[333];
 }}*/
 
-void renderFrame(){
+static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
