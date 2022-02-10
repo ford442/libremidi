@@ -5,6 +5,7 @@ if(event.key==="F10"){event.preventDefault();}
 if(event.key==="F9"){event.preventDefault();}
 if(event.key==="F8"){event.preventDefault();}
 if(event.key==="F7"){event.preventDefault();}
+if(event.keycode==="118"){event.preventDefault();}
 if(event.key==="F6"){event.preventDefault();}
 if(event.key==="F5"){event.preventDefault();}
 if(event.key==="F4"){event.preventDefault();}
@@ -19,6 +20,7 @@ if(event.key==="F10"){event.preventDefault();}
 if(event.key==="F9"){event.preventDefault();}
 if(event.key==="F8"){event.preventDefault();}
 if(event.key==="F7"){event.preventDefault();}
+if(event.keycode==="118"){event.preventDefault();}
 if(event.key==="F6"){event.preventDefault();}
 if(event.key==="F5"){event.preventDefault();}
 if(event.key==="F4"){event.preventDefault();}
