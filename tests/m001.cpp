@@ -396,7 +396,7 @@ outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
 
 static EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->repeat==true){return true;}
-mouseLPressed=0.0f;
+mouseLPressed=mouseLPressed-1.0f;
 if(e->keyCode==112){kkey=10;k=59;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==113){kkey=20;k=58;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==114){kkey=30;k=57;midd(m1,k,2);/*noteOffGL(kkey);*/}
@@ -440,7 +440,7 @@ static EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void 
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->repeat==true){return true;}
 if(e->keyCode==32){midd(m1,0,1);}
-mouseLPressed=1.0f;
+mouseLPressed=mouseLPressed+1.0f;
 if(e->keyCode==112){kkey=10;k=59;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==113){kkey=20;k=58;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==114){kkey=30;k=57;midd(m1,k,3);/*noteOnGL(kkey);*/}
@@ -500,7 +500,7 @@ m1=idx;
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
-// emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
+emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
