@@ -85,7 +85,7 @@ static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 GLuint shader_program;
 GLfloat mouseX;
 GLfloat mouseY;
-static GLfloat mouseLPressed=0.5f;
+ GLfloat mouseLPressed=0.5f;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
