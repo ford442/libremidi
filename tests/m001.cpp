@@ -85,7 +85,7 @@ static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 GLuint shader_program;
 GLfloat mouseX;
 GLfloat mouseY;
- GLfloat mouseLPressed=0.5f;
+ GLint mouseLPressed=0;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
@@ -149,7 +149,7 @@ ink[0]=mouseX/2;
 ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
-if(mouseLPressed>0.5f){
+if(mouseLPressed>=1){
 for(aa=0;aa<kkey;aa++){
 vertices[(kkey*aa)+3]=vertices[3]+0.2f;
 vertices[(kkey*aa)+4]=vertices[100]+white;
@@ -354,11 +354,11 @@ printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
 if(eventType==EMSCRIPTEN_EVENT_MOUSEDOWN&&e->buttons!=0){
-mouseLPressed=mouseLPressed+1.0;
+mouseLPressed=mouseLPressed+1;
 gotMouseDown=1;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEUP){
-mouseLPressed=mouseLPressed-1.0;
+mouseLPressed=mouseLPressed-1;
 gotMouseUp=1;
 }
 if(eventType==EMSCRIPTEN_EVENT_MOUSEMOVE&&(e->movementX!=0||e->movementY!=0)){
@@ -396,7 +396,7 @@ outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
 
 static EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->repeat==true){return true;}
-mouseLPressed=mouseLPressed-1.0;
+mouseLPressed=mouseLPressed-1;
 if(e->keyCode==112){kkey=10;k=59;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==113){kkey=20;k=58;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==114){kkey=30;k=57;midd(m1,k,2);/*noteOffGL(kkey);*/}
@@ -440,7 +440,7 @@ static EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void 
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->repeat==true){return true;}
 if(e->keyCode==32){midd(m1,0,1);}
-mouseLPressed=mouseLPressed+1.0;
+mouseLPressed=mouseLPressed+1;
 if(e->keyCode==112){kkey=10;k=59;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==113){kkey=20;k=58;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==114){kkey=30;k=57;midd(m1,k,3);/*noteOnGL(kkey);*/}
@@ -501,7 +501,7 @@ libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)}
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-// ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 // TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 // TEST_RESULT(emscripten_set_mousedown_callback);
