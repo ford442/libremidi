@@ -492,9 +492,7 @@ return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->k
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 
-static int main(int argc, char**){
- 
-EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
+static void user(){
 libremidi::observer::callbacks callbacks{
 .input_added=[&](int idx,const std::string& id){
 },
@@ -523,4 +521,9 @@ emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 emscripten_set_main_loop([]{},60,1);
+}
+
+int main(int argc, char**){
+EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
+user();
 }
