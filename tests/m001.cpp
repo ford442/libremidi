@@ -433,7 +433,7 @@ if(e->keyCode==82){kkey=362;k=80;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==69){kkey=367;k=81;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==87){kkey=372;k=82;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==81){kkey=377;k=83;midd(m1,k,2);/*noteOffGL(kkey);*/}
-return true;
+return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 
 static EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
