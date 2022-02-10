@@ -85,7 +85,7 @@ static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 GLuint shader_program;
 GLfloat mouseX;
 GLfloat mouseY;
-GLfloat mouseLPressed;
+static GLfloat mouseLPressed;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
@@ -149,7 +149,7 @@ ink[0]=mouseX/2;
 ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
-if(mouseLPressed==1.0f){
+if(mouseLPressed>=1.0f){
 for(aa=0;aa<kkey;aa++){
 vertices[(kkey*aa)+3]=vertices[3]+0.2f;
 vertices[(kkey*aa)+4]=vertices[100]+white;
@@ -501,14 +501,14 @@ libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)}
 emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
 emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,up_callback);
 emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,key_callback);
-ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_click_callback);
+// ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
+// TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mousedown_callback);
+// TEST_RESULT(emscripten_set_mousedown_callback);
 ret=emscripten_set_mouseup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mouseup_callback);
+// TEST_RESULT(emscripten_set_mouseup_callback);
 ret=emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
-TEST_RESULT(emscripten_set_mousemove_callback);
+// TEST_RESULT(emscripten_set_mousemove_callback);
 // ret=emscripten_set_dblclick_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 // TEST_RESULT(emscripten_set_dblclick_callback);
 // ret=emscripten_set_wheel_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,wheel_callback);
