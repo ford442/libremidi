@@ -444,31 +444,31 @@ int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 
 if(e->repeat==true){return true;}
 if(e->keyCode==32){midd(m1,0,1);}
-if(e->keyCode==112){k=59;midd(m1,k,3);kkey=10;/*noteOnGL(kkey);*/}
-if(e->keyCode==113){k=58;midd(m1,k,3);kkey=20;/*noteOnGL(kkey);*/}
-if(e->keyCode==114){k=57;midd(m1,k,3);kkey=30;/*noteOnGL(kkey);*/}
-if(e->keyCode==115){k=56;midd(m1,k,3);kkey=40;/*noteOnGL(kkey);*/}
-if(e->keyCode==116){k=55;midd(m1,k,3);kkey=50;/*noteOnGL(kkey);*/}
-if(e->keyCode==117){k=54;midd(m1,k,3);kkey=60;/*noteOnGL(kkey);*/}
-if(e->keyCode==118){k=53;midd(m1,k,3);kkey=70;/*noteOnGL(kkey);*/}
-if(e->keyCode==119){k=52;midd(m1,k,3);kkey=80;/*noteOnGL(kkey);*/}
-if(e->keyCode==120){k=51;midd(m1,k,3);kkey=90;/*noteOnGL(kkey);*/}
-if(e->keyCode==121){k=50;midd(m1,k,3);kkey=100;/*noteOnGL(kkey);*/}
-if(e->keyCode==122){k=49;midd(m1,k,3);kkey=110;/*noteOnGL(kkey);*/}
-if(e->keyCode==123){k=48;midd(m1,k,3);kkey=120;/*noteOnGL(kkey);*/}
+if(e->keyCode==112){kkey=10;k=59;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==113){kkey=20;k=58;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==114){kkey=30;k=57;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==115){kkey=40;k=56;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==116){kkey=50;k=55;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==117){kkey=60;k=54;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==118){kkey=70;k=53;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==119){kkey=80;k=52;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==120){kkey=90;k=51;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==121){kkey=100;k=50;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==122){kkey=110;k=49;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==123){kkey=120;k=48;midd(m1,k,3);/*noteOnGL(kkey);*/}
   
-if(e->keyCode==49){k=71;midd(m1,k,3);kkey=220;/*noteOnGL(kkey);*/}
-if(e->keyCode==50){k=70;midd(m1,k,3);kkey=210;/*noteOnGL(kkey);*/}
-if(e->keyCode==51){k=69;midd(m1,k,3);kkey=200;/*noteOnGL(kkey);*/}
-if(e->keyCode==52){k=68;midd(m1,k,3);kkey=190;/*noteOnGL(kkey);*/}
-if(e->keyCode==53){k=67;midd(m1,k,3);kkey=180;/*noteOnGL(kkey);*/}
-if(e->keyCode==54){k=66;midd(m1,k,3);kkey=170;/*noteOnGL(kkey);*/}
-if(e->keyCode==55){k=65;midd(m1,k,3);kkey=150;/*noteOnGL(kkey);*/}
-if(e->keyCode==56){k=64;midd(m1,k,3);kkey=140;/*noteOnGL(kkey);*/}
-if(e->keyCode==57){k=63;midd(m1,k,3);kkey=130;/*noteOnGL(kkey);*/}
-if(e->keyCode==48){k=62;midd(m1,k,3);kkey=117;/*noteOnGL(kkey);*/}
-if(e->keyCode==189){k=61;midd(m1,k,3);kkey=107;/*noteOnGL(kkey);*/}
-if(e->keyCode==187){k=60;midd(m1,k,3);kkey=97;/*noteOnGL(kkey);*/}
+if(e->keyCode==49){kkey=220;k=71;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==50){kkey=210;k=70;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==51){kkey=200;k=69;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==52){kkey=190;k=68;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==53){kkey=180;k=67;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==54){kkey=170;k=66;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==55){kkey=150;k=65;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==56){kkey=140;k=64;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==57){kkey=130;k=63;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==48){kkey=117;k=62;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==189){kkey=107;k=61;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==187){kkey=97;k=60;midd(m1,k,3);/*noteOnGL(kkey);*/}
   
 if(e->keyCode==221){k=72;midd(m1,k,3);kkey=111;/*noteOnGL(kkey);*/}
 if(e->keyCode==219){k=73;midd(m1,k,3);kkey=222;/*noteOnGL(kkey);*/}
