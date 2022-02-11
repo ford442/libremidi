@@ -86,6 +86,7 @@ GLuint shader_program;
 GLfloat mouseX;
 GLfloat mouseY;
 GLint mouseLPressed;
+static GLint portOpen;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
@@ -140,6 +141,10 @@ libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
 static void midd(int idx,int kll,int com){
 kl=kll;
+if(portOpen==0){
+outpu.open_port(idx);
+portOpen=1;
+}
 if(com==1){
 for (ll=48;ll<83;ll++){
 outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
@@ -304,6 +309,7 @@ glUseProgram(shader_program);
 t1=steady_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
+portOpen=0;
 glClearColor(0.0f,1.0f,0.0f,1.0f);
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 emscripten_set_main_loop((void(*)())renderFrame,0,0);
@@ -501,8 +507,6 @@ libremidi::observer::callbacks callbacks{
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output: "<<idx<<" - "<<id<<std::endl;
 m1=idx;
-  outpu.open_port(idx);
-
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
