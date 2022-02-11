@@ -1,21 +1,21 @@
-document.addEventListener('keypress',function(event){
+window.addEventListener('keypress',function(event){
 if(event.which==="118"){
   event.preventDefault();
 // event.stopPropagation? event.stopPropagation() : event.cancelBubble=true;
 }});
 
-document.addEventListener('keyup',function(event){
+window.addEventListener('keyup',function(event){
 if(event.which==="118"){event.preventDefault();
 // event.stopPropagation? event.stopPropagation() : event.cancelBubble=true;
 }});
 
-document.addEventListener('keydown',function(event){
+window.addEventListener('keydown',function(event){
 if(event.which==="118"){
   event.preventDefault();
 // event.stopPropagation? event.stopPropagation() : event.cancelBubble=true;
 }});
 
-document.addEventListener('keypress',function(event){
+window.addEventListener('keypress',function(event){
 if(event.key==="F12"){event.preventDefault();}
 if(event.key==="F11"){event.preventDefault();}
 if(event.key==="F10"){event.preventDefault();}
@@ -33,7 +33,7 @@ if(event.key==="F2"){event.preventDefault();}
 if(event.key==="F1"){event.preventDefault();}
 });
 
-document.addEventListener('keydown',function(event){
+window.addEventListener('keydown',function(event){
 if(event.key==="F12"){event.preventDefault();}
 if(event.key==="F11"){event.preventDefault();}
 if(event.key==="F10"){event.preventDefault();}
@@ -52,7 +52,7 @@ if(event.key==="F2"){event.preventDefault();}
 if(event.key==="F1"){event.preventDefault();}
 });
 
-document.addEventListener('keyup',function(event){
+window.addEventListener('keyup',function(event){
 if(event.key==="F12"){event.preventDefault();}
 if(event.key==="F11"){event.preventDefault();}
 if(event.key==="F10"){event.preventDefault();}
