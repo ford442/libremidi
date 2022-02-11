@@ -182,6 +182,9 @@ vertices[0]=vertices[32]-white;
 vertices[3]=vertices[1]-white;
 vertices[2]=vertices[2]-white;
 }else{
+for(ii=0;ii<2161;ii++){
+vertices[ii]=F0;
+}
 for(a=0;a<361;a++){
 b=(float)a/360;
 vertices[a*6]=siz*cos(a);
