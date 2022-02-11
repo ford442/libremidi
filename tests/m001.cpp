@@ -86,7 +86,7 @@ GLuint shader_program;
 GLfloat mouseX;
 GLfloat mouseY;
 GLint mouseLPressed;
- GLint portOpen;
+GLint portOpen;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
@@ -125,7 +125,7 @@ char *fileloc="/shader/shader1.glsl";
 GLint kkey;
 GLint k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
- int aa;
+int aa;
 
 /*
 void noteOnGL(int note){
@@ -163,22 +163,22 @@ void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
-duration<double> time_spana=duration_cast<duration<double>>(t2 - &t1);
+duration<double> time_spana=duration_cast<duration<double>>(t2 - t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
-mouseX=&x/&viewportSizeX;
-mouseY=&y/&viewportSizeY;
+mouseX=&x/viewportSizeX;
+mouseY=&y/viewportSizeY;
 ink[0]=mouseX/2;
 ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
 if(mouseLPressed>=1){
 for(aa=0;aa<kkey;aa++){
-vertices[(&kkey*aa)+3]=vertices[3]+0.2f;
-vertices[(&kkey*aa)+4]=vertices[100]+white;
-vertices[(&kkey*aa)+5]=vertices[33]+0.2f;
+vertices[(&kkey*&aa)+3]=vertices[3]+0.2f;
+vertices[(&kkey*&aa)+4]=vertices[100]+white;
+vertices[(&kkey*&aa)+5]=vertices[33]+0.2f;
 }
-vertices[(&kkey*aa)+6]=white;
+vertices[(&kkey*&aa)+6]=white;
 ink[2]=white+0.1f;
 siz=0.88;
 vertices[7]=1.0f-mouseX;
