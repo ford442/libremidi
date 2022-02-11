@@ -116,7 +116,7 @@ long double siz,outTimeA;
 int a;
 float b;
 GLint m1,m2;
-unsigned char kl=999;
+unsigned char kl;
 unsigned char ll;
 
 int ii,idx;
@@ -131,7 +131,7 @@ libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
 void midd(int idx,int kll,int com){
 kl=kll;
-if(&portOpen==0){
+if(portOpen==0){
 outpu.open_port(idx);
 portOpen=1;
 }
@@ -424,7 +424,7 @@ return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->k
 return EM_TRUE;
 }
 
- EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->repeat==true){
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
