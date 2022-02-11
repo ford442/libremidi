@@ -240,7 +240,7 @@ EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
 EGL_CONTEXT_OPENGL_ROBUST_ACCESS_EXT,EGL_TRUE,
 EGL_DEPTH_ENCODING_NV,EGL_DEPTH_ENCODING_NONLINEAR_NV,
 EGL_RENDER_BUFFER,EGL_QUADRUPLE_BUFFER_NV,
-// EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE,EGL_TRUE,
+EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE,EGL_TRUE,
 EGL_RED_SIZE,8,
 EGL_GREEN_SIZE,8,
 EGL_BLUE_SIZE,8,
@@ -345,8 +345,6 @@ if((*str++&0xC0)!=0x80)++num_chars;
 return num_chars;
 }
 
-
-
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
@@ -381,8 +379,7 @@ gotWheel=1;
 return 0;
 }
 
-
- EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->repeat==true){
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
