@@ -141,7 +141,7 @@ libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
 void midd(int idx,int kll,int com){
 kl=kll;
-if(portOpen=0){
+if(portOpen==0){
 outpu.open_port(idx);
 portOpen=1;
 }
