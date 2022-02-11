@@ -404,12 +404,12 @@ if(e->keyCode==112){kkey=10;k=59;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==113){kkey=20;k=58;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==114){kkey=30;k=57;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==115){kkey=40;k=56;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==116){kkey=50;k=55;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==117){kkey=68;k=54;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==116){kkey=50;midd(m1,55,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==117){kkey=68;midd(m1,54,3);/*noteOnGL(kkey);*/}
 // if(e->keyCode==118){kkey=70;k=53;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->key=="F7"){kkey=70;midd(m1,53,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==119){kkey=80;k=52;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==120){kkey=90;k=51;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==119){kkey=80;midd(m1,52,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==120){kkey=90;midd(m1,51,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==121){kkey=100;k=50;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==122){kkey=110;k=49;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==123){kkey=120;k=48;midd(m1,k,3);/*noteOnGL(kkey);*/}
