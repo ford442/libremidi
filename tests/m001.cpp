@@ -88,8 +88,8 @@ GLfloat mouseY;
 GLint mouseLPressed;
 GLint portOpen;
 GLfloat mouseRPressed;
-GLfloat viewportSizeX;
-GLfloat viewportSizeY;
+static GLfloat viewportSizeX;
+static GLfloat viewportSizeY;
 GLfloat abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
@@ -126,18 +126,6 @@ GLint kkey;
 GLint k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
-
-/*
-void noteOnGL(int note){
-}
-
-void noteOffGL(int note){
-int aab;
-for(aab=0;aab<note;aab++){
-vertices[(note*aab)+3]=vertices[3];
-vertices[(note*aab)+4]=vertices[33];
-vertices[(note*aab)+5]=vertices[333];
-}}*/
 
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
@@ -253,7 +241,11 @@ EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
 
- void strt(){
+static int h,w;
+
+void strt(){
+h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
+w=h;
 emscripten_cancel_main_loop();
 for(ii=0;ii<2161;ii++){
 vertices[ii]=0.0f;
@@ -292,8 +284,7 @@ contextegl=eglCreateContext(display,eglconfig,EGL_NO_CONTEXT,anEglCtxAttribs2);
 surface=eglCreateWindowSurface(display,eglconfig,NULL,attribut_list);
 eglMakeCurrent(display,surface,surface,contextegl);
 emscripten_webgl_make_context_current(ctx);
-int h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
-int w=h;
+
 glHint(GL_FRAGMENT_SHADER_DERIVATIVE_HINT,GL_NICEST);
 sources[0]=common_shader_header;
 sources[1]=vertex_shader_body;
@@ -356,7 +347,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
- EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
+EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 // printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
@@ -376,7 +367,7 @@ y=e->clientY;
 return 0;
 }
 
- EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userData){
+EM_BOOL wheel_callback(int eventType,const EmscriptenWheelEvent *e,void *userData){
 // printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,target: (%ld,%ld),delta:(%g,%g,%g),deltaMode:%lu\n",emscripten_event_type_to_string(eventType),e->mouse.screenX,e->mouse.screenY,e->mouse.clientX,e->mouse.clientY,e->mouse.ctrlKey ? " CTRL" : "",e->mouse.shiftKey ? " SHIFT" : "",e->mouse.altKey ? " ALT" : "",e->mouse.metaKey ? " META" : "",e->mouse.button,e->mouse.buttons,e->mouse.targetX,e->mouse.targetY,(float)e->deltaX,(float)e->deltaY,(float)e->deltaZ,e->deltaMode);
 if(e->deltaY>0.f||e->deltaY<0.f){
 gotWheel=1;
@@ -391,43 +382,43 @@ return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->k
 }
 if(e->keyCode==32){midd(m1,0,1);}
 mouseLPressed=mouseLPressed+1;
-if(e->keyCode==112){kkey=10;k=59;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==113){kkey=20;k=58;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==114){kkey=30;k=57;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==115){kkey=40;k=56;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==116){kkey=50;midd(m1,55,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==117){kkey=68;midd(m1,54,3);/*noteOnGL(kkey);*/}
-// if(e->keyCode==118){kkey=70;k=53;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->which==118){kkey=70;midd(m1,53,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==119){kkey=80;midd(m1,52,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==120){kkey=90;midd(m1,51,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==121){kkey=100;k=50;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==122){kkey=110;k=49;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==123){kkey=120;k=48;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==49){kkey=220;k=71;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==50){kkey=210;k=70;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==51){kkey=200;k=69;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==52){kkey=190;k=68;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==53){kkey=180;k=67;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==54){kkey=170;k=66;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==55){kkey=150;k=65;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==56){kkey=140;k=64;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==57){kkey=130;k=63;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==48){kkey=117;k=62;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==189){kkey=107;k=61;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==187){kkey=97;k=60;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==221){kkey=111;k=72;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==219){kkey=222;k=73;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==80){kkey=333;k=74;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==79){kkey=338;k=75;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==73){kkey=343;k=76;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==85){kkey=348;k=77;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==89){kkey=353;k=78;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==84){kkey=358;k=79;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==82){kkey=362;k=80;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==69){kkey=367;k=81;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==87){kkey=372;k=82;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==81){kkey=377;k=83;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->keyCode==112){kkey=10;k=59;midd(m1,k,3);}
+if(e->keyCode==113){kkey=20;k=58;midd(m1,k,3);}
+if(e->keyCode==114){kkey=30;k=57;midd(m1,k,3);}
+if(e->keyCode==115){kkey=40;k=56;midd(m1,k,3);}
+if(e->keyCode==116){kkey=50;midd(m1,55,3);}
+if(e->keyCode==117){kkey=68;midd(m1,54,3);}
+// if(e->keyCode==118){kkey=70;k=53;midd(m1,k,3);}
+if(e->which==118){kkey=70;midd(m1,53,3);}
+if(e->keyCode==119){kkey=80;midd(m1,52,3);}
+if(e->keyCode==120){kkey=90;midd(m1,51,3);}
+if(e->keyCode==121){kkey=100;k=50;midd(m1,k,3);}
+if(e->keyCode==122){kkey=110;k=49;midd(m1,k,3);}
+if(e->keyCode==123){kkey=120;k=48;midd(m1,k,3);}
+if(e->keyCode==49){kkey=220;k=71;midd(m1,k,3);}
+if(e->keyCode==50){kkey=210;k=70;midd(m1,k,3);}
+if(e->keyCode==51){kkey=200;k=69;midd(m1,k,3);}
+if(e->keyCode==52){kkey=190;k=68;midd(m1,k,3);}
+if(e->keyCode==53){kkey=180;k=67;midd(m1,k,3);}
+if(e->keyCode==54){kkey=170;k=66;midd(m1,k,3);}
+if(e->keyCode==55){kkey=150;k=65;midd(m1,k,3);}
+if(e->keyCode==56){kkey=140;k=64;midd(m1,k,3);}
+if(e->keyCode==57){kkey=130;k=63;midd(m1,k,3);}
+if(e->keyCode==48){kkey=117;k=62;midd(m1,k,3);}
+if(e->keyCode==189){kkey=107;k=61;midd(m1,k,3);}
+if(e->keyCode==187){kkey=97;k=60;midd(m1,k,3);}
+if(e->keyCode==221){kkey=111;k=72;midd(m1,k,3);}
+if(e->keyCode==219){kkey=222;k=73;midd(m1,k,3);}
+if(e->keyCode==80){kkey=333;k=74;midd(m1,k,3);}
+if(e->keyCode==79){kkey=338;k=75;midd(m1,k,3);}
+if(e->keyCode==73){kkey=343;k=76;midd(m1,k,3);}
+if(e->keyCode==85){kkey=348;k=77;midd(m1,k,3);}
+if(e->keyCode==89){kkey=353;k=78;midd(m1,k,3);}
+if(e->keyCode==84){kkey=358;k=79;midd(m1,k,3);}
+if(e->keyCode==82){kkey=362;k=80;midd(m1,k,3);}
+if(e->keyCode==69){kkey=367;k=81;midd(m1,k,3);}
+if(e->keyCode==87){kkey=372;k=82;midd(m1,k,3);}
+if(e->keyCode==81){kkey=377;k=83;midd(m1,k,3);}
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 // printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 return EM_TRUE;
@@ -438,43 +429,43 @@ if(e->repeat==true){
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 mouseLPressed=mouseLPressed-1;
-if(e->keyCode==112){kkey=10;k=59;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==113){kkey=20;k=58;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==114){kkey=30;k=57;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==115){kkey=40;k=56;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==116){kkey=50;k=55;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==117){kkey=68;k=54;midd(m1,k,2);/*noteOffGL(kkey);*/}
-// if(e->keyCode==118){kkey=70;k=53;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->which==118){midd(m1,53,2);kkey=70;/*noteOffGL(kkey);*/}
-if(e->keyCode==119){kkey=80;k=52;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==120){kkey=90;k=51;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==121){kkey=100;k=50;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==122){kkey=110;k=49;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==123){kkey=120;k=48;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==49){kkey=220;k=71;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==50){kkey=210;k=70;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==51){kkey=200;k=69;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==52){kkey=190;k=68;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==53){kkey=180;k=67;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==54){kkey=170;k=66;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==55){kkey=150;k=65;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==56){kkey=140;k=64;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==57){kkey=130;k=63;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==48){kkey=117;k=62;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==189){kkey=107;k=61;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==187){kkey=97;k=60;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==221){kkey=111;k=72;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==219){kkey=222;k=73;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==80){kkey=333;k=74;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==79){kkey=338;k=75;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==73){kkey=343;k=76;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==85){kkey=348;k=77;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==89){kkey=353;k=78;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==84){kkey=358;k=79;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==82){kkey=362;k=80;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==69){kkey=367;k=81;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==87){kkey=372;k=82;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==81){kkey=377;k=83;midd(m1,k,2);/*noteOffGL(kkey);*/}
+if(e->keyCode==112){kkey=10;k=59;midd(m1,k,2);}
+if(e->keyCode==113){kkey=20;k=58;midd(m1,k,2);}
+if(e->keyCode==114){kkey=30;k=57;midd(m1,k,2);}
+if(e->keyCode==115){kkey=40;k=56;midd(m1,k,2);}
+if(e->keyCode==116){kkey=50;k=55;midd(m1,k,2);}
+if(e->keyCode==117){kkey=68;k=54;midd(m1,k,2);}
+// if(e->keyCode==118){kkey=70;k=53;midd(m1,k,2);}
+if(e->which==118){midd(m1,53,2);kkey=70;}
+if(e->keyCode==119){kkey=80;k=52;midd(m1,k,2);}
+if(e->keyCode==120){kkey=90;k=51;midd(m1,k,2);}
+if(e->keyCode==121){kkey=100;k=50;midd(m1,k,2)}
+if(e->keyCode==122){kkey=110;k=49;midd(m1,k,2)}
+if(e->keyCode==123){kkey=120;k=48;midd(m1,k,2)}
+if(e->keyCode==49){kkey=220;k=71;midd(m1,k,2);}
+if(e->keyCode==50){kkey=210;k=70;midd(m1,k,2);}
+if(e->keyCode==51){kkey=200;k=69;midd(m1,k,2);}
+if(e->keyCode==52){kkey=190;k=68;midd(m1,k,2);}
+if(e->keyCode==53){kkey=180;k=67;midd(m1,k,2);}
+if(e->keyCode==54){kkey=170;k=66;midd(m1,k,2);}
+if(e->keyCode==55){kkey=150;k=65;midd(m1,k,2);}
+if(e->keyCode==56){kkey=140;k=64;midd(m1,k,2);}
+if(e->keyCode==57){kkey=130;k=63;midd(m1,k,2);}
+if(e->keyCode==48){kkey=117;k=62;midd(m1,k,2);}
+if(e->keyCode==189){kkey=107;k=61;midd(m1,k,2);}
+if(e->keyCode==187){kkey=97;k=60;midd(m1,k,2);}
+if(e->keyCode==221){kkey=111;k=72;midd(m1,k,2);}
+if(e->keyCode==219){kkey=222;k=73;midd(m1,k,2);}
+if(e->keyCode==80){kkey=333;k=74;midd(m1,k,2);}
+if(e->keyCode==79){kkey=338;k=75;midd(m1,k,2);}
+if(e->keyCode==73){kkey=343;k=76;midd(m1,k,2);}
+if(e->keyCode==85){kkey=348;k=77;midd(m1,k,2);}
+if(e->keyCode==89){kkey=353;k=78;midd(m1,k,2);}
+if(e->keyCode==84){kkey=358;k=79;midd(m1,k,2);}
+if(e->keyCode==82){kkey=362;k=80;midd(m1,k,2);}
+if(e->keyCode==69){kkey=367;k=81;midd(m1,k,2);}
+if(e->keyCode==87){kkey=372;k=82;midd(m1,k,2);}
+if(e->keyCode==81){kkey=377;k=83;midd(m1,k,2);}
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 
