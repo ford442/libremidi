@@ -139,7 +139,9 @@ if(com==1){
 for (ll=48;ll<83;ll++){
 outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
 nanosleep(&s_time,NULL);
-}}
+}
+mouseLPressed=F0;
+}
 if(com==3){
 outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
 }
