@@ -395,7 +395,7 @@ outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
 }}
 
 static EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
-if(e->repeat==true){return true;}
+if(e->repeat==true){return EM_TRUE;}
 mouseLPressed=mouseLPressed-1;
 if(e->keyCode==112){kkey=10;k=59;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==113){kkey=20;k=58;midd(m1,k,2);/*noteOffGL(kkey);*/}
