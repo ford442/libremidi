@@ -103,25 +103,27 @@ glShaderSource(shader,nsources,sources,srclens);
 glCompileShader(shader);
 return shader;
 }
-
- GLfloat ink[]={0.0f,1.0f,0.0f,1.0f};
- GLfloat vertices[2160]={};
+GLfloat F=1.0f;
+GLfloat F0=0.0f;
+GLfloat Fm1=-1.0f;
+GLfloat ink[]={F0,F,F0,F};
+GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
-  GLfloat white;
- GLfloat x,y;
- long double siz,outTimeA;
+GLfloat white;
+GLfloat x,y;
+long double siz,outTimeA;
 int a;
 float b;
- GLint m1,m2;
- unsigned char kl=999;
- unsigned char ll;
+GLint m1,m2;
+unsigned char kl=999;
+unsigned char ll;
 
- int ii,idx;
+int ii,idx;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
- GLint kkey;
- GLint k;
+GLint kkey;
+GLint k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
  int aa;
 
@@ -141,7 +143,7 @@ libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
 void midd(int idx,int kll,int com){
 kl=kll;
-if(portOpen==0){
+if(&portOpen==0){
 outpu.open_port(idx);
 portOpen=1;
 }
@@ -161,22 +163,22 @@ void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
-duration<double> time_spana=duration_cast<duration<double>>(t2 - t1);
+duration<double> time_spana=duration_cast<duration<double>>(t2 - &t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
-mouseX=x/viewportSizeX;
-mouseY=y/viewportSizeY;
+mouseX=&x/&viewportSizeX;
+mouseY=&y/&viewportSizeY;
 ink[0]=mouseX/2;
 ink[1]=mouseY;
 white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
 if(mouseLPressed>=1){
 for(aa=0;aa<kkey;aa++){
-vertices[(kkey*aa)+3]=vertices[3]+0.2f;
-vertices[(kkey*aa)+4]=vertices[100]+white;
-vertices[(kkey*aa)+5]=vertices[33]+0.2f;
+vertices[(&kkey*aa)+3]=vertices[3]+0.2f;
+vertices[(&kkey*aa)+4]=vertices[100]+white;
+vertices[(&kkey*aa)+5]=vertices[33]+0.2f;
 }
-vertices[(kkey*aa)+6]=white;
+vertices[(&kkey*aa)+6]=white;
 ink[2]=white+0.1f;
 siz=0.88;
 vertices[7]=1.0f-mouseX;
@@ -229,7 +231,7 @@ eglSwapBuffers(display,surface);
 }
 
 const EGLint attribut_list[]={
-// EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
+EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
 EGL_NONE
 };
 
@@ -278,10 +280,13 @@ display=eglGetDisplay(EGL_DEFAULT_DISPLAY);
 eglInitialize(display,&major,&minor);
 eglChooseConfig(display,attribute_list,&eglconfig,1,&config_size);
 eglBindAPI(EGL_OPENGL_ES_API);
-EGLint anEglCtxAttribs2[]={
+const EGLint anEglCtxAttribs2[]={
 EGL_CONTEXT_CLIENT_VERSION,3,
+EGL_CONTEXT_MINOR_VERSION_KHR,0,
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
 EGL_CONTEXT_PRIORITY_LEVEL_IMG,EGL_CONTEXT_PRIORITY_REALTIME_NV,
+EGL_CONTEXT_FLAGS_KHR,EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE_BIT_KHR,
+EGL_CONTEXT_FLAGS_KHR,EGL_CONTEXT_OPENGL_ROBUST_ACCESS_BIT_KHR,
 EGL_NONE};
 contextegl=eglCreateContext(display,eglconfig,EGL_NO_CONTEXT,anEglCtxAttribs2);
 surface=eglCreateWindowSurface(display,eglconfig,NULL,attribut_list);
@@ -310,7 +315,7 @@ t1=steady_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
 portOpen=0;
-glClearColor(0.0f,1.0f,0.0f,1.0f);
+glClearColor(F0,F,F0,F);
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 emscripten_set_main_loop((void(*)())renderFrame,0,0);
 }
