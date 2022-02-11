@@ -85,7 +85,7 @@ static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 GLuint shader_program;
 GLfloat mouseX;
 GLfloat mouseY;
- GLint mouseLPressed=0;
+GLint mouseLPressed;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
@@ -377,10 +377,10 @@ gotWheel=1;
 return 0;
 }
 
+libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
 static void midd(int idx,int kll,int com){
 kl=kll;
-libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 outpu.open_port(idx);
 if(com==1){
 for (ll=48;ll<83;ll++){
