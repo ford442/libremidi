@@ -403,7 +403,8 @@ if(e->keyCode==114){kkey=30;k=57;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==115){kkey=40;k=56;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==116){kkey=50;k=55;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==117){kkey=68;k=54;midd(m1,k,2);/*noteOffGL(kkey);*/}
-if(e->keyCode==118){kkey=70;k=53;midd(m1,k,2);return true;/*noteOffGL(kkey);*/}
+// if(e->keyCode==118){kkey=70;k=53;midd(m1,k,2);/*noteOffGL(kkey);*/}
+if(e->key=="F7"){kkey=70;k=53;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==119){kkey=80;k=52;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==120){kkey=90;k=51;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==121){kkey=100;k=50;midd(m1,k,2);/*noteOffGL(kkey);*/}
@@ -448,7 +449,8 @@ if(e->keyCode==114){kkey=30;k=57;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==115){kkey=40;k=56;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==116){kkey=50;k=55;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==117){kkey=68;k=54;midd(m1,k,3);/*noteOnGL(kkey);*/}
-if(e->keyCode==118){kkey=70;k=53;midd(m1,k,3);/*noteOnGL(kkey);*/}
+// if(e->keyCode==118){kkey=70;k=53;midd(m1,k,3);/*noteOnGL(kkey);*/}
+if(e->key=="F7"){kkey=70;k=53;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==119){kkey=80;k=52;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==120){kkey=90;k=51;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==121){kkey=100;k=50;midd(m1,k,3);/*noteOnGL(kkey);*/}
