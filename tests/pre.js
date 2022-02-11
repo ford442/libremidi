@@ -1,5 +1,6 @@
 document.addEventListener('keypress',function(event){
-if(event.keycode==="118"){event.preventDefault();}
+if(event.keycode==="118"){event.preventDefault();
+event.stopPropagation? event.stopPropagation() : event.cancelBubble=true;}
 });
 
 document.addEventListener('keyup',function(event){
