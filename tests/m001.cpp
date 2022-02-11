@@ -136,6 +136,22 @@ vertices[(note*aab)+4]=vertices[33];
 vertices[(note*aab)+5]=vertices[333];
 }}*/
 
+libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
+
+static void midd(int idx,int kll,int com){
+kl=kll;
+if(com==1){
+for (ll=48;ll<83;ll++){
+outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
+nanosleep(&s_time,NULL);
+}}
+if(com==2){
+outpu.send_message(std::vector<unsigned char>{0x80,kl,100});
+}
+if(com==3){
+outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
+}}
+
 static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
@@ -377,22 +393,6 @@ gotWheel=1;
 return 0;
 }
 
-libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
-
-static void midd(int idx,int kll,int com){
-kl=kll;
-outpu.open_port(idx);
-if(com==1){
-for (ll=48;ll<83;ll++){
-outpu.send_message(std::vector<unsigned char>{0x80,ll,100});
-nanosleep(&s_time,NULL);
-}}
-if(com==2){
-outpu.send_message(std::vector<unsigned char>{0x80,kl,100});
-}
-if(com==3){
-outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
-}}
 
 static EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
@@ -501,6 +501,8 @@ libremidi::observer::callbacks callbacks{
 .output_added=[&](int idx,const std::string& id){
 std::cout<<"MIDI Output: "<<idx<<" - "<<id<<std::endl;
 m1=idx;
+  outpu.open_port(idx);
+
 },
 .output_removed=[&](int idx,const std::string& id){
 }};
