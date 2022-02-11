@@ -439,9 +439,9 @@ if(e->keyCode==117){kkey=68;k=54;midd(m1,k,2);}
 if(e->which==118){midd(m1,53,2);kkey=70;}
 if(e->keyCode==119){kkey=80;k=52;midd(m1,k,2);}
 if(e->keyCode==120){kkey=90;k=51;midd(m1,k,2);}
-if(e->keyCode==121){kkey=100;k=50;midd(m1,k,2)}
-if(e->keyCode==122){kkey=110;k=49;midd(m1,k,2)}
-if(e->keyCode==123){kkey=120;k=48;midd(m1,k,2)}
+if(e->keyCode==121){kkey=100;k=50;midd(m1,k,2);}
+if(e->keyCode==122){kkey=110;k=49;midd(m1,k,2);}
+if(e->keyCode==123){kkey=120;k=48;midd(m1,k,2);}
 if(e->keyCode==49){kkey=220;k=71;midd(m1,k,2);}
 if(e->keyCode==50){kkey=210;k=70;midd(m1,k,2);}
 if(e->keyCode==51){kkey=200;k=69;midd(m1,k,2);}
