@@ -396,7 +396,6 @@ outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
 
 static EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->repeat==true){return true;}
-return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 mouseLPressed=mouseLPressed-1;
 if(e->keyCode==112){kkey=10;k=59;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==113){kkey=20;k=58;midd(m1,k,2);/*noteOffGL(kkey);*/}
@@ -434,12 +433,12 @@ if(e->keyCode==82){kkey=362;k=80;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==69){kkey=367;k=81;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==87){kkey=372;k=82;midd(m1,k,2);/*noteOffGL(kkey);*/}
 if(e->keyCode==81){kkey=377;k=83;midd(m1,k,2);/*noteOffGL(kkey);*/}
+return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 
 static EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->repeat==true){return true;}
-return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 if(e->keyCode==32){midd(m1,0,1);}
 mouseLPressed=mouseLPressed+1;
 if(e->keyCode==112){kkey=10;k=59;midd(m1,k,3);/*noteOnGL(kkey);*/}
@@ -478,7 +477,7 @@ if(e->keyCode==82){kkey=362;k=80;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==69){kkey=367;k=81;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==87){kkey=372;k=82;midd(m1,k,3);/*noteOnGL(kkey);*/}
 if(e->keyCode==81){kkey=377;k=83;midd(m1,k,3);/*noteOnGL(kkey);*/}
- 
+return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 // printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",emscripten_event_type_to_string(eventType),e->key,emscripten_key_event_is_printable_character(e) ? "true" : "false", e->code,emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 }
 
