@@ -82,7 +82,7 @@ const char* vertex_shader_body=vertex_shader_body_gles3;
 const char* fragment_shader_header=fragment_shader_header_gles3;
 const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
-static GLuint shader_program;
+ GLuint shader_program;
 static GLfloat mouseX;
 static GLfloat mouseY;
 static GLint mouseLPressed;
