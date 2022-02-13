@@ -82,15 +82,15 @@ const char* vertex_shader_body=vertex_shader_body_gles3;
 const char* fragment_shader_header=fragment_shader_header_gles3;
 const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
-GLuint shader_program;
+static GLuint shader_program;
 static GLfloat mouseX;
 static GLfloat mouseY;
-GLint mouseLPressed;
-GLint portOpen;
+static GLint mouseLPressed;
+static GLint portOpen;
 GLfloat mouseRPressed;
-GLfloat viewportSizeX;
-GLfloat viewportSizeY;
-GLfloat  abstime;
+static GLfloat viewportSizeX;
+static GLfloat viewportSizeY;
+static GLfloat  abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
@@ -103,16 +103,16 @@ glShaderSource(shader,nsources,sources,srclens);
 glCompileShader(shader);
 return shader;
 }
-GLfloat F=1.0f;
-GLfloat F0=0.0f;
-GLfloat Fm1=-1.0f;
-GLfloat ink[]={F0,F,F0,F};
-GLfloat vertices[2160]={};
+static GLfloat F=1.0f;
+static GLfloat F0=0.0f;
+static GLfloat Fm1=-1.0f;
+static GLfloat ink[]={F0,F,F0,F};
+static GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
 GLfloat white;
 GLfloat x,y;
-GLfloat  siz,outTimeA;
+GLfloat siz,outTimeA;
 int a;
 float b;
 int m1,m2;
@@ -122,12 +122,12 @@ int idx;
 int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
-static int kkey=0;
+static int kkey;
 int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
-
-libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
+GLint *glkey=&kkey;
+static libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
 void midd(int idx,int kll,int com){
 kl=kll;
@@ -166,12 +166,12 @@ white=abstime-(round(abstime/1000)*1000);
 white=1000/white;
 if(mouseLPressed>=1){
 for(aa=0;aa<kkey;aa++){
-vertices[(kkey*aa)+3]=vertices[3]+0.2f;
-vertices[(kkey*aa)+4]=vertices[100]+white;
-vertices[(kkey*aa)+5]=vertices[33]+(0.888f*(kkey/1000));
-vertices[(kkey*aa)+7]=vertices[33]+(0.777f*(kkey/1000));
+vertices[(*glkey*aa)+3]=vertices[3]+0.2f;
+vertices[(*glkey*aa)+4]=vertices[100]+white;
+vertices[(*glkey*aa)+5]=vertices[33]+(0.888f*(*glkey/1000));
+vertices[(*glkey*aa)+7]=vertices[33]+(0.777f*(*glkey/1000));
 }
-vertices[(kkey*aa)+6]=white;
+vertices[(*glkey*aa)+6]=white;
 ink[2]=white+0.1f;
 siz=0.88;
 vertices[7]=1.0f-mouseX;
