@@ -82,17 +82,17 @@ const char* vertex_shader_body=vertex_shader_body_gles3;
 const char* fragment_shader_header=fragment_shader_header_gles3;
 const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
- GLuint shader_program;
+GLuint shader_program;
 static GLfloat mouseX;
 static GLfloat mouseY;
 static GLint mouseLPressed;
-static GLint portOpen;
+GLint portOpen;
 GLfloat mouseRPressed;
-static GLfloat viewportSizeX;
-static GLfloat viewportSizeY;
-static GLfloat  abstime;
+GLfloat viewportSizeX;
+GLfloat viewportSizeY;
+static GLfloat abstime;
 
-static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
+GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
 GLsizei i,srclens[nsources];
 for (i=0;i<nsources;++i){
@@ -103,11 +103,11 @@ glShaderSource(shader,nsources,sources,srclens);
 glCompileShader(shader);
 return shader;
 }
- GLfloat F=1.0f;
- GLfloat F0=0.0f;
- GLfloat Fm1=-1.0f;
- GLfloat ink[]={F0,F,F0,F};
- GLfloat vertices[2160]={};
+GLfloat F=1.0f;
+GLfloat F0=0.0f;
+GLfloat Fm1=-1.0f;
+GLfloat ink[]={F0,F,F0,F};
+GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
 GLfloat white;
@@ -127,7 +127,7 @@ int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
 GLint *glkey=&kkey;
-static libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
+libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 
 void midd(int idx,int kll,int com){
 kl=kll;
