@@ -26,8 +26,8 @@ using namespace std::chrono;
 using namespace std::literals;
 using std::string;
 struct timespec s_time={0,10000000};
-static high_resolution_clock::time_point t1;
-static high_resolution_clock::time_point t2;
+ high_resolution_clock::time_point t1;
+ high_resolution_clock::time_point t2;
 
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
@@ -75,7 +75,7 @@ EGLDisplay display;
 EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
-static EMSCRIPTEN_RESULT ret;
+ EMSCRIPTEN_RESULT ret;
 
 static const char* common_shader_header=common_shader_header_gles3;
 static const char* vertex_shader_body=vertex_shader_body_gles3;
@@ -86,7 +86,7 @@ GLuint shader_program;
 static GLfloat mouseX;
 static GLfloat mouseY;
 static GLint mouseLPressed;
-static GLint portOpen;
+ GLint portOpen;
 GLfloat mouseRPressed;
 static GLfloat viewportSizeX;
 static GLfloat viewportSizeY;
@@ -116,14 +116,14 @@ long double siz,outTimeA;
 int a;
 float b;
 GLint m1,m2;
-static unsigned char kl=0;
+static unsigned char kl;
 unsigned char ll;
 static int idx;
 int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
-static int kkey=0;
-int k=0;
+int kkey;
+int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
 
