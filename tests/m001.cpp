@@ -26,8 +26,8 @@ using namespace std::chrono;
 using namespace std::literals;
 using std::string;
 struct timespec s_time={0,10000000};
-high_resolution_clock::time_point t1;
-high_resolution_clock::time_point t2;
+static high_resolution_clock::time_point t1;
+static high_resolution_clock::time_point t2;
 
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
@@ -83,14 +83,14 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-GLfloat mouseX;
-GLfloat mouseY;
+static GLfloat mouseX;
+static GLfloat mouseY;
 static GLint mouseLPressed;
-GLint portOpen;
+static GLint portOpen;
 GLfloat mouseRPressed;
 static GLfloat viewportSizeX;
 static GLfloat viewportSizeY;
-GLfloat abstime;
+static GLfloat abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
@@ -103,9 +103,9 @@ glShaderSource(shader,nsources,sources,srclens);
 glCompileShader(shader);
 return shader;
 }
-GLfloat F=1.0f;
-GLfloat F0=0.0f;
-GLfloat Fm1=-1.0f;
+static GLfloat F=1.0f;
+static GLfloat F0=0.0f;
+static GLfloat Fm1=-1.0f;
 GLfloat ink[]={F0,F,F0,F};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
@@ -116,14 +116,14 @@ long double siz,outTimeA;
 int a;
 float b;
 GLint m1,m2;
- static unsigned char kl;
+static unsigned char kl=0;
 unsigned char ll;
-
-int ii,idx;
+static int idx;
+int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
-int kkey;
-int k;
+static int kkey=0;
+int k=0;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
 
@@ -155,7 +155,7 @@ void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
-duration<double> time_spana=duration_cast<duration<double>>(t2 - t1);
+duration<double>time_spana=duration_cast<duration<double>>(t2 - t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
 mouseX=x/viewportSizeX;
@@ -168,7 +168,8 @@ if(mouseLPressed>=1){
 for(aa=0;aa<kkey;aa++){
 vertices[(kkey*aa)+3]=vertices[3]+0.2f;
 vertices[(kkey*aa)+4]=vertices[100]+white;
-vertices[(kkey*aa)+5]=vertices[33]+0.2f;
+vertices[(kkey*aa)+5]=vertices[33]+(0.888f*(kkey/1000));
+vertices[(kkey*aa)+7]=vertices[33]+(0.888f*(kkey/1000));
 }
 vertices[(kkey*aa)+6]=white;
 ink[2]=white+0.1f;
