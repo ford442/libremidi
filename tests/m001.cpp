@@ -85,7 +85,7 @@ static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 GLuint shader_program;
 GLfloat mouseX;
 GLfloat mouseY;
-GLint mouseLPressed;
+static GLint mouseLPressed;
 GLint portOpen;
 GLfloat mouseRPressed;
 static GLfloat viewportSizeX;
@@ -116,8 +116,7 @@ long double siz,outTimeA;
 int a;
 float b;
 GLint m1,m2;
-// static unsigned char kl;
-unsigned char kl;
+ static unsigned char kl;
 unsigned char ll;
 
 int ii,idx;
