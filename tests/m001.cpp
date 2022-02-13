@@ -115,10 +115,10 @@ GLfloat x,y;
 GLfloat siz,outTimeA;
 int a;
 float b;
-int m1,m2;
+static int m1,m2;
 static unsigned char kl;
 unsigned char ll;
-int idx;
+static int idx;
 int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
@@ -126,11 +126,11 @@ static int kkey;
 int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
-GLint *glkey=&kkey;
+static GLint *glkey=&kkey;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 static int h,w;
 
-void midd(int idx,int kll,int com){
+static void midd(int idx,int kll,int com){
 kl=kll;
 if(portOpen==0){
 outpu.open_port(idx);
@@ -152,7 +152,7 @@ nanosleep(&s_time,NULL);
 mouseLPressed=0;
 }}
 
-void renderFrame(){
+static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
@@ -250,7 +250,7 @@ EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
 
-void strt(){
+static void strt(){
 h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
 w=h;
 emscripten_cancel_main_loop();
@@ -353,7 +353,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
-EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
+static EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 // printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
@@ -381,7 +381,7 @@ gotWheel=1;
 return 0;
 }
 
-EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+static EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->repeat==true){
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
@@ -441,7 +441,7 @@ return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->k
 return EM_TRUE;
 }
 
-EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+static EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->keyCode==112){kkey=kkey-10;k=59;midd(m1,k,2);
 }
 if(e->keyCode==113){kkey=kkey-20;k=58;midd(m1,k,2);
