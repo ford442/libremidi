@@ -103,11 +103,11 @@ glShaderSource(shader,nsources,sources,srclens);
 glCompileShader(shader);
 return shader;
 }
-static GLfloat F=1.0f;
-static GLfloat F0=0.0f;
-static GLfloat Fm1=-1.0f;
-static GLfloat ink[]={F0,F,F0,F};
-static GLfloat vertices[2160]={};
+ GLfloat F=1.0f;
+ GLfloat F0=0.0f;
+ GLfloat Fm1=-1.0f;
+ GLfloat ink[]={F0,F,F0,F};
+ GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
 GLfloat white;
