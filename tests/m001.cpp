@@ -90,7 +90,7 @@ GLint portOpen;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
-long abstime;
+long double abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
@@ -111,8 +111,8 @@ GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
 float white;
-static float x,y;
-long siz,outTimeA;
+float x,y;
+long double siz,outTimeA;
 int a;
 float b;
 int m1,m2;
