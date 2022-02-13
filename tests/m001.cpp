@@ -75,7 +75,7 @@ EGLDisplay display;
 EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
- EMSCRIPTEN_RESULT ret;
+static EMSCRIPTEN_RESULT ret;
 
 static const char* common_shader_header=common_shader_header_gles3;
 static const char* vertex_shader_body=vertex_shader_body_gles3;
@@ -90,7 +90,7 @@ static GLint mouseLPressed;
 GLfloat mouseRPressed;
 static GLfloat viewportSizeX;
 static GLfloat viewportSizeY;
-static GLfloat abstime;
+ GLfloat abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
@@ -103,9 +103,9 @@ glShaderSource(shader,nsources,sources,srclens);
 glCompileShader(shader);
 return shader;
 }
-static GLfloat F=1.0f;
-static GLfloat F0=0.0f;
-static GLfloat Fm1=-1.0f;
+ GLfloat F=1.0f;
+ GLfloat F0=0.0f;
+ GLfloat Fm1=-1.0f;
 GLfloat ink[]={F0,F,F0,F};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
@@ -118,11 +118,11 @@ float b;
 GLint m1,m2;
 static unsigned char kl;
 unsigned char ll;
-static int idx;
+ int idx;
 int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
-int kkey;
+static int kkey;
 int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
