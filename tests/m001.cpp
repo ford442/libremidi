@@ -128,6 +128,7 @@ int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel
 int aa;
 GLint *glkey=&kkey;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
+static int h,w;
 
 void midd(int idx,int kll,int com){
 kl=kll;
@@ -248,8 +249,6 @@ EGL_STENCIL_SIZE,8,
 EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
-
-int h,w;
 
 void strt(){
 h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
