@@ -107,7 +107,7 @@ float F=1.0f;
 float F0=0.0f;
 float Fm1=-1.0f;
 float ink[]={F0,F,F0,F};
-float vertices[2160]={};
+GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
 float white;
