@@ -26,8 +26,8 @@ using namespace std::chrono;
 using namespace std::literals;
 using std::string;
 struct timespec s_time={0,10000000};
- high_resolution_clock::time_point t1;
- high_resolution_clock::time_point t2;
+high_resolution_clock::time_point t1;
+high_resolution_clock::time_point t2;
 
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
@@ -56,19 +56,19 @@ return result;
 return NULL;
 }
 
-static const char common_shader_header_gles3[]=
+const char common_shader_header_gles3[]=
 "#version 300 es \n"
 "precision highp float;precision highp int; \n";
 
-static const char vertex_shader_body_gles3[]=
+const char vertex_shader_body_gles3[]=
 "layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
 "out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
 
-static const char fragment_shader_header_gles3[]=
+const char fragment_shader_header_gles3[]=
 "in highp vec3 ourColor; \n"
 "out highp vec4 FragColor; \n";
 
-static const char fragment_shader_footer_gles3[]=
+const char fragment_shader_footer_gles3[]=
 " \n\0";
 
 EGLDisplay display;
@@ -77,20 +77,20 @@ EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
 static EMSCRIPTEN_RESULT ret;
 
-static const char* common_shader_header=common_shader_header_gles3;
-static const char* vertex_shader_body=vertex_shader_body_gles3;
-static const char* fragment_shader_header=fragment_shader_header_gles3;
-static const char* fragment_shader_footer=fragment_shader_footer_gles3;
+const char* common_shader_header=common_shader_header_gles3;
+const char* vertex_shader_body=vertex_shader_body_gles3;
+const char* fragment_shader_header=fragment_shader_header_gles3;
+const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
 static GLfloat mouseX;
 static GLfloat mouseY;
- GLint mouseLPressed;
- GLint portOpen;
+GLint mouseLPressed;
+GLint portOpen;
 GLfloat mouseRPressed;
-static GLfloat viewportSizeX;
-static GLfloat viewportSizeY;
- GLfloat abstime;
+GLfloat viewportSizeX;
+GLfloat viewportSizeY;
+long abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
@@ -103,22 +103,22 @@ glShaderSource(shader,nsources,sources,srclens);
 glCompileShader(shader);
 return shader;
 }
- GLfloat F=1.0f;
- GLfloat F0=0.0f;
- GLfloat Fm1=-1.0f;
-GLfloat ink[]={F0,F,F0,F};
-GLfloat vertices[2160]={};
+float F=1.0f;
+float F0=0.0f;
+float Fm1=-1.0f;
+float ink[]={F0,F,F0,F};
+float vertices[2160]={};
 GLuint VBO,VAO;
 // long double white;
- GLfloat white;
+float white;
 static float x,y;
-long double siz,outTimeA;
+long siz,outTimeA;
 int a;
 float b;
-GLint m1,m2;
+int m1,m2;
 static unsigned char kl;
 unsigned char ll;
- int idx;
+int idx;
 int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
@@ -136,7 +136,7 @@ outpu.open_port(idx);
 portOpen=1;
 }
 if(com==3){
-outpu.send_message(std::vector<unsigned char>{0x90,kl,100});
+outpu.send_message(std::vector<unsigned char>{0x90,kl,127});
 mouseLPressed=mouseLPressed+1;
 }
 if(com==2){
@@ -249,7 +249,7 @@ EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
 
-static int h,w;
+int h,w;
 
 void strt(){
 h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
@@ -292,7 +292,6 @@ contextegl=eglCreateContext(display,eglconfig,EGL_NO_CONTEXT,anEglCtxAttribs2);
 surface=eglCreateWindowSurface(display,eglconfig,NULL,attribut_list);
 eglMakeCurrent(display,surface,surface,contextegl);
 emscripten_webgl_make_context_current(ctx);
-
 glHint(GL_FRAGMENT_SHADER_DERIVATIVE_HINT,GL_NICEST);
 sources[0]=common_shader_header;
 sources[1]=vertex_shader_body;
@@ -408,24 +407,24 @@ if(e->keyCode==119){kkey=kkey+80;midd(m1,52,3);
 }
 if(e->keyCode==120){kkey=kkey+90;midd(m1,51,3);
 }
-if(e->keyCode==121){kkey=kkey+100;k=50;midd(m1,k,3);
+if(e->keyCode==121){kkey=kkey+100;k=50;midd(m1,50,3);
 }
-if(e->keyCode==122){kkey=kkey+110;k=49;midd(m1,k,3);
+if(e->keyCode==122){kkey=kkey+110;k=49;midd(m1,49,3);
 }
-if(e->keyCode==123){kkey=kkey+120;k=48;midd(m1,k,3);
+if(e->keyCode==123){kkey=kkey+120;k=48;midd(m1,48,3);
 }
-if(e->keyCode==49){kkey=kkey+220;k=71;midd(m1,k,3);}
-if(e->keyCode==50){kkey=kkey+210;k=70;midd(m1,k,3);}
-if(e->keyCode==51){kkey=kkey+200;k=69;midd(m1,k,3);}
-if(e->keyCode==52){kkey=kkey+190;k=68;midd(m1,k,3);}
-if(e->keyCode==53){kkey=kkey+180;k=67;midd(m1,k,3);}
-if(e->keyCode==54){kkey=kkey+170;k=66;midd(m1,k,3);}
-if(e->keyCode==55){kkey=kkey+150;k=65;midd(m1,k,3);}
-if(e->keyCode==56){kkey=kkey+140;k=64;midd(m1,k,3);}
-if(e->keyCode==57){kkey=kkey+130;k=63;midd(m1,k,3);}
-if(e->keyCode==48){kkey=kkey+117;k=62;midd(m1,k,3);}
-if(e->keyCode==189){kkey=kkey+107;k=61;midd(m1,k,3);}
-if(e->keyCode==187){kkey=kkey+97;k=60;midd(m1,k,3);}
+if(e->keyCode==49){kkey=kkey+220;midd(m1,71,3);}
+if(e->keyCode==50){kkey=kkey+210;midd(m1,70,3);}
+if(e->keyCode==51){kkey=kkey+200;midd(m1,69,3);}
+if(e->keyCode==52){kkey=kkey+190;midd(m1,68,3);}
+if(e->keyCode==53){kkey=kkey+180;midd(m1,67,3);}
+if(e->keyCode==54){kkey=kkey+170;midd(m1,66,3);}
+if(e->keyCode==55){kkey=kkey+150;midd(m1,65,3);}
+if(e->keyCode==56){kkey=kkey+140;midd(m1,64,3);}
+if(e->keyCode==57){kkey=kkey+130;midd(m1,63,3);}
+if(e->keyCode==48){kkey=kkey+117;midd(m1,62,3);}
+if(e->keyCode==189){kkey=kkey+107;midd(m1,61,3);}
+if(e->keyCode==187){kkey=kkey+97;midd(m1,60,3);}
 if(e->keyCode==221){kkey=kkey+111;k=72;midd(m1,k,3);}
 if(e->keyCode==219){kkey=kkey+222;k=73;midd(m1,k,3);}
 if(e->keyCode==80){kkey=kkey+333;k=74;midd(m1,k,3);}
