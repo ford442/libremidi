@@ -10,7 +10,6 @@
 #include <GLES3/gl32.h>
 #define __gl2_h_
 #include <GLES2/gl2ext.h>
-#include <vector>
 #include <iostream>
 #include <algorithm>
 #include <cstring>
@@ -72,10 +71,10 @@ static const char fragment_shader_header_gles3[]=
 static const char fragment_shader_footer_gles3[]=
 " \n\0";
 
-EGLDisplay display;
-EGLContext contextegl;
-EGLSurface surface;
-EmscriptenWebGLContextAttributes attr;
+static EGLDisplay display;
+static EGLContext contextegl;
+static EGLSurface surface;
+static EmscriptenWebGLContextAttributes attr;
 
 static const char* common_shader_header=common_shader_header_gles3;
 static const char* vertex_shader_body=vertex_shader_body_gles3;
@@ -83,13 +82,13 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-GLfloat mouseX=0.0f;
-GLfloat mouseY=0.0f;
-GLfloat mouseLPressed=0.0f;
-GLfloat mouseRPressed=0.0f;
-GLfloat viewportSizeX=0.0f;
-GLfloat viewportSizeY=0.0f;
-GLfloat abstime;
+static GLfloat mouseX=0.0f;
+static GLfloat mouseY=0.0f;
+static GLfloat mouseLPressed=0.0f;
+static GLfloat mouseRPressed=0.0f;
+static GLfloat viewportSizeX=0.0f;
+static GLfloat viewportSizeY=0.0f;
+static GLfloat abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
@@ -106,10 +105,10 @@ return shader;
 GLfloat ink[]={0.0f,1.0f,0.0f,1.0f};
 GLfloat vertices[2160]={};
 GLuint VBO,VAO;
-long double white;
+float white;
 // GLfloat white;
-GLfloat x,y;
-long double siz,outTimeA;
+static GLfloat x,y;
+float siz,outTimeA;
 int a;
 float b;
 int m1,m2;
@@ -277,6 +276,8 @@ glLinkProgram(shader_program);
 glDeleteShader(vtx);
 glDeleteShader(frag);
 glReleaseShaderCompiler();
+glBindAttribLocation(shader_program,0,"aPos");
+glBindAttribLocation(shader_program,1,"aColor");
 glUseProgram(shader_program);
 t1=steady_clock::now();
 viewportSizeX=w;
