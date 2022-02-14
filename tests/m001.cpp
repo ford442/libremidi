@@ -77,19 +77,20 @@ EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
 static EMSCRIPTEN_RESULT ret;
 
-const char* common_shader_header=common_shader_header_gles3;
-const char* vertex_shader_body=vertex_shader_body_gles3;
-const char* fragment_shader_header=fragment_shader_header_gles3;
-const char* fragment_shader_footer=fragment_shader_footer_gles3;
+static const char* common_shader_header=common_shader_header_gles3;
+static const char* vertex_shader_body=vertex_shader_body_gles3;
+static const char* fragment_shader_header=fragment_shader_header_gles3;
+static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
+EGLint attrib_position,attrib_color;
 static GLfloat mouseX;
 static GLfloat mouseY;
 static GLint mouseLPressed;
-GLint portOpen;
-GLfloat mouseRPressed;
-GLfloat viewportSizeX;
-GLfloat viewportSizeY;
+static GLint portOpen;
+static GLfloat mouseRPressed;
+static GLfloat viewportSizeX;
+static GLfloat viewportSizeY;
 static GLfloat abstime;
 
 GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
@@ -123,7 +124,7 @@ int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 static int kkey;
-int k;
+static int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
 static GLint *glkey=&kkey;
@@ -213,26 +214,16 @@ ink[2]=white;
 ink[0]=white/100;
 }
 glClearColor(ink[0],ink[1],ink[2],ink[3]);
-glGenVertexArrays(1,&VAO);
-glGenBuffers(1,&VBO);
-glBindVertexArray(VAO);
-glBindBuffer(GL_ARRAY_BUFFER,VBO);
-glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)0);
-glEnableVertexAttribArray(0);
-glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)(3*sizeof(float)));
-glEnableVertexAttribArray(1);
-glUseProgram(shader_program);
 glDrawArrays(GL_TRIANGLES,0,360);
 eglSwapBuffers(display,surface);
 }
 
-const EGLint attribut_list[]={
+static const EGLint attribut_list[]={
 EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
 EGL_NONE
 };
 
-const EGLint attribute_list[]={
+static const EGLint attribute_list[]={
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
 EGL_CONTEXT_OPENGL_PROFILE_MASK_KHR,EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT_KHR,
 EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
@@ -303,11 +294,24 @@ frag=compile_shader(GL_FRAGMENT_SHADER,4,sources);
 shader_program=glCreateProgram();
 glAttachShader(shader_program,vtx);
 glAttachShader(shader_program,frag);
+glBindAttribLocation(shader_program,0,"aPos");
+glBindAttribLocation(shader_program,1,"aColor");
+glGenVertexArrays(1,&VAO);
+glGenBuffers(1,&VBO);
+glBindVertexArray(VAO);
+glBindBuffer(GL_ARRAY_BUFFER,VBO);
+glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+glUseProgram(shader_program);
+attrib_position=glGetAttribLocation(shader_program,"aPos");
+attrib_color=glGetAttribLocation(shader_program,"aColor");
+glEnableVertexAttribArray(attrib_position);
+glVertexAttribPointer(attrib_position,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)0);
+glEnableVertexAttribArray(attrib_color);
+glVertexAttribPointer(attrib_color,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)(3*sizeof(float)));
 glLinkProgram(shader_program);
 glDeleteShader(vtx);
 glDeleteShader(frag);
 glReleaseShaderCompiler();
-glUseProgram(shader_program);
 t1=steady_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
