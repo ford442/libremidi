@@ -125,7 +125,7 @@ static unsigned char k;
 
 static EM_BOOL gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 static unsigned short aa;
-static unsigned short *glkey=&kkey;
+static short *glkey=&kkey;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 static int h,w;
 
