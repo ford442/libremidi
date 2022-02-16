@@ -83,7 +83,7 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-static EGLint attrib_position,attrib_color;
+EGLint attrib_position,attrib_color;
 static GLfloat mouseX;
 static GLfloat mouseY;
 static unsigned char mouseLPressed;
@@ -122,11 +122,12 @@ GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 static unsigned short kkey;
 static unsigned char k;
-EM_BOOL gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
-unsigned short aa;
+
+static EM_BOOL gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
+static unsigned short aa;
 static unsigned short *glkey=&kkey;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
-static unsigned short h,w;
+static int h,w;
 
 static void midd(int idx,unsigned char kll,unsigned char com){
 if(portOpen==0){
