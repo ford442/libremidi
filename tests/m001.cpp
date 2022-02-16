@@ -83,14 +83,14 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-GLfloat mouseX;
-GLfloat mouseY;
-GLint mouseLPressed;
-GLint portOpen;
+static GLfloat mouseX;
+static GLfloat mouseY;
+static GLint mouseLPressed;
+static GLint portOpen;
 GLfloat mouseRPressed;
-GLfloat viewportSizeX;
-GLfloat viewportSizeY;
-GLfloat abstime;
+static GLfloat viewportSizeX;
+static GLfloat viewportSizeY;
+static GLfloat abstime;
 GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
 GLsizei i,srclens[nsources];
