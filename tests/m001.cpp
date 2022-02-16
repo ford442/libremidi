@@ -83,11 +83,11 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-EGLint attrib_position,attrib_color;
+static EGLint attrib_position,attrib_color;
 static GLfloat mouseX;
 static GLfloat mouseY;
-static unsigned char mouseLPressed;
-static EM_BOOL portOpen;
+static GLint mouseLPressed;
+static GLint portOpen;
 static GLfloat viewportSizeX;
 static GLfloat viewportSizeY;
 static GLfloat abstime;
@@ -117,10 +117,10 @@ static short a,b;
 static int m1,m2;
 static unsigned char ll;
 static int idx;
-static unsigned short ii;
+static int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
-static unsigned short kkey;
+static short kkey;
 static unsigned char k;
 
 static EM_BOOL gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
