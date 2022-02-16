@@ -26,8 +26,8 @@ using namespace std::chrono;
 using namespace std::literals;
 using std::string;
 struct timespec s_time={0,10000000};
-static high_resolution_clock::time_point t1;
-static high_resolution_clock::time_point t2;
+high_resolution_clock::time_point t1;
+high_resolution_clock::time_point t2;
 
 static const char *read_file_into_str(const char *filename){
 char *result=NULL;
@@ -56,41 +56,40 @@ return result;
 return NULL;
 }
 
-static const char common_shader_header_gles3[]=
+const char common_shader_header_gles3[]=
 "#version 300 es \n"
 "precision highp float;precision highp int; \n";
 
-static const char vertex_shader_body_gles3[]=
+const char vertex_shader_body_gles3[]=
 "layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
 "out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
 
-static const char fragment_shader_header_gles3[]=
+const char fragment_shader_header_gles3[]=
 "in highp vec3 ourColor; \n"
 "out highp vec4 FragColor; \n";
 
-static const char fragment_shader_footer_gles3[]=
+const char fragment_shader_footer_gles3[]=
 " \n\0";
 
-static EGLDisplay display;
-static EGLContext contextegl;
-static EGLSurface surface;
-static EmscriptenWebGLContextAttributes attr;
+EGLDisplay display;
+EGLContext contextegl;
+EGLSurface surface;
+EmscriptenWebGLContextAttributes attr;
 static EMSCRIPTEN_RESULT ret;
 
-static const char* common_shader_header=common_shader_header_gles3;
-static const char* vertex_shader_body=vertex_shader_body_gles3;
-static const char* fragment_shader_header=fragment_shader_header_gles3;
-static const char* fragment_shader_footer=fragment_shader_footer_gles3;
+const char* common_shader_header=common_shader_header_gles3;
+const char* vertex_shader_body=vertex_shader_body_gles3;
+const char* fragment_shader_header=fragment_shader_header_gles3;
+const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-static EGLint attrib_position,attrib_color;
 static GLfloat mouseX;
 static GLfloat mouseY;
 static GLint mouseLPressed;
-static GLint portOpen;
-static GLfloat mouseRPressed;
-static GLfloat viewportSizeX;
-static GLfloat viewportSizeY;
+GLint portOpen;
+GLfloat mouseRPressed;
+GLfloat viewportSizeX;
+GLfloat viewportSizeY;
 static GLfloat abstime;
 
 GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
@@ -124,7 +123,7 @@ int ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 static int kkey;
-static int k;
+int k;
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 int aa;
 static GLint *glkey=&kkey;
@@ -214,16 +213,26 @@ ink[2]=white;
 ink[0]=white/100;
 }
 glClearColor(ink[0],ink[1],ink[2],ink[3]);
+glGenVertexArrays(1,&VAO);
+glGenBuffers(1,&VBO);
+glBindVertexArray(VAO);
+glBindBuffer(GL_ARRAY_BUFFER,VBO);
+glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)0);
+glEnableVertexAttribArray(0);
+glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)(3*sizeof(float)));
+glEnableVertexAttribArray(1);
+glUseProgram(shader_program);
 glDrawArrays(GL_TRIANGLES,0,360);
 eglSwapBuffers(display,surface);
 }
 
-static const EGLint attribut_list[]={
-// EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
+const EGLint attribut_list[]={
+EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
 EGL_NONE
 };
 
-static const EGLint attribute_list[]={
+const EGLint attribute_list[]={
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
 EGL_CONTEXT_OPENGL_PROFILE_MASK_KHR,EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT_KHR,
 EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
@@ -294,35 +303,15 @@ frag=compile_shader(GL_FRAGMENT_SHADER,4,sources);
 shader_program=glCreateProgram();
 glAttachShader(shader_program,vtx);
 glAttachShader(shader_program,frag);
-glBindAttribLocation(shader_program,0,"aPos");
-glBindAttribLocation(shader_program,1,"aColor");
 glLinkProgram(shader_program);
 glDeleteShader(vtx);
 glDeleteShader(frag);
 glReleaseShaderCompiler();
 glUseProgram(shader_program);
-glGenVertexArrays(1,&VAO);
-glGenBuffers(1,&VBO);
-glBindVertexArray(VAO);
-glBindBuffer(GL_ARRAY_BUFFER,VBO);
-glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-attrib_position=glGetAttribLocation(shader_program,"aPos");
-attrib_color=glGetAttribLocation(shader_program,"aColor");
-glEnableVertexAttribArray(attrib_position);
-glVertexAttribPointer(attrib_position,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)0);
-glEnableVertexAttribArray(attrib_color);
-glVertexAttribPointer(attrib_color,3,GL_FLOAT,GL_FALSE,6*sizeof(float),(void*)(3*sizeof(float)));
-
 t1=steady_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
 portOpen=0;
-glEnable(GL_DITHER);
-glEnable(GL_BLEND);
-glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
-glBlendFuncSeparate(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
-glEnable(GL_DEPTH_TEST);
-glDepthFunc(GL_LESS);
 glClearColor(F0,F,F0,F);
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 emscripten_set_main_loop((void(*)())renderFrame,0,0);
