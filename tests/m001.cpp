@@ -56,42 +56,41 @@ return result;
 return NULL;
 }
 
-const char common_shader_header_gles3[]=
+static const char common_shader_header_gles3[]=
 "#version 300 es \n"
 "precision highp float;precision highp int; \n";
 
-const char vertex_shader_body_gles3[]=
+static const char vertex_shader_body_gles3[]=
 "layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
 "out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
 
-const char fragment_shader_header_gles3[]=
+static const char fragment_shader_header_gles3[]=
 "in highp vec3 ourColor; \n"
 "out highp vec4 FragColor; \n";
 
-const char fragment_shader_footer_gles3[]=
+static const char fragment_shader_footer_gles3[]=
 " \n\0";
 
 EGLDisplay display;
 EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
-static EMSCRIPTEN_RESULT ret;
+EMSCRIPTEN_RESULT ret;
 
-const char* common_shader_header=common_shader_header_gles3;
-const char* vertex_shader_body=vertex_shader_body_gles3;
-const char* fragment_shader_header=fragment_shader_header_gles3;
-const char* fragment_shader_footer=fragment_shader_footer_gles3;
+static const char* common_shader_header=common_shader_header_gles3;
+static const char* vertex_shader_body=vertex_shader_body_gles3;
+static const char* fragment_shader_header=fragment_shader_header_gles3;
+static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-static GLfloat mouseX;
-static GLfloat mouseY;
-static GLint mouseLPressed;
+GLfloat mouseX;
+GLfloat mouseY;
+GLint mouseLPressed;
 GLint portOpen;
 GLfloat mouseRPressed;
 GLfloat viewportSizeX;
 GLfloat viewportSizeY;
-static GLfloat abstime;
-
+GLfloat abstime;
 GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
 GLsizei i,srclens[nsources];
@@ -113,24 +112,24 @@ GLuint VBO,VAO;
 GLfloat white;
 GLfloat x,y;
 GLfloat siz,outTimeA;
-int a;
+unsigned short a;
 float b;
-static int m1,m2;
-static unsigned char kl;
+int m1,m2;
+unsigned char kl;
 unsigned char ll;
-static int idx;
-int ii;
+int idx;
+unsigned short ii;
 GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
-static int kkey;
-int k;
-int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
-int aa;
-static GLint *glkey=&kkey;
+unsigned short kkey;
+unsigned char k;
+EM_BOOL gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
+unsigned short aa;
+unsigned short *glkey=&kkey;
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI,"Emscripten"};
 static int h,w;
 
-static void midd(int idx,int kll,int com){
+void midd(int idx,int kll,int com){
 kl=kll;
 if(portOpen==0){
 outpu.open_port(idx);
@@ -152,7 +151,7 @@ nanosleep(&s_time,NULL);
 mouseLPressed=0;
 }}
 
-static void renderFrame(){
+void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 siz=0.33;
 t2=steady_clock::now();
@@ -227,12 +226,12 @@ glDrawArrays(GL_TRIANGLES,0,360);
 eglSwapBuffers(display,surface);
 }
 
-const EGLint attribut_list[]={
+static const EGLint attribut_list[]={
 EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
 EGL_NONE
 };
 
-const EGLint attribute_list[]={
+static const EGLint attribute_list[]={
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
 EGL_CONTEXT_OPENGL_PROFILE_MASK_KHR,EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT_KHR,
 EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
@@ -250,7 +249,7 @@ EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
 
-static void strt(){
+void strt(){
 h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
 w=h;
 emscripten_cancel_main_loop();
@@ -258,8 +257,8 @@ for(ii=0;ii<2161;ii++){
 vertices[ii]=0.0f;
 }
 string program_source=read_file_into_str(fileloc);
-const char* default_fragment_shader=program_source.c_str();
-const char *sources[4];
+static const char* default_fragment_shader=program_source.c_str();
+static const char *sources[4];
 emscripten_webgl_init_context_attributes(&attr);
 attr.alpha=EM_TRUE;
 attr.stencil=EM_TRUE;
@@ -279,7 +278,7 @@ display=eglGetDisplay(EGL_DEFAULT_DISPLAY);
 eglInitialize(display,&major,&minor);
 eglChooseConfig(display,attribute_list,&eglconfig,1,&config_size);
 eglBindAPI(EGL_OPENGL_ES_API);
-const EGLint anEglCtxAttribs2[]={
+static const EGLint anEglCtxAttribs2[]={
 EGL_CONTEXT_CLIENT_VERSION,3,
 EGL_CONTEXT_MINOR_VERSION_KHR,0,
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
@@ -353,7 +352,7 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
 
-static EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
+EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 // printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
 if(e->screenX!=0&&e->screenY!=0&&e->clientX!=0&&e->clientY!=0&&e->targetX!=0&&e->targetY!=0){
 if(eventType==EMSCRIPTEN_EVENT_CLICK)gotClick=1;
@@ -381,7 +380,7 @@ gotWheel=1;
 return 0;
 }
 
-static EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
 if(e->repeat==true){
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
@@ -441,7 +440,7 @@ return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->k
 return EM_TRUE;
 }
 
-static EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
+EM_BOOL up_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 if(e->keyCode==112){kkey=kkey-10;k=59;midd(m1,k,2);
 }
 if(e->keyCode==113){kkey=kkey-20;k=58;midd(m1,k,2);
