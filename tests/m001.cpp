@@ -118,7 +118,7 @@ static int m1,m2;
 static unsigned char ll;
 static int idx;
 static unsigned short ii;
-static GLuint vtx,frag;
+GLuint vtx,frag;
 char *fileloc="/shader/shader1.glsl";
 static unsigned short kkey;
 static unsigned char k;
