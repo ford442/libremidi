@@ -21,6 +21,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <memory>
+#include <unistd.h>
+#include <chrono>
 
 using namespace std;
 using namespace std::chrono;
@@ -123,7 +125,7 @@ static void renderFrame(){
 glClear(GL_COLOR_BUFFER_BIT);
 siz=0.42;
 SDL_PumpEvents();
-t2=steady_clock::now();
+t2=high_resolution_clock::now();
 duration<double> time_spana=duration_cast<duration<double>>(t2 - t1);
 outTimeA=time_spana.count();
 abstime=outTimeA*1000;
@@ -309,7 +311,7 @@ glDeleteShader(frag);
 glReleaseShaderCompiler();
 glUseProgram(shader_program);
 SDL_Init(SDL_INIT_EVENTS);
-t1=steady_clock::now();
+t1=high_resolution_clock::now();
 viewportSizeX=w;
 viewportSizeY=h;
 glClearColor(0.0f,1.0f,0.0f,1.0f);
