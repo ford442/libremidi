@@ -74,6 +74,7 @@ EGLDisplay display;
 EGLContext contextegl;
 EGLSurface surface;
 EmscriptenWebGLContextAttributes attr;
+
 EMSCRIPTEN_RESULT ret;
 
 static const char* common_shader_header=common_shader_header_gles3;
