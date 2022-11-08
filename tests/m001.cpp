@@ -6,10 +6,6 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <GLES3/gl3.h>
-#include <GLES3/gl31.h>
-#include <GLES3/gl32.h>
-#define __gl2_h_
-#include <GLES2/gl2ext.h>
 #include <iostream>
 #include <algorithm>
 #include <cstring>
@@ -250,9 +246,9 @@ EGL_NONE
 };
 
 void strt(){
+emscripten_cancel_main_loop();
 h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
 w=h;
-emscripten_cancel_main_loop();
 for(ii=0;ii<2161;ii++){
 vertices[ii]=0.0f;
 }
@@ -316,10 +312,6 @@ glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 emscripten_set_main_loop((void(*)())renderFrame,0,0);
 }
 
-extern "C" {
-void str(){
-strt();
-}}
 
 inline const char *emscripten_event_type_to_string(int eventType){
 const char *events[]={"(invalid)","(none)","keypress","keydown","keyup","click","mousedown","mouseup","dblclick","mousemove","wheel","resize","scroll","blur","focus","focusin","focusout","deviceorientation","devicemotion","orientationchange","fullscreenchange","pointerlockchange","visibilitychange","touchstart","touchend","touchmove","touchcancel","gamepadconnected","gamepaddisconnected","beforeunload","batterychargingchange","batterylevelchange","webglcontextlost","webglcontextrestored","(invalid)"};
@@ -351,6 +343,8 @@ return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
 
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
+
+extern "C" {
 
 EM_BOOL mouse_callback(int eventType,const EmscriptenMouseEvent *e,void *userData){
 // printf("%s,screen: (%ld,%ld),client: (%ld,%ld),%s%s%s%s button: %hu,buttons: %hu,movement: (%ld,%ld),target: (%ld,%ld)\n",emscripten_event_type_to_string(eventType),e->screenX,e->screenY,e->clientX,e->clientY,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->button,e->buttons,e->movementX,e->movementY,e->targetX,e->targetY);
@@ -493,22 +487,26 @@ if(e->keyCode==81){kkey=kkey-377;k=83;midd(m1,k,2);}
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
 
+void str(){
+strt();
+}
+
+}
+
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 
 int main(int argc, char**){
-EM_ASM({FS.mkdir("/snd");FS.mkdir("/shader");});
+EM_ASM({
+FS.mkdir("/snd");
+FS.mkdir("/shader");
+});
 libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx,const std::string& id){
-},
-.input_removed=[&](int idx,const std::string& id){
-},
-.output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output: "<<idx<<" - "<<id<<std::endl;
-m1=idx;
-},
-.output_removed=[&](int idx,const std::string& id){
-}};
+.input_added=[&](int idx,const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){std::cout<<"MIDI Output: "<<idx<<" - "<<id<<std::endl;m1=idx;},
+.output_removed=[&](int idx,const std::string& id){}
+};
 libremidi::observer obs{libremidi::API::EMSCRIPTEN_WEBMIDI,std::move(callbacks)};
 ret=emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,0,key_callback);
 ret=emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,0,key_callback);
