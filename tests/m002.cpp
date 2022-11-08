@@ -6,10 +6,6 @@
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <GLES3/gl3.h>
-#include <GLES3/gl31.h>
-#include <GLES3/gl32.h>
-#define __gl2_h_
-#include <GLES2/gl2ext.h>
 #include <iostream>
 #include <algorithm>
 #include <cstring>
@@ -58,23 +54,23 @@ return NULL;
 
 static const char common_shader_header_gles3[]=
 "#version 300 es \n"
-"precision highp float;precision highp int; \n";
+"#version 300 es \n precision highp float;precision highp int;precision lowp sampler3D;precision highp sampler2D;";
 
 static const char vertex_shader_body_gles3[]=
-"layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
-"out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
+"\n layout(location=0)in vec3 aPos;layout(location=1)in vec3 aColor;"
+"\n out vec3 ourColor;void main(){gl_Position=vec4(aPos,1.0);ourColor=aColor;} \n\0";
 
 static const char fragment_shader_header_gles3[]=
-"in highp vec3 ourColor; \n"
-"out highp vec4 FragColor; \n";
+"\n in highp vec3 ourColor; \n"
+"\n out highp vec4 FragColor; \n";
 
 static const char fragment_shader_footer_gles3[]=
-" \n\0";
+" \n \0";
 
-static EGLDisplay display;
-static EGLContext contextegl;
-static EGLSurface surface;
-static EmscriptenWebGLContextAttributes attr;
+EGLDisplay display;
+EGLContext contextegl;
+EGLSurface surface;
+EmscriptenWebGLContextAttributes attr;
 
 static const char* common_shader_header=common_shader_header_gles3;
 static const char* vertex_shader_body=vertex_shader_body_gles3;
@@ -82,13 +78,13 @@ static const char* fragment_shader_header=fragment_shader_header_gles3;
 static const char* fragment_shader_footer=fragment_shader_footer_gles3;
 
 GLuint shader_program;
-static GLfloat mouseX=0.0f;
-static GLfloat mouseY=0.0f;
-static GLfloat mouseLPressed=0.0f;
-static GLfloat mouseRPressed=0.0f;
-static GLfloat viewportSizeX=0.0f;
-static GLfloat viewportSizeY=0.0f;
-static GLfloat abstime;
+GLfloat mouseX=0.0f;
+GLfloat mouseY=0.0f;
+GLfloat mouseLPressed=0.0f;
+GLfloat mouseRPressed=0.0f;
+GLfloat viewportSizeX=0.0f;
+GLfloat viewportSizeY=0.0f;
+GLfloat abstime;
 
 static GLuint compile_shader(GLenum type,GLsizei nsources,const char **sources){
 GLuint shader;
@@ -107,7 +103,7 @@ GLfloat vertices[2160]={};
 GLuint VBO,VAO;
 float white;
 // GLfloat white;
-static GLfloat x,y;
+GLfloat x,y;
 float siz,outTimeA;
 int a;
 float b;
@@ -181,6 +177,7 @@ vertices[2]=0.0f;
 ink[2]=white;
 ink[0]=white/100;
 }
+  
 glClearColor(ink[0],ink[1],ink[2],ink[3]);
 glGenVertexArrays(1,&VAO);
 glGenBuffers(1,&VBO);
@@ -194,10 +191,11 @@ glEnableVertexAttribArray(1);
 glUseProgram(shader_program);
 glDrawArrays(GL_TRIANGLES,0,360);
 eglSwapBuffers(display,surface);
+  
 }
 
 const EGLint attribut_list[]={
-// EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
+EGL_GL_COLORSPACE_KHR,EGL_GL_COLORSPACE_SRGB,
 EGL_NONE
 };
 
@@ -208,21 +206,21 @@ EGL_RENDERABLE_TYPE,EGL_OPENGL_ES3_BIT,
 EGL_CONTEXT_OPENGL_ROBUST_ACCESS_EXT,EGL_TRUE,
 EGL_DEPTH_ENCODING_NV,EGL_DEPTH_ENCODING_NONLINEAR_NV,
 EGL_RENDER_BUFFER,EGL_QUADRUPLE_BUFFER_NV,
-// EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE,EGL_TRUE,
+EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE,EGL_TRUE,
 EGL_RED_SIZE,8,
 EGL_GREEN_SIZE,8,
 EGL_BLUE_SIZE,8,
 EGL_ALPHA_SIZE,8,
-EGL_DEPTH_SIZE,24,
-EGL_STENCIL_SIZE,8,
+EGL_DEPTH_SIZE,32,
+EGL_STENCIL_SIZE,16,
 EGL_BUFFER_SIZE,32,
 EGL_NONE
 };
-int ii,idx;
-GLuint vtx,frag;
-char *fileloc="/shader/shader1.glsl";
 
 void strt(){
+char *fileloc="/shader/shader1.glsl";
+int ii;
+GLuint vtx,frag;
 emscripten_cancel_main_loop();
 for(ii=0;ii<2161;ii++){
 vertices[ii]=0.0f;
@@ -234,10 +232,10 @@ emscripten_webgl_init_context_attributes(&attr);
 attr.alpha=EM_TRUE;
 attr.stencil=EM_TRUE;
 attr.depth=EM_TRUE;
-attr.antialias=EM_FALSE;
+attr.antialias=EM_TRUE;
 attr.premultipliedAlpha=EM_FALSE;
 attr.preserveDrawingBuffer=EM_FALSE;
-attr.enableExtensionsByDefault=EM_FALSE;
+attr.enableExtensionsByDefault=EM_TRUE;
 attr.powerPreference=EM_WEBGL_POWER_PREFERENCE_HIGH_PERFORMANCE;
 attr.failIfMajorPerformanceCaveat=EM_FALSE;
 attr.majorVersion=2;
@@ -249,11 +247,16 @@ display=eglGetDisplay(EGL_DEFAULT_DISPLAY);
 eglInitialize(display,&major,&minor);
 eglChooseConfig(display,attribute_list,&eglconfig,1,&config_size);
 eglBindAPI(EGL_OPENGL_ES_API);
+
 EGLint anEglCtxAttribs2[]={
 EGL_CONTEXT_CLIENT_VERSION,3,
 // EGL_COLOR_COMPONENT_TYPE_EXT,EGL_COLOR_COMPONENT_TYPE_FLOAT_EXT,
 EGL_CONTEXT_PRIORITY_LEVEL_IMG,EGL_CONTEXT_PRIORITY_REALTIME_NV,
-EGL_NONE};
+EGL_CONTEXT_FLAGS_KHR,EGL_CONTEXT_OPENGL_ROBUST_ACCESS_BIT_KHR,
+EGL_CONTEXT_FLAGS_KHR,EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE_BIT_KHR,
+EGL_NONE
+};
+  
 contextegl=eglCreateContext(display,eglconfig,EGL_NO_CONTEXT,anEglCtxAttribs2);
 surface=eglCreateWindowSurface(display,eglconfig,NULL,attribut_list);
 eglMakeCurrent(display,surface,surface,contextegl);
@@ -288,31 +291,34 @@ emscripten_set_main_loop((void(*)())renderFrame,0,0);
 }
 
 extern "C" {
+  
 void str(){
 strt();
-}}
+}
+  
+}
 
 inline const char *emscripten_event_type_to_string(int eventType){
 const char *events[]={"(invalid)","(none)","keypress","keydown","keyup","click","mousedown","mouseup","dblclick","mousemove","wheel","resize","scroll","blur","focus","focusin","focusout","deviceorientation","devicemotion","orientationchange","fullscreenchange","pointerlockchange","visibilitychange","touchstart","touchend","touchmove","touchcancel","gamepadconnected","gamepaddisconnected","beforeunload","batterychargingchange","batterylevelchange","webglcontextlost","webglcontextrestored","(invalid)"};
 ++eventType;
-if(eventType<0)eventType=0;
-if(eventType>=sizeof(events)/sizeof(events[0]))eventType=sizeof(events)/sizeof(events[0])-1;
+if(eventType<0){eventType=0;}
+if(eventType>=sizeof(events)/sizeof(events[0])){eventType=sizeof(events)/sizeof(events[0])-1;}
 return events[eventType];
 }
 
 int interpret_charcode_for_keyevent(int eventType,const EmscriptenKeyboardEvent *e){
-if(eventType==EMSCRIPTEN_EVENT_KEYPRESS&&e->which)return e->which;
-if(e->charCode)return e->charCode;
-if(strlen(e->key)==1)return(int)e->key[0];
-if(e->which)return e->which;
+if(eventType==EMSCRIPTEN_EVENT_KEYPRESS&&e->which){return e->which;}
+if(e->charCode){return e->charCode;}
+if(strlen(e->key)==1){return(int)e->key[0];}
+if(e->which){return e->which;}
 return e->keyCode;
 }
 
 int number_of_characters_in_utf8_string(const char *str){
-if(!str)return 0;
+if(!str){return 0;}
 int num_chars=0;
 while(*str){
-if((*str++&0xC0)!=0x80)++num_chars;
+if((*str++&0xC0)!=0x80){++num_chars;}
 }
 return num_chars;
 }
@@ -320,21 +326,18 @@ return num_chars;
 void midd(int idx,unsigned char k){
 libremidi::midi_out outpu{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outpu.open_port(idx);
-//  EM_ASM({console.log("note off");});
 outpu.send_message(std::vector<unsigned char>{0x80,k,100});
 }
 
 void midd2(int idx,unsigned char k){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
-// EM_ASM({console.log("note on");});
 outp.send_message(std::vector<unsigned char>{0x90,k,100});
 }
 
 void midd3(int idx){
 libremidi::midi_out outp{libremidi::API::EMSCRIPTEN_WEBMIDI, "Emscripten"};
 outp.open_port(idx);
-// EM_ASM({console.log("note on");});
 for (unsigned char ll=48;ll<83;ll++){
 outp.send_message(std::vector<unsigned char>{0x80,ll,100});
 nanosleep(&s_time,NULL);
@@ -343,6 +346,8 @@ nanosleep(&s_time,NULL);
 int emscripten_key_event_is_printable_character(const EmscriptenKeyboardEvent *keyEvent){
 return number_of_characters_in_utf8_string(keyEvent->key)==1;
 }
+
+extern "C" {
 
 unsigned char k;
 int kkey;
@@ -394,7 +399,6 @@ return true;
 
 EM_BOOL key_callback(int eventType,const EmscriptenKeyboardEvent *e,void *userData){
 int dom_pk_code=emscripten_compute_dom_pk_code(e->code);
-
 if(e->repeat==true){return true;}
 if(e->keyCode==32){midd3(m1);}
 if(e->keyCode==112){k=59;midd2(m1,k);kkey=10;/*noteOnGL(kkey);*/}
@@ -409,7 +413,6 @@ if(e->keyCode==120){k=51;midd2(m1,k);kkey=90;/*noteOnGL(kkey);*/}
 if(e->keyCode==121){k=50;midd2(m1,k);kkey=100;/*noteOnGL(kkey);*/}
 if(e->keyCode==122){k=49;midd2(m1,k);kkey=110;/*noteOnGL(kkey);*/}
 if(e->keyCode==123){k=48;midd2(m1,k);kkey=120;/*noteOnGL(kkey);*/}
-  
 if(e->keyCode==49){k=71;midd2(m1,k);kkey=220;/*noteOnGL(kkey);*/}
 if(e->keyCode==50){k=70;midd2(m1,k);kkey=210;/*noteOnGL(kkey);*/}
 if(e->keyCode==51){k=69;midd2(m1,k);kkey=200;/*noteOnGL(kkey);*/}
@@ -422,7 +425,6 @@ if(e->keyCode==57){k=63;midd2(m1,k);kkey=130;/*noteOnGL(kkey);*/}
 if(e->keyCode==48){k=62;midd2(m1,k);kkey=117;/*noteOnGL(kkey);*/}
 if(e->keyCode==189){k=61;midd2(m1,k);kkey=107;/*noteOnGL(kkey);*/}
 if(e->keyCode==187){k=60;midd2(m1,k);kkey=97;/*noteOnGL(kkey);*/}
-  
 if(e->keyCode==221){k=72;midd2(m1,k);kkey=111;/*noteOnGL(kkey);*/}
 if(e->keyCode==219){k=73;midd2(m1,k);kkey=222;/*noteOnGL(kkey);*/}
 if(e->keyCode==80){k=74;midd2(m1,k);kkey=333;/*noteOnGL(kkey);*/}
@@ -435,13 +437,17 @@ if(e->keyCode==82){k=80;midd2(m1,k);kkey=362;/*noteOnGL(kkey);*/}
 if(e->keyCode==69){k=81;midd2(m1,k);kkey=367;/*noteOnGL(kkey);*/}
 if(e->keyCode==87){k=82;midd2(m1,k);kkey=372;/*noteOnGL(kkey);*/}
 if(e->keyCode==81){k=83;midd2(m1,k);kkey=377;/*noteOnGL(kkey);*/}
-  
 mouseLPressed=1.0f;
 printf("%s, key: \"%s\" (printable: %s), code: \"%s\" = %s (%d), location: %lu,%s%s%s%s repeat: %d, locale: \"%s\", char: \"%s\", charCode: %lu (interpreted: %d), keyCode: %s(%lu), which: %lu\n",emscripten_event_type_to_string(eventType),e->key,/*emscripten_key_event_is_printable_character(e) ? "true" : "false",*/ e->code,emscripten_dom_pk_code_to_string(dom_pk_code),dom_pk_code,e->location,e->ctrlKey ? " CTRL" : "",e->shiftKey ? " SHIFT" : "",e->altKey ? " ALT" : "",e->metaKey ? " META" : "",e->repeat, e->locale, e->charValue, e->charCode, interpret_charcode_for_keyevent(eventType, e), emscripten_dom_vk_to_string(e->keyCode),e->keyCode,e->which);
 // if(eventType==EMSCRIPTEN_EVENT_KEYUP)printf("\n");
 return e->keyCode==DOM_VK_F2||e->keyCode==DOM_VK_F3||e->keyCode==DOM_VK_F4||e->keyCode==DOM_VK_F5||e->keyCode==DOM_VK_F6||e->keyCode==DOM_VK_F7||e->keyCode==DOM_VK_F8||e->keyCode==DOM_VK_F9||e->keyCode==DOM_VK_F10||e->keyCode==DOM_VK_F11||e->keyCode==DOM_VK_F12||e->keyCode==DOM_VK_F1||e->keyCode==DOM_VK_BACK_SPACE||(e->keyCode>=DOM_VK_F1&&e->keyCode<=DOM_VK_F24)||e->ctrlKey||e->altKey||eventType==EMSCRIPTEN_EVENT_KEYPRESS||eventType||eventType==EMSCRIPTEN_EVENT_KEYUP;
 }
+
+}
+
 #define TEST_RESULT(x) if (ret != EMSCRIPTEN_RESULT_SUCCESS) printf("%s returned %s.\n",#x);
+
+extern "C" {
 
 int gotClick=0,gotMouseDown=0,gotMouseUp=0,gotDblClick=0,gotMouseMove=0,gotWheel=0;
 
@@ -472,19 +478,18 @@ gotWheel=1;
 }
 return 0;
 }
+  
+}
+
 int main(int argc, char**){
 std::vector<std::shared_ptr<libremidi::midi_in>>inputs;
 std::vector<std::shared_ptr<libremidi::midi_out>>outputs;
 libremidi::observer::callbacks callbacks{
-.input_added=[&](int idx,const std::string& id){
-},
-.input_removed=[&](int idx,const std::string& id){
-},
-.output_added=[&](int idx,const std::string& id){
-std::cout<<"MIDI Output: "<<idx<<" - "<<id<<std::endl;m1=idx;
-},
-.output_removed=[&](int idx,const std::string& id){
-}};
+.input_added=[&](int idx,const std::string& id){},
+.input_removed=[&](int idx,const std::string& id){},
+.output_added=[&](int idx,const std::string& id){std::cout<<"MIDI Output: "<<idx<<" - "<<id<<std::endl;m1=idx;},
+.output_removed=[&](int idx,const std::string& id){}
+};
 EMSCRIPTEN_RESULT ret=emscripten_set_click_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
 TEST_RESULT(emscripten_set_click_callback);
 ret=emscripten_set_mousedown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_callback);
