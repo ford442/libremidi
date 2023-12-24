@@ -180,7 +180,7 @@ if(LIBREMIDI_EXAMPLES)
 
   if(EMSCRIPTEN)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -sFULL_ES3=1 --pre-js ../tests/pre.js --post-js ../tests/post.js -sEXPORTED_FUNCTIONS=[\"_main\", \"_str\"] -sEXPORTED_RUNTIME_METHODS=["ccall"]")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -sFULL_ES3=1 --pre-js ../tests/pre.js --post-js ../tests/post.js -sEXPORTED_FUNCTIONS='[\'_main\', \'_str\']' -sEXPORTED_RUNTIME_METHODS='['ccall']")
     add_executable(m0-001 tests/m001.cpp)
     target_link_libraries(m0-001 PRIVATE libremidi)
   endif()
