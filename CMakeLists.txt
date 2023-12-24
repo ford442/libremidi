@@ -58,7 +58,6 @@ target_include_directories(libremidi ${_public}
 
 if(EMSCRIPTEN)
   set(CMAKE_EXECUTABLE_SUFFIX .js)
-
   target_compile_definitions(libremidi ${_public} LIBREMIDI_EMSCRIPTEN)
 elseif(APPLE)
   ## CoreMIDI support ##
@@ -167,21 +166,7 @@ export(EXPORT libremidi-exports)
 
 ### Examples ###
 if(LIBREMIDI_EXAMPLES)
-  add_executable(midiobserve tests/midiobserve.cpp)
-  target_link_libraries(midiobserve PRIVATE libremidi)
-
-  add_executable(cmidiin tests/cmidiin.cpp)
-  target_link_libraries(cmidiin PRIVATE libremidi)
-
-  add_executable(midiclock_in tests/midiclock_in.cpp)
-  target_link_libraries(midiclock_in PRIVATE libremidi)
-
-  add_executable(midiclock_out tests/midiclock_out.cpp)
-  target_link_libraries(midiclock_out PRIVATE libremidi)
-
-  add_executable(midiout tests/midiout.cpp)
-  target_link_libraries(midiout PRIVATE libremidi)
-
+ 
   set(CMAKE_REQUIRED_FLAGS -std=c++2a)
   check_cxx_source_compiles("#include <thread>\nint main() { std::jthread t; }" HAS_STD_JTHREAD)
 
@@ -190,21 +175,11 @@ if(LIBREMIDI_EXAMPLES)
     target_link_libraries(multithread_midiout PRIVATE libremidi)
   endif()
 
-  add_executable(midiprobe tests/midiprobe.cpp)
-  target_link_libraries(midiprobe PRIVATE libremidi)
-
-  add_executable(qmidiin tests/qmidiin.cpp)
-  target_link_libraries(qmidiin PRIVATE libremidi)
-
-  add_executable(sysextest tests/sysextest.cpp)
-  target_link_libraries(sysextest PRIVATE libremidi)
-
   add_executable(midi2 tests/midi2.cpp)
   target_link_libraries(midi2 PRIVATE libremidi)
 
   if(EMSCRIPTEN)
-    add_executable(emscripten_midiin tests/emscripten_midiin.cpp)
-    target_link_libraries(emscripten_midiin PRIVATE libremidi)
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --pre-js ../tests/pre.js --post-js ../tests/post.js -sEXPORTED_FUNCTIONS='[\"_main\", \"_str\"]'")
     add_executable(m0-001 tests/m001.cpp)
     target_link_libraries(m0-001 PRIVATE libremidi)
