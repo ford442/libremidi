@@ -58,7 +58,6 @@ target_include_directories(libremidi ${_public}
 
 if(EMSCRIPTEN)
   set(CMAKE_EXECUTABLE_SUFFIX .js)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --pre-js ../tests/pre.js --post-js ../tests/post.js -sEXPORTED_FUNCTIONS='[\"_main\", \"_str\"]'")
 
   target_compile_definitions(libremidi ${_public} LIBREMIDI_EMSCRIPTEN)
 elseif(APPLE)
@@ -204,6 +203,7 @@ if(LIBREMIDI_EXAMPLES)
   target_link_libraries(midi2 PRIVATE libremidi)
 
   if(EMSCRIPTEN)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --pre-js ../tests/pre.js --post-js ../tests/post.js -sEXPORTED_FUNCTIONS='[\"_main\", \"_str\"]'")
     add_executable(emscripten_midiin tests/emscripten_midiin.cpp)
     target_link_libraries(emscripten_midiin PRIVATE libremidi)
     add_executable(m0-001 tests/m001.cpp)
