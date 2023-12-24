@@ -175,8 +175,8 @@ if(LIBREMIDI_EXAMPLES)
     target_link_libraries(multithread_midiout PRIVATE libremidi)
   endif()
 
-  add_executable(midi2 tests/midi2.cpp)
-  target_link_libraries(midi2 PRIVATE libremidi)
+#  add_executable(midi2 tests/midi2.cpp)
+ # target_link_libraries(midi2 PRIVATE libremidi)
 
   if(EMSCRIPTEN)
 
