@@ -128,7 +128,7 @@ static int h,w;
 void midd(int idx,int kll,int com){
 kl=kll;
 if(portOpen==0){
-outpu.open_port(idx);
+outpu.open_port(0);
 portOpen=1;
 }
 if(com==3){
@@ -246,7 +246,7 @@ EGL_NONE
 };
 
 void strt(){
-// emscripten_cancel_main_loop();
+emscripten_cancel_main_loop();
 h=EM_ASM_INT({return parseInt(document.getElementById('pmhig').innerHTML,10);});
 w=h;
 for(ii=0;ii<2161;ii++){
@@ -592,5 +592,5 @@ ret=emscripten_set_mousemove_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,mouse_c
 // TEST_RESULT(emscripten_set_dblclick_callback);
 // ret=emscripten_set_wheel_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW,0,1,wheel_callback);
 // TEST_RESULT(emscripten_set_wheel_callback);
-// emscripten_set_main_loop([]{},60,1);
+emscripten_set_main_loop([]{},60,1);
 }
