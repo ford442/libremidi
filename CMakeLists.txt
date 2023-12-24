@@ -58,6 +58,8 @@ target_include_directories(libremidi ${_public}
 
 if(EMSCRIPTEN)
   set(CMAKE_EXECUTABLE_SUFFIX .js)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --pre-js pre.js --post-js post.js -sEXPORTED_FUNCTIONS='[\"_main\", \"_str\"]'")
+
   target_compile_definitions(libremidi ${_public} LIBREMIDI_EMSCRIPTEN)
 elseif(APPLE)
   ## CoreMIDI support ##
