@@ -16,6 +16,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <memory>
+#include <SDL2/SDL.h>
 
 using namespace std;
 using namespace std::chrono;
