@@ -21,7 +21,7 @@ int main(void)
 try
 {
 midi_out midiout;
-auto ports=observer{{},observer_configuration_for(libremidi.get_current_api())}.get_output_ports();
+auto ports=observer{{},observer_configuration_for(midiout.get_current_api())}.get_output_ports();
 midiout.open_virtual_port();
 
 midiout.open_port(ports[0]);
