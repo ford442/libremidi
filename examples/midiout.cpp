@@ -10,6 +10,9 @@
 
 #include <libremidi/libremidi.hpp>
 
+using namespace libremidi;
+using namespace std::literals;
+
 #include <array>
 #include <chrono>
 #include <thread>
@@ -17,10 +20,8 @@
 int main(void)
 try
 {
-  using namespace std::literals;
-  libremidi::midi_out midiout;
-    auto ports = libremidi::observer{{}, observer_configuration_for(libremidi.get_current_api())}
-                   .get_output_ports();
+midi_out midiout;
+auto ports=observer{{},observer_configuration_for(libremidi.get_current_api())}.get_output_ports();
 midiout.open_virtual_port();
 
 midiout.open_port(ports[0]);
@@ -57,7 +58,7 @@ midiout.open_port(ports[0]);
 
   return 0;
 }
-catch (const libremidi::midi_exception& error)
+catch (const midi_exception& error)
 {
   std::cerr << error.what() << std::endl;
   exit(EXIT_FAILURE);
