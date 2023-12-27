@@ -19,10 +19,11 @@ try
 {
   using namespace std::literals;
   libremidi::midi_out midiout;
-  
+    auto ports = libremidi::observer{{}, observer_configuration_for(libremidi.get_current_api())}
+                   .get_output_ports();
 midiout.open_virtual_port();
 
-midiout.open_port(0);
+midiout.open_port(ports[0]);
   
   // Send out a series of MIDI messages.
 
