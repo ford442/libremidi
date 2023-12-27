@@ -22,7 +22,7 @@ try
   
 midiout.open_virtual_port();
 
-midiout.open_port(ports[0]);
+midiout.open_port(0);
   
   // Send out a series of MIDI messages.
 
