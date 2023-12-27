@@ -20,10 +20,10 @@ try
   using namespace std::literals;
   libremidi::midi_out midiout;
 
-  // Call function to select port.
-  if (chooseMidiPort(midiout) == false)
-    return 0;
+libremidi.open_virtual_port();
 
+libremidi.open_port(ports[0]);
+  
   // Send out a series of MIDI messages.
 
   // Program change: 192, 5
