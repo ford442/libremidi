@@ -15,11 +15,10 @@ using namespace std::literals;
 
 #include <array>
 #include <chrono>
-#include <thread>
+// #include <thread>
 
-int main(void)
-try
-{
+int main()
+
 midi_out midiout;
 auto ports=observer{{},observer_configuration_for(midiout.get_current_api())}.get_output_ports();
 midiout.open_virtual_port();
@@ -28,38 +27,15 @@ midiout.open_port(ports[0]);
   
   // Send out a series of MIDI messages.
 
-  // Program change: 192, 5
-  midiout.send_message(192, 5);
-
-  std::this_thread::sleep_for(500ms);
-
-  midiout.send_message(0xF1, 60);
-
-  // Control Change: 176, 7, 100 (volume)
-  midiout.send_message(176, 7, 100);
 
   // Note On: 144, 64, 90
   midiout.send_message(144, 64, 90);
 
-  std::this_thread::sleep_for(500ms);
 
   // Note Off: 128, 64, 40
   midiout.send_message(128, 64, 40);
 
-  std::this_thread::sleep_for(500ms);
-
-  // Control Change: 176, 7, 40
-  midiout.send_message(176, 7, 40);
-
-  std::this_thread::sleep_for(500ms);
-
-  // Sysex: 240, 67, 4, 3, 2, 247
-  midiout.send_message(std::to_array<unsigned char>({240, 67, 4, 3, 2, 247}));
-
   return 0;
-}
-catch (const midi_exception& error)
-{
-  std::cerr << error.what() << std::endl;
-  exit(EXIT_FAILURE);
+
+
 }
