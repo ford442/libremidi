@@ -20,9 +20,9 @@ try
   using namespace std::literals;
   libremidi::midi_out midiout;
 
-libremidi.open_virtual_port();
+libremidi::libremidi.open_virtual_port();
 
-libremidi.open_port(ports[0]);
+libremidi::libremidi.open_port(ports[0]);
   
   // Send out a series of MIDI messages.
 
