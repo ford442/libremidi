@@ -222,7 +222,7 @@ if(EMSCRIPTEN)
 
   set(CMAKE_EXECUTABLE_SUFFIX .html)
   target_compile_definitions(libremidi ${_public} LIBREMIDI_EMSCRIPTEN)
-  target_link_options(libremidi ${_public} "SHELL:-s 'EXPORTED_FUNCTIONS=[\"_main\", \"_free\", \"_libremidi_devices_poll\", \"_libremidi_devices_input\"]' -sNO_DISABLE_EXCEPTION_CATCHING")
+  target_link_options(libremidi ${_public} "SHELL:-s 'EXPORTED_FUNCTIONS=[\"_main\", \"_malloc\",\"_free\", \"_libremidi_devices_poll\", \"_libremidi_devices_input\"]' -sNO_DISABLE_EXCEPTION_CATCHING")
 elseif(APPLE)
   ## CoreMIDI support ##
   if(NOT LIBREMIDI_NO_COREMIDI)
