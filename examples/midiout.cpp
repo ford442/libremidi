@@ -17,9 +17,10 @@ using namespace std::literals;
 #include <chrono>
 // #include <thread>
 
-int main()
 
-midi_out midiout;
+int main(){
+  midi_out midiout;
+
 auto ports=observer{{},observer_configuration_for(midiout.get_current_api())}.get_output_ports();
 midiout.open_virtual_port();
 
@@ -36,6 +37,5 @@ midiout.open_port(ports[0]);
   midiout.send_message(128, 64, 40);
 
   return 0;
-
 
 }
