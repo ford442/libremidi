@@ -9,6 +9,7 @@
 #include "utils.hpp"
 
 #include <libremidi/libremidi.hpp>
+#include <emscripten.h>
 
 using namespace libremidi;
 using namespace std::literals;
