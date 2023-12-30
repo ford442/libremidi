@@ -128,7 +128,7 @@ static int h,w;
 void midd(int idx,int kll,int com){
 kl=kll;
 if(portOpen==0){
-outpu.open_virtual_port();
+outpu.open_virtual_port(std::string_view portName = "libremidi virtual port");
 // outpu.open_port(idx);
 portOpen=1;
 }
